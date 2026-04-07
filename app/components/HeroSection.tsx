@@ -50,15 +50,8 @@ export default function HeroSection() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundColor: "rgba(0, 51, 102, 0.45)", // Navy Tint
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
             background:
-              "linear-gradient(to top, rgba(0, 51, 102, 0.7) 0%, rgba(0, 51, 102, 0.2) 60%, transparent 100%)",
+              "linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.1) 60%, transparent 100%)",
           }}
         />
       </div>
