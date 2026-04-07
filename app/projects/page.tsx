@@ -63,13 +63,21 @@ export default function ProjectsPage() {
           width: "100%",
           height: "65vh",
           minHeight: "450px",
-          backgroundColor: "#1c1917",
+          backgroundColor: "var(--color-primary)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           overflow: "hidden",
         }}
       >
+        <div 
+          style={{ 
+            position: "absolute", 
+            inset: 0, 
+            backgroundColor: "rgba(0, 51, 102, 0.45)",
+            zIndex: 1
+          }} 
+        />
         <img
           src="https://images.unsplash.com/photo-1541888941294-118889412942?w=1920&q=80"
           alt="Large-scale water project"
@@ -231,8 +239,9 @@ export default function ProjectsPage() {
                         fontSize: "0.625rem", 
                         textTransform: "uppercase", 
                         letterSpacing: "0.1em", 
-                        color: "var(--color-secondary)",
-                        marginBottom: "0.5rem"
+                        color: "var(--color-accent)",
+                        marginBottom: "0.5rem",
+                        fontWeight: 500
                       }}>
                         Success Metric
                       </span>
@@ -288,7 +297,7 @@ export default function ProjectsPage() {
       <section 
         style={{ 
           padding: "10rem 3rem", 
-          backgroundColor: "#F6F2EC",
+          backgroundColor: "var(--color-background)",
           borderTop: "1px solid var(--color-line)",
           textAlign: "center"
         }}

@@ -84,7 +84,7 @@ export default function QuotePage() {
             style={{
               display: "inline-block",
               padding: "1rem 2.5rem",
-              backgroundColor: "var(--color-primary)",
+              backgroundColor: "var(--color-accent)",
               color: "white",
               fontSize: "0.625rem",
               textTransform: "uppercase",
@@ -291,8 +291,17 @@ export default function QuotePage() {
               className="schedule-btn"
               style={{
                 width: "fit-content",
-                padding: "1rem 3rem",
+                padding: "1rem 3.5rem",
                 cursor: "pointer",
+                backgroundColor: "var(--color-accent)",
+                color: "white",
+                border: "none",
+                borderRadius: "2px",
+                textTransform: "uppercase",
+                fontSize: "0.625rem",
+                letterSpacing: "0.2em",
+                fontWeight: 500,
+                transition: "opacity 0.3s"
               }}
             >
               Submit Requirements
@@ -358,7 +367,7 @@ export default function QuotePage() {
                   }}
                 >
                   <Icon icon="lucide:mail" />
-                  support@afrotechliving.com
+                  support@afrotech-solutions.com
                 </a>
               </div>
             </div>

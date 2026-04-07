@@ -50,7 +50,7 @@ export default function HeroSection() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundColor: "rgba(0,0,0,0.45)",
+            backgroundColor: "rgba(0, 51, 102, 0.45)", // Navy Tint
           }}
         />
         <div
@@ -58,7 +58,7 @@ export default function HeroSection() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)",
+              "linear-gradient(to top, rgba(0, 51, 102, 0.7) 0%, rgba(0, 51, 102, 0.2) 60%, transparent 100%)",
           }}
         />
       </div>
@@ -81,7 +81,7 @@ export default function HeroSection() {
               fontSize: "0.625rem",
               textTransform: "uppercase",
               letterSpacing: "0.15em",
-              color: "rgba(255,255,255,0.8)",
+              color: "rgba(255,255,255,0.9)",
               fontFamily: "'DM Sans', sans-serif",
               marginBottom: "2rem",
             }}
@@ -154,7 +154,7 @@ export default function HeroSection() {
               <span
                 style={{
                   display: "block",
-                  color: "rgba(255,255,255,0.5)",
+                  color: "rgba(255,255,255,0.6)",
                   fontSize: "0.625rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.15em",
@@ -189,7 +189,7 @@ export default function HeroSection() {
               <span
                 style={{
                   display: "block",
-                  color: "rgba(255,255,255,0.5)",
+                  color: "rgba(255,255,255,0.6)",
                   fontSize: "0.625rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.15em",
@@ -224,7 +224,7 @@ export default function HeroSection() {
               <span
                 style={{
                   display: "block",
-                  color: "rgba(255,255,255,0.5)",
+                  color: "rgba(255,255,255,0.6)",
                   fontSize: "0.625rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.15em",
@@ -264,7 +264,7 @@ export default function HeroSection() {
               <span
                 style={{
                   display: "block",
-                  color: "rgba(255,255,255,0.6)",
+                  color: "rgba(255,255,255,0.8)",
                   fontSize: "0.625rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.15em",
@@ -283,13 +283,13 @@ export default function HeroSection() {
                   fontSize: "0.625rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.15em",
-                  backgroundColor: "white",
-                  color: "var(--color-primary)",
+                  backgroundColor: "var(--color-accent)",
+                  color: "white",
                   padding: "0.75rem 1.5rem",
                   borderRadius: "2px",
                   fontWeight: 500,
                   textDecoration: "none",
-                  transition: "background-color 0.3s, color 0.3s",
+                  transition: "background-color 0.3s, opacity 0.3s",
                 }}
                 className="hero-cta-btn"
               >

@@ -11,7 +11,11 @@ export default function FooterForm() {
         placeholder="Email Address"
         className="email-input"
       />
-      <button type="submit" className="send-btn">
+      <button 
+        type="submit" 
+        className="send-btn"
+        style={{ color: "var(--color-accent)" }}
+      >
         Send
       </button>
     </form>

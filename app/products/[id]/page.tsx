@@ -27,7 +27,7 @@ export default function ProductDetailPage() {
     <main style={{ backgroundColor: "var(--color-background)" }}>
       <Navbar />
 
-      {/* Product Hero & Specs Grid */}
+      {/* Product Hero: Image + Primary Info */}
       <section style={{ paddingTop: "8rem", paddingBottom: "6rem" }}>
         <div 
           style={{ 
@@ -35,12 +35,13 @@ export default function ProductDetailPage() {
             margin: "0 auto", 
             padding: "0 2rem",
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 0.7fr 1.3fr 1fr))",
-            gap: "4rem",
-            alignItems: "start"
+            gridTemplateColumns: "1fr 1.2fr",
+            gap: "5rem",
+            alignItems: "center"
           }}
+          className="product-detail-hero"
         >
-          {/* Column 1: Small Product Image */}
+          {/* Left: Product Image */}
           <div className="reveal-fade">
             <div style={{ 
               aspectRatio: "1/1", 
@@ -49,7 +50,7 @@ export default function ProductDetailPage() {
               borderRadius: "2px",
               border: "1px solid var(--color-line)",
               overflow: "hidden",
-              boxShadow: "0 10px 40px rgba(0,0,0,0.02)"
+              boxShadow: "0 20px 60px rgba(0,0,0,0.03)"
             }}>
               <img 
                 src={product.mainImg} 
@@ -59,46 +60,46 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* Column 2: Product Info */}
+          {/* Right: Primary Info */}
           <div className="reveal-fade">
             <span style={{ 
               display: "block", 
-              fontSize: "0.625rem", 
+              fontSize: "0.75rem", 
               textTransform: "uppercase", 
               letterSpacing: "0.2em", 
               color: "var(--color-secondary)",
-              marginBottom: "1rem"
+              marginBottom: "1.5rem"
             }}>
               {product.category}
             </span>
             <h1 style={{ 
               fontFamily: "'Playfair Display', serif", 
-              fontSize: "clamp(2rem, 4vw, 3rem)", 
+              fontSize: "clamp(2.5rem, 5vw, 4rem)", 
               fontWeight: 300, 
               color: "var(--color-primary)",
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.03em",
               lineHeight: 1.1,
-              marginBottom: "1.5rem"
+              marginBottom: "2rem"
             }}>
               {product.name}
             </h1>
             <p style={{ 
-              fontSize: "1rem", 
+              fontSize: "1.125rem", 
               color: "var(--color-secondary)", 
               fontWeight: 300, 
-              lineHeight: 1.7, 
-              marginBottom: "2.5rem",
-              maxWidth: "28rem"
+              lineHeight: 1.75, 
+              marginBottom: "3rem",
+              maxWidth: "36rem"
             }}>
               {product.fullDesc}
             </p>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "3rem" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "2rem" }}>
               <Link 
                 href="/quote" 
                 style={{ 
-                  padding: "1rem 2.5rem", 
-                  backgroundColor: "var(--color-primary)", 
+                  padding: "1.25rem 3rem", 
+                  backgroundColor: "var(--color-accent)", 
                   color: "white", 
                   fontSize: "0.625rem", 
                   textTransform: "uppercase", 
@@ -111,8 +112,7 @@ export default function ProductDetailPage() {
                 Inquire About Model
               </Link>
               <span style={{ 
-                padding: "1rem 0", 
-                fontSize: "1.125rem", 
+                fontSize: "1.25rem", 
                 color: "var(--color-primary)", 
                 fontWeight: 500
               }}>
@@ -120,42 +120,10 @@ export default function ProductDetailPage() {
               </span>
             </div>
           </div>
-
-          {/* Column 3: Technical Specifications (Moved up) */}
-          <div className="reveal-fade">
-            <h3 style={{ 
-              fontFamily: "'Playfair Display', serif", 
-              fontSize: "1.25rem", 
-              fontWeight: 300, 
-              color: "var(--color-primary)",
-              marginBottom: "1.5rem",
-              borderBottom: "1px solid var(--color-line)",
-              paddingBottom: "0.75rem"
-            }}>
-              Technical Specs.
-            </h3>
-            <div style={{ display: "grid", gap: "0.75rem" }}>
-              {product.detailedSpecs.map((spec, i) => (
-                <div 
-                  key={i} 
-                  style={{ 
-                    display: "flex", 
-                    justifyContent: "space-between", 
-                    fontSize: "0.8125rem",
-                    borderBottom: "1px solid rgba(0,0,0,0.03)",
-                    paddingBottom: "0.5rem"
-                  }}
-                >
-                  <span style={{ color: "var(--color-secondary)", fontWeight: 300 }}>{spec.label}</span>
-                  <span style={{ color: "var(--color-primary)", fontWeight: 500 }}>{spec.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* Applications & Reliability Section */}
+      {/* Detailed Technical Specs & Applications (Below Hero) */}
       <section style={{ padding: "8rem 2rem", backgroundColor: "white", borderTop: "1px solid var(--color-line)" }}>
         <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
           <div 
@@ -166,8 +134,38 @@ export default function ProductDetailPage() {
               alignItems: "start"
             }}
           >
-            {/* Left: Applications */}
+            {/* Detailed Stats Table */}
             <div className="reveal-fade">
+              <h2 style={{ 
+                fontFamily: "'Playfair Display', serif", 
+                fontSize: "2rem", 
+                fontWeight: 300, 
+                color: "var(--color-primary)",
+                marginBottom: "3rem"
+              }}>
+                Technical specifications.
+              </h2>
+              <div style={{ borderTop: "1px solid var(--color-line)" }}>
+                {product.detailedSpecs.map((spec, i) => (
+                  <div 
+                    key={i} 
+                    style={{ 
+                      display: "flex", 
+                      justifyContent: "space-between", 
+                      padding: "1.5rem 0", 
+                      borderBottom: "1px solid var(--color-line)",
+                      fontSize: "0.9375rem"
+                    }}
+                  >
+                    <span style={{ color: "var(--color-secondary)", fontWeight: 300 }}>{spec.label}</span>
+                    <span style={{ color: "var(--color-primary)", fontWeight: 500 }}>{spec.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Application Use Cases */}
+            <div className="reveal-fade" style={{ paddingTop: "2rem" }}>
               <div style={{ backgroundColor: "var(--color-background)", padding: "4rem", borderRadius: "2px" }}>
                 <h3 style={{ 
                   fontFamily: "'Playfair Display', serif", 
@@ -176,9 +174,9 @@ export default function ProductDetailPage() {
                   color: "var(--color-primary)",
                   marginBottom: "2rem"
                 }}>
-                  Primary Applications.
+                  Primary applications.
                 </h3>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.5rem" }}>
+                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: "1.5rem" }}>
                   {product.applications.map((app, i) => (
                     <li key={i} style={{ display: "flex", alignItems: "center", gap: "1rem", color: "var(--color-secondary)", fontSize: "1rem", fontWeight: 300 }}>
                       <Icon icon="lucide:check" width="18" style={{ color: "var(--color-primary)" }} />
@@ -187,31 +185,11 @@ export default function ProductDetailPage() {
                   ))}
                 </ul>
               </div>
-            </div>
-
-            {/* Right: Reliability Standards */}
-            <div className="reveal-fade" style={{ paddingTop: "2rem" }}>
-              <h3 style={{ 
-                fontFamily: "'Playfair Display', serif", 
-                fontSize: "1.5rem", 
-                fontWeight: 300, 
-                color: "var(--color-primary)",
-                marginBottom: "2rem"
-              }}>
-                Reliability Standards.
-              </h3>
-              <p style={{ fontSize: "1rem", color: "var(--color-secondary)", fontWeight: 300, lineHeight: 1.75, marginBottom: "2rem" }}>
-                All components in the {product.name} series undergo our rigorous 12-point quality testing cycle, including high-pressure endurance and motor winding integrity checks.
-              </p>
-              <div style={{ display: "flex", gap: "2rem" }}>
-                <div style={{ borderLeft: "1px solid var(--color-line)", paddingLeft: "1.5rem" }}>
-                  <span style={{ display: "block", fontSize: "0.625rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(87,83,78,0.6)", marginBottom: "0.25rem" }}>Test Cycle</span>
-                  <span style={{ fontSize: "1.25rem", fontWeight: 500, color: "var(--color-primary)" }}>12-Point</span>
-                </div>
-                <div style={{ borderLeft: "1px solid var(--color-line)", paddingLeft: "1.5rem" }}>
-                  <span style={{ display: "block", fontSize: "0.625rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(87,83,78,0.6)", marginBottom: "0.25rem" }}>Approval</span>
-                  <span style={{ fontSize: "1.25rem", fontWeight: 500, color: "var(--color-primary)" }}>ISO 9001</span>
-                </div>
+              <div style={{ marginTop: "4rem", display: "grid", gap: "1.5rem" }}>
+                <span style={{ fontSize: "0.625rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(87,83,78,0.6)" }}>Reliability standards</span>
+                <p style={{ fontSize: "0.875rem", color: "var(--color-secondary)", fontWeight: 300, lineHeight: 1.6 }}>
+                  All components in the {product.name} series undergo our rigorous 12-point quality testing cycle, including high-pressure endurance and motor winding integrity checks.
+                </p>
               </div>
             </div>
           </div>

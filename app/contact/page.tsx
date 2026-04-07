@@ -42,7 +42,7 @@ export default function ContactPage() {
               width: "64px",
               height: "64px",
               borderRadius: "50%",
-              backgroundColor: "rgba(28,25,23,0.05)",
+              backgroundColor: "rgba(0,51,102,0.05)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -79,7 +79,7 @@ export default function ContactPage() {
             style={{
               display: "inline-block",
               padding: "1rem 2.5rem",
-              backgroundColor: "var(--color-primary)",
+              backgroundColor: "var(--color-accent)",
               color: "white",
               fontSize: "0.625rem",
               textTransform: "uppercase",
@@ -228,7 +228,7 @@ export default function ContactPage() {
             <button 
               type="submit" 
               className="consult-btn"
-              style={{ padding: "1rem 3rem", width: "fit-content", cursor: "pointer" }}
+              style={{ backgroundColor: "var(--color-accent)", color: "white", padding: "1rem 3rem", width: "fit-content", cursor: "pointer", border: "none", borderRadius: "2px", textTransform: "uppercase", fontSize: "0.625rem", letterSpacing: "0.2em", fontWeight: 500 }}
             >
               Send Message
             </button>

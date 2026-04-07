@@ -7,12 +7,12 @@
 }
 
 :root {
-  --color-primary: #1c1917;
-  --color-secondary: #57534e;
-  --color-background: #F9F8F6;
-  --color-surface: #F9F8F6;
-  --color-line: #e7e5e4;
-  --color-warm: #F6F4F1;
+  --color-primary: #003366;    /* Deep Navy - Trust & Authority */
+  --color-secondary: #475569;  /* Steel Gray - Technical Detail */
+  --color-accent: #D61C2C;     /* Precision Red - Brand & Action */
+  --color-background: #F8FAFC;  /* Cool Off-White - Clean Presence */
+  --color-surface: #FFFFFF;    /* Pure White */
+  --color-line: #E2E8F0;       /* Light border for technical grid */
 }
 
 html { scroll-behavior: smooth; }
@@ -105,17 +105,18 @@ body {
   font-size: 0.625rem;
   font-weight: 500;
   letter-spacing: 0.15em;
-  color: var(--color-primary);
+  color: var(--color-accent);
   text-decoration: none;
-  border: 1px solid rgba(28, 25, 23, 0.3);
+  border: 1px solid var(--color-accent);
   border-radius: 2px;
   padding: 0.5rem 1.25rem;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
   white-space: nowrap;
 }
 .nav-cta-link:hover {
-  background-color: var(--color-primary);
+  background-color: var(--color-accent);
   color: white;
+  border-color: var(--color-accent);
 }
 
 /* --- Hero --- */

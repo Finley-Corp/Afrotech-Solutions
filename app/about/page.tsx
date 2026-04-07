@@ -36,13 +36,21 @@ export default function AboutPage() {
           width: "100%",
           height: "70vh",
           minHeight: "500px",
-          backgroundColor: "#1c1917",
+          backgroundColor: "var(--color-primary)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           overflow: "hidden",
         }}
       >
+        <div 
+          style={{ 
+            position: "absolute", 
+            inset: 0, 
+            backgroundColor: "rgba(0, 51, 102, 0.45)",
+            zIndex: 1
+          }} 
+        />
         <img
           src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1920&q=80"
           alt="Engineering site visit"
@@ -256,23 +264,23 @@ export default function AboutPage() {
                   "Energy Optimized Motor Design",
                   "2-Year Performance Guarantee",
                 ].map((item) => (
-                  <li
-                    key={item}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                      fontSize: "0.75rem",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.12em",
-                      color: "var(--color-primary)",
-                      fontWeight: 500,
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    <Icon icon="lucide:check" style={{ color: "var(--color-primary)" }} />
-                    {item}
-                  </li>
+                      <li
+                        key={item}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.75rem",
+                          fontSize: "0.75rem",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.12em",
+                          color: "var(--color-primary)",
+                          fontWeight: 500,
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        <Icon icon="lucide:check" style={{ color: "var(--color-accent)" }} />
+                        {item}
+                      </li>
                 ))}
               </ul>
             </div>
@@ -377,7 +385,7 @@ export default function AboutPage() {
           backgroundColor: "var(--color-primary)",
           color: "white",
           textAlign: "center",
-          backgroundImage: "linear-gradient(rgba(28,25,23,0.3), rgba(28,25,23,0.3)), url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&q=80')",
+          backgroundImage: "linear-gradient(rgba(0, 51, 102, 0.6), rgba(0, 51, 102, 0.6)), url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&q=80')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -422,15 +430,15 @@ export default function AboutPage() {
             style={{
               display: "inline-block",
               padding: "1rem 2.5rem",
-              backgroundColor: "white",
-              color: "var(--color-primary)",
+              backgroundColor: "var(--color-accent)",
+              color: "white",
               fontSize: "0.625rem",
               textTransform: "uppercase",
               letterSpacing: "0.2em",
               borderRadius: "2px",
               fontWeight: 500,
               textDecoration: "none",
-              transition: "opacity 0.3s",
+              transition: "transform 0.3s, opacity 0.3s",
             }}
             className="find-hub-btn"
           >

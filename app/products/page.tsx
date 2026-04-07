@@ -301,7 +301,7 @@ export default function ProductsPage() {
                 alignItems: "center",
                 gap: "0.5rem",
                 padding: "1rem 2.5rem",
-                backgroundColor: "var(--color-primary)",
+                backgroundColor: "var(--color-accent)",
                 color: "white",
                 fontSize: "0.625rem",
                 textTransform: "uppercase",
