@@ -49,7 +49,7 @@ export default function ProductsPage() {
         }}
       >
         <img
-          src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1920&q=80"
+          src="/assets/images/water%20pump-1.jpg"
           alt="Afrotech Product Catalog"
           style={{
             position: "absolute",
