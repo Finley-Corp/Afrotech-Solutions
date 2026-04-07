@@ -216,11 +216,7 @@ export default function ProductsPage() {
               {/* Product Grid */}
               <div 
                 data-anim="stagger"
-                style={{ 
-                  display: "grid", 
-                  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-                  gap: "3rem 2rem"
-                }}
+                className="product-grid-4"
               >
                 {cat.products.map((p) => (
                   <div 
