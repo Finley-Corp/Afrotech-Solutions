@@ -1,25 +1,46 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { productsList } from "../../data/products";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import GSAPAnimations from "../../components/GSAPAnimations";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabase";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const product = productsList.find((p) => p.id === params.id);
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  // If product not found, redirect to catalog
   useEffect(() => {
-    if (!product) {
-      router.push("/products");
+    async function fetchProduct() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("id", params.id)
+        .single();
+
+      if (error || !data) {
+        console.error("Error fetching product:", error);
+        router.push("/products");
+      } else {
+        setProduct(data);
+      }
+      setLoading(false);
     }
-  }, [product, router]);
+    fetchProduct();
+  }, [params.id, router]);
+
+  if (loading) {
+    return (
+      <main style={{ backgroundColor: "var(--color-background)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Icon icon="lucide:loader-2" className="animate-spin" width="32" color="var(--color-primary)" />
+      </main>
+    );
+  }
 
   if (!product) return null;
 
@@ -53,7 +74,7 @@ export default function ProductDetailPage() {
               boxShadow: "0 20px 60px rgba(0,0,0,0.03)"
             }}>
               <img 
-                src={product.mainImg} 
+                src={product.main_img} 
                 alt={product.name} 
                 style={{ width: "100%", height: "100%", objectFit: "cover" }} 
               />
@@ -91,7 +112,7 @@ export default function ProductDetailPage() {
               marginBottom: "3rem",
               maxWidth: "36rem"
             }}>
-              {product.fullDesc}
+              {product.full_desc}
             </p>
 
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "2rem" }}>
@@ -146,7 +167,7 @@ export default function ProductDetailPage() {
                 Technical specifications.
               </h2>
               <div style={{ borderTop: "1px solid var(--color-line)" }}>
-                {product.detailedSpecs.map((spec, i) => (
+                {(product.detailed_specs || []).map((spec: any, i: number) => (
                   <div 
                     key={i} 
                     style={{ 
@@ -177,7 +198,7 @@ export default function ProductDetailPage() {
                   Primary applications.
                 </h3>
                 <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: "1.5rem" }}>
-                  {product.applications.map((app, i) => (
+                  {(product.applications || []).map((app: string, i: number) => (
                     <li key={i} style={{ display: "flex", alignItems: "center", gap: "1rem", color: "var(--color-secondary)", fontSize: "1rem", fontWeight: 300 }}>
                       <Icon icon="lucide:check" width="18" style={{ color: "var(--color-primary)" }} />
                       {app}

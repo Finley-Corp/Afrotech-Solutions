@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import { Icon } from "@iconify/react";
+import { supabase } from "../lib/supabase";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -15,10 +16,34 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setSubmitting(true);
+    setError(null);
+
+    const { error: supabaseError } = await supabase
+      .from("contacts")
+      .insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+      ]);
+
+    setSubmitting(false);
+
+    if (supabaseError) {
+      console.error("Supabase Error:", supabaseError);
+      setError("Failed to send message. Please try again later.");
+    } else {
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -225,12 +250,16 @@ export default function ContactPage() {
                 onChange={handleChange}
               />
             </div>
+            {error && (
+              <p style={{ color: "var(--color-accent)", fontSize: "0.875rem", marginBottom: "1rem" }}>{error}</p>
+            )}
             <button 
               type="submit" 
               className="consult-btn"
-              style={{ backgroundColor: "var(--color-accent)", color: "white", padding: "1rem 3rem", width: "fit-content", cursor: "pointer", border: "none", borderRadius: "2px", textTransform: "uppercase", fontSize: "0.625rem", letterSpacing: "0.2em", fontWeight: 500 }}
+              disabled={submitting}
+              style={{ backgroundColor: "var(--color-accent)", color: "white", padding: "1rem 3rem", width: "fit-content", cursor: "pointer", border: "none", borderRadius: "2px", textTransform: "uppercase", fontSize: "0.625rem", letterSpacing: "0.2em", fontWeight: 500, opacity: submitting ? 0.7 : 1 }}
             >
-              Send Message
+              {submitting ? "Sending..." : "Send Message"}
             </button>
           </form>
 

@@ -1,35 +1,63 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-
-import { productsList } from "../data/products";
-
-const productCategories = [
-  {
-    category: "Submersible Pumps",
-    id: "submersible",
-    description: "High-pressure borehole and well pumps engineered for industrial and agricultural water supply.",
-    products: productsList.filter(p => p.categoryId === "submersible"),
-  },
-  {
-    category: "Solar Pumping Systems",
-    id: "solar",
-    description: "Sustainable, off-grid water solutions for remote locations and rural communities.",
-    products: productsList.filter(p => p.categoryId === "solar"),
-  },
-  {
-    category: "Industrial Centrifugal",
-    id: "industrial",
-    description: "High-volume pumps for industrial process, municipal supply, and construction dewatering.",
-    products: productsList.filter(p => p.categoryId === "industrial"),
-  },
-];
+import { supabase } from "../lib/supabase";
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("created_at", { ascending: true });
+
+      if (error) {
+        console.error("Error fetching products:", error);
+      } else {
+        setProducts(data || []);
+      }
+      setLoading(false);
+    }
+    fetchProducts();
+  }, []);
+
+  const productCategories = [
+    {
+      category: "Submersible Pumps",
+      id: "submersible",
+      description: "High-pressure borehole and well pumps engineered for industrial and agricultural water supply.",
+      products: products.filter(p => p.category_id === "submersible"),
+    },
+    {
+      category: "Solar Pumping Systems",
+      id: "solar",
+      description: "Sustainable, off-grid water solutions for remote locations and rural communities.",
+      products: products.filter(p => p.category_id === "solar"),
+    },
+    {
+      category: "Industrial Centrifugal",
+      id: "industrial",
+      description: "High-volume pumps for industrial process, municipal supply, and construction dewatering.",
+      products: products.filter(p => p.category_id === "industrial"),
+    },
+  ];
+
+  if (loading) {
+    return (
+      <main style={{ backgroundColor: "var(--color-background)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Icon icon="lucide:loader-2" className="animate-spin" width="32" color="var(--color-primary)" />
+      </main>
+    );
+  }
+
   return (
     <main style={{ backgroundColor: "var(--color-background)" }}>
       <Navbar />
@@ -177,7 +205,7 @@ export default function ProductsPage() {
               >
                 {cat.products.map((p) => (
                   <div 
-                    key={p.name}
+                    key={p.id}
                     className="residence-card"
                     style={{ display: "flex", flexDirection: "column" }}
                   >
@@ -191,7 +219,7 @@ export default function ProductsPage() {
                         position: "relative"
                       }}>
                         <img 
-                          src={p.mainImg} 
+                          src={p.main_img} 
                           alt={p.name} 
                           className="residence-img"
                           style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
@@ -218,12 +246,13 @@ export default function ProductsPage() {
                     </Link>
                     <div style={{ 
                       display: "flex", 
+                      flexWrap: "wrap",
                       gap: "0.75rem", 
                       fontSize: "0.75rem", 
                       color: "rgba(87,83,78,0.7)", 
                       marginBottom: "1rem"
                     }}>
-                      {p.specs.map((s, i) => (
+                      {(p.specs || []).map((s: string, i: number) => (
                         <span key={i}>
                           {s}{i !== p.specs.length - 1 && " • "}
                         </span>
@@ -236,7 +265,7 @@ export default function ProductsPage() {
                       lineHeight: 1.6,
                       marginBottom: "1.5rem"
                     }}>
-                      {p.shortDesc}
+                      {p.short_desc}
                     </p>
                     <Link 
                       href={`/products/${p.id}`}

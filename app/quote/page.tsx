@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import { supabase } from "../lib/supabase";
 
 export default function QuotePage() {
   const [submitted, setSubmitted] = useState(false);
@@ -20,10 +21,38 @@ export default function QuotePage() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setSubmitting(true);
+    setError(null);
+
+    const { error: supabaseError } = await supabase
+      .from("quotations")
+      .insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          location: formData.location,
+          pump_type: formData.pumpType,
+          flow_rate: formData.flowRate,
+          depth: formData.depth,
+          message: formData.message,
+        },
+      ]);
+
+    setSubmitting(false);
+
+    if (supabaseError) {
+      console.error("Supabase Error:", supabaseError);
+      setError("Failed to submit requirements. Please try again later.");
+    } else {
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -286,9 +315,13 @@ export default function QuotePage() {
               />
             </div>
 
+            {error && (
+              <p style={{ color: "var(--color-accent)", fontSize: "0.875rem", marginBottom: "1rem" }}>{error}</p>
+            )}
             <button
               type="submit"
               className="schedule-btn"
+              disabled={submitting}
               style={{
                 width: "fit-content",
                 padding: "1rem 3.5rem",
@@ -301,10 +334,11 @@ export default function QuotePage() {
                 fontSize: "0.625rem",
                 letterSpacing: "0.2em",
                 fontWeight: 500,
-                transition: "opacity 0.3s"
+                transition: "opacity 0.3s",
+                opacity: submitting ? 0.7 : 1
               }}
             >
-              Submit Requirements
+              {submitting ? "Submitting..." : "Submit Requirements"}
             </button>
           </form>
 
