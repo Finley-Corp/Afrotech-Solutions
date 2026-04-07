@@ -402,3 +402,24 @@ body {
 @media (min-width: 1024px) {
   .product-grid-4 { grid-template-columns: repeat(4, 1fr); }
 }
+
+.product-detail-hero {
+  grid-template-columns: 1fr !important;
+  text-align: center;
+}
+
+.product-detail-hero p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1024px) {
+  .product-detail-hero {
+    grid-template-columns: 1fr 1.2fr !important;
+    text-align: left;
+  }
+  .product-detail-hero p {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
