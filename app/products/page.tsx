@@ -6,69 +6,26 @@ import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 
+import { productsList } from "../data/products";
+
 const productCategories = [
   {
     category: "Submersible Pumps",
     id: "submersible",
     description: "High-pressure borehole and well pumps engineered for industrial and agricultural water supply.",
-    products: [
-      {
-        name: "AquaMax 3000",
-        specs: ["80m Max Head", "3 HP Motor", "5 m³/hr"],
-        price: "From $850",
-        desc: "Ideal for deep boreholes and wells. Stainless steel impeller, auto dry-run protection.",
-        img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=800&q=80",
-      },
-      {
-        name: "AquaMax 5000",
-        specs: ["120m Max Head", "5.5 HP Motor", "10 m³/hr"],
-        price: "From $1,450",
-        desc: "Heavy-duty borehole pump for large-scale agricultural irrigation.",
-        img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=800&q=80",
-      },
-    ],
+    products: productsList.filter(p => p.categoryId === "submersible"),
   },
   {
     category: "Solar Pumping Systems",
     id: "solar",
     description: "Sustainable, off-grid water solutions for remote locations and rural communities.",
-    products: [
-      {
-        name: "SolarFlow Pro",
-        specs: ["60m Max Head", "Solar-Powered", "3 m³/hr"],
-        price: "From $1,200",
-        desc: "Complete solar borehole kit. High efficiency, low maintenance for remote farms.",
-        img: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=800&q=80",
-      },
-      {
-        name: "SolarFlow Hybrid",
-        specs: ["45m Max Head", "Dual Power (AC/DC)", "8 m³/hr"],
-        price: "From $1,850",
-        desc: "Connects to solar and grid power. Seamless power switching for reliability.",
-        img: "https://images.unsplash.com/photo-1542336391-ae2936d8efe4?w=800&q=80",
-      },
-    ],
+    products: productsList.filter(p => p.categoryId === "solar"),
   },
   {
     category: "Industrial Centrifugal",
     id: "industrial",
     description: "High-volume pumps for industrial process, municipal supply, and construction dewatering.",
-    products: [
-      {
-        name: "TurboFlow Industrial",
-        specs: ["40m Max Head", "7.5 HP Motor", "30 m³/hr"],
-        price: "From $2,100",
-        desc: "Heavy-duty surface pump for municipal water networks and construction sites.",
-        img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80",
-      },
-      {
-        name: "TurboFlow Max",
-        specs: ["55m Max Head", "15 HP Motor", "65 m³/hr"],
-        price: "From $3,800",
-        desc: "Ultra-high volume pumping for large-scale industrial cooling and supply.",
-        img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=800&q=80",
-      },
-    ],
+    products: productsList.filter(p => p.categoryId === "industrial"),
   },
 ];
 
@@ -224,39 +181,41 @@ export default function ProductsPage() {
                     className="residence-card"
                     style={{ display: "flex", flexDirection: "column" }}
                   >
-                    <div style={{ 
-                      aspectRatio: "4/5", 
-                      overflow: "hidden", 
-                      borderRadius: "2px", 
-                      border: "1px solid var(--color-line)",
-                      marginBottom: "1.5rem",
-                      position: "relative"
-                    }}>
-                      <img 
-                        src={p.img} 
-                        alt={p.name} 
-                        className="residence-img"
-                        style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
-                      />
-                    </div>
-                    <div style={{ 
-                      display: "flex", 
-                      justifyContent: "space-between", 
-                      alignItems: "baseline",
-                      marginBottom: "0.5rem"
-                    }}>
-                      <h3 style={{ 
-                        fontFamily: "'Playfair Display', serif", 
-                        fontSize: "1.5rem", 
-                        fontWeight: 300,
-                        color: "var(--color-primary)"
+                    <Link href={`/products/${p.id}`} style={{ textDecoration: "none" }}>
+                      <div style={{ 
+                        aspectRatio: "4/5", 
+                        overflow: "hidden", 
+                        borderRadius: "2px", 
+                        border: "1px solid var(--color-line)",
+                        marginBottom: "1.5rem",
+                        position: "relative"
                       }}>
-                        {p.name}
-                      </h3>
-                      <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--color-primary)" }}>
-                        {p.price}
-                      </span>
-                    </div>
+                        <img 
+                          src={p.mainImg} 
+                          alt={p.name} 
+                          className="residence-img"
+                          style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
+                        />
+                      </div>
+                      <div style={{ 
+                        display: "flex", 
+                        justifyContent: "space-between", 
+                        alignItems: "baseline",
+                        marginBottom: "0.5rem"
+                      }}>
+                        <h3 style={{ 
+                          fontFamily: "'Playfair Display', serif", 
+                          fontSize: "1.5rem", 
+                          fontWeight: 300,
+                          color: "var(--color-primary)"
+                        }}>
+                          {p.name}
+                        </h3>
+                        <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--color-primary)" }}>
+                          {p.price}
+                        </span>
+                      </div>
+                    </Link>
                     <div style={{ 
                       display: "flex", 
                       gap: "0.75rem", 
@@ -277,10 +236,10 @@ export default function ProductsPage() {
                       lineHeight: 1.6,
                       marginBottom: "1.5rem"
                     }}>
-                      {p.desc}
+                      {p.shortDesc}
                     </p>
                     <Link 
-                      href="/quote"
+                      href={`/products/${p.id}`}
                       style={{ 
                         fontSize: "0.625rem", 
                         textTransform: "uppercase", 
@@ -296,7 +255,7 @@ export default function ProductsPage() {
                       }}
                       className="product-cta"
                     >
-                      Get Technical Quote
+                      View Full Specifications
                     </Link>
                   </div>
                 ))}
