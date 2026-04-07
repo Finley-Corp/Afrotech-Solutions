@@ -11,7 +11,7 @@ export default function EditorialBreak() {
       }}
     >
       <img
-        src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=1920&q=80"
+        src="/assets/images/water%20pump-1.jpg"
         alt="Industrial pump installation"
         data-anim="scale-scrub-editorial"
         style={{
