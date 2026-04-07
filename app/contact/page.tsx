@@ -334,7 +334,7 @@ export default function ContactPage() {
             position: "relative"
           }}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.784557929424!2d36.83786047587843!3d-1.3046200986829773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f116a444f2b1b%3A0xe7f9b8c0b5f8e6c!2sNML%20Towers!5e0!3m2!1sen!2ske!4v1700000000000!5m2!1sen!2ske"
+              src="https://maps.google.com/maps?q=NML%20Towers,%20Tsavo%20Road,%20South%20B,%20Nairobi&t=&z=15&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0, filter: "grayscale(1) contrast(1.2) opacity(0.8)" }}
