@@ -66,6 +66,9 @@ export default function Navbar() {
               alignItems: "center",
             }}
           >
+            <Link href="/" className="nav-link">
+              Home
+            </Link>
             <Link href="/products" className="nav-link">
               Our Products
             </Link>
@@ -144,6 +147,9 @@ export default function Navbar() {
             marginTop: "2rem",
           }}
         >
+          <Link href="/" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
+            Home
+          </Link>
           <Link
             href="/products"
             className="mobile-nav-link text-reveal"
