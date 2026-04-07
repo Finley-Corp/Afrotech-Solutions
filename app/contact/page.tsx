@@ -295,10 +295,10 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Regional Offices */}
+      {/* Regional Office & Map Section */}
       <section style={{ padding: "8rem 2rem", backgroundColor: "white", borderTop: "1px solid var(--color-line)" }}>
         <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "6rem" }} className="reveal-fade">
+          <div style={{ textAlign: "center", marginBottom: "4rem" }} className="reveal-fade">
              <span style={{ 
               display: "block", 
               fontSize: "0.625rem", 
@@ -306,77 +306,78 @@ export default function ContactPage() {
               letterSpacing: "0.15em", 
               color: "rgba(87,83,78,0.6)",
               marginBottom: "1.5rem"
-            }}>Regional Hubs</span>
+            }}>Visit our Headquarters</span>
             <h2 style={{ 
               fontFamily: "'Playfair Display', serif", 
               fontSize: "2.5rem", 
               fontWeight: 300, 
-              color: "var(--color-primary)"
-            }}>Visit our offices.</h2>
+              color: "var(--color-primary)",
+              marginBottom: "1rem"
+            }}>Our Location.</h2>
+            <p style={{ 
+              color: "var(--color-secondary)", 
+              fontSize: "1rem", 
+              fontWeight: 300,
+              marginBottom: "3rem"
+            }}>
+              NML Towers, South B, Nairobi, Kenya
+            </p>
           </div>
 
-          <div 
-            data-anim="stagger"
-            style={{ 
-              display: "grid", 
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", 
-              gap: "3rem" 
-            }}
-          >
-            {[
-              { 
-                city: "Nairobi Hub", 
-                address: "Westlands Business Center, Ring Road", 
-                country: "Kenya", 
-                phone: "+254 20 445 000" 
-              },
-              { 
-                city: "Dar es Salaam", 
-                address: "Masaki Drive, Block 124", 
-                country: "Tanzania", 
-                phone: "+255 22 260 000" 
-              },
-              { 
-                city: "Mombasa Office", 
-                address: "Nyali Road, Complex Plaza", 
-                country: "Kenya", 
-                phone: "+254 41 231 000" 
-              },
-            ].map((office) => (
-              <div 
-                key={office.city}
-                style={{ 
-                  padding: "3rem", 
-                  border: "1px solid var(--color-line)", 
-                  borderRadius: "2px",
-                  backgroundColor: "var(--color-background)"
-                }}
-              >
-                 <Icon icon="lucide:map-pin" style={{ color: "var(--color-primary)", marginBottom: "1.5rem" }} width="24" />
-                 <h3 style={{ 
-                   fontFamily: "'Playfair Display', serif", 
-                   fontSize: "1.25rem", 
-                   fontWeight: 300, 
-                   marginBottom: "1rem",
-                   color: "var(--color-primary)"
-                 }}>{office.city}</h3>
-                 <p style={{ 
-                   fontSize: "0.875rem", 
-                   color: "var(--color-secondary)", 
-                   fontWeight: 300, 
-                   lineHeight: 1.6,
-                   marginBottom: "1.5rem"
-                 }}>
-                   {office.address}<br />
-                   {office.country}
-                 </p>
-                 <span style={{ 
-                   fontSize: "0.875rem", 
-                   fontWeight: 500, 
-                   color: "var(--color-primary)" 
-                 }}>{office.phone}</span>
-              </div>
-            ))}
+          <div className="reveal-fade" style={{ 
+            width: "100%", 
+            height: "500px", 
+            borderRadius: "2px", 
+            overflow: "hidden",
+            border: "1px solid var(--color-line)",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.05)",
+            position: "relative"
+          }}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.784557929424!2d36.83786047587843!3d-1.3046200986829773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f116a444f2b1b%3A0xe7f9b8c0b5f8e6c!2sNML%20Towers!5e0!3m2!1sen!2ske!4v1700000000000!5m2!1sen!2ske"
+              width="100%"
+              height="100%"
+              style={{ border: 0, filter: "grayscale(1) contrast(1.2) opacity(0.8)" }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+            {/* Map Overlay info */}
+            <div style={{
+              position: "absolute",
+              bottom: "2rem",
+              left: "2rem",
+              backgroundColor: "white",
+              padding: "1.5rem 2rem",
+              borderRadius: "2px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+              border: "1px solid var(--color-line)",
+              zIndex: 10
+            }}>
+              <span style={{ 
+                display: "block", 
+                fontSize: "0.625rem", 
+                textTransform: "uppercase", 
+                letterSpacing: "0.1em",
+                color: "var(--color-secondary)",
+                marginBottom: "0.5rem"
+              }}>Headquarters</span>
+              <h4 style={{ 
+                fontFamily: "'Playfair Display', serif", 
+                fontSize: "1.25rem", 
+                fontWeight: 300,
+                color: "var(--color-primary)",
+                marginBottom: "0.5rem"
+              }}>Afrotech Nairobi</h4>
+              <p style={{ 
+                fontSize: "0.75rem", 
+                color: "var(--color-secondary)", 
+                fontWeight: 300 
+              }}>
+                NML Towers, South B<br />
+                P.O. Box 4500-00100, Nairobi
+              </p>
+            </div>
           </div>
         </div>
       </section>
