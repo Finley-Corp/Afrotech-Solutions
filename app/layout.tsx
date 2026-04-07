@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AFROTECH | Architectural Living",
+  title: "AFROTECH | Industrial Water Solutions",
   description:
-    "A curated collection of residences shaped by light, proportion, and quiet intention. Afrotech — Architectural Living.",
-  keywords: "luxury residences, architectural living, Toronto, waterfront, Afrotech",
+    "Industrial-grade water pump solutions for agriculture, construction, and municipal applications across East Africa.",
+  keywords: "water pumps, industrial pumping, solar pumps, borehole pumps, Nairobi, Kenya, Afrotech",
   openGraph: {
-    title: "AFROTECH | Architectural Living",
+    title: "AFROTECH | Industrial Water Solutions",
     description:
-      "A curated collection of residences shaped by light, proportion, and quiet intention.",
+      "Industrial-grade water pump solutions for agriculture, construction, and municipal applications across East Africa.",
     type: "website",
   },
 };

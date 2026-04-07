@@ -69,9 +69,10 @@ export default function Footer() {
             </span>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {[
-                { label: "Residences", href: "/residences" },
-                { label: "Neighbourhoods", href: "/neighbourhoods" },
-                { label: "Schedule a Viewing", href: "/inquire" },
+                { label: "Our Products", href: "/products" },
+                { label: "Our Projects", href: "/projects" },
+                { label: "About Us", href: "/about" },
+                { label: "Get A Quote", href: "/quote" },
               ].map(({ label, href }) => (
                 <li key={label}>
                   <Link
@@ -117,13 +118,13 @@ export default function Footer() {
             >
               Afrotech
               <br />
-              145 Harbour Crescent
+              NML Towers
               <br />
-              Waterfront District
+              Tsavo Road, South B
               <br />
-              Toronto, ON M5V 3L9
+              Nairobi
               <br />
-              Canada
+              Kenya
             </p>
             <span
               style={{
@@ -135,7 +136,7 @@ export default function Footer() {
                 marginBottom: "0.5rem",
               }}
             >
-              Leasing Office
+              Technical Support
             </span>
             <p
               style={{
@@ -180,7 +181,7 @@ export default function Footer() {
             <FooterForm />
             <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
               <a
-                href="mailto:leasing@afrotechliving.com"
+                href="mailto:support@afrotech-solutions.com"
                 style={{
                   fontSize: "0.875rem",
                   fontWeight: 300,
@@ -190,10 +191,10 @@ export default function Footer() {
                 }}
                 className="footer-link"
               >
-                leasing@afrotechliving.com
+                support@afrotech-solutions.com
               </a>
               <a
-                href="tel:+14165550187"
+                href="tel:+254712345678"
                 style={{
                   fontSize: "0.875rem",
                   fontWeight: 300,
@@ -203,7 +204,7 @@ export default function Footer() {
                 }}
                 className="footer-link"
               >
-                +1 (416) 555-0187
+                +254 712 345 678
               </a>
             </div>
           </div>
