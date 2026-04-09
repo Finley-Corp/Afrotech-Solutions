@@ -54,3 +54,4 @@ The project is currently tracking active development on the **`finley`** branch.
 
 ---
 © 2026 Afrotech Water Solutions. Engineering Excellence for Africa.
+# Afrotech-Solutions
