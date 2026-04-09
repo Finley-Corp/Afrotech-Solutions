@@ -188,12 +188,13 @@ export default function QuotePage() {
       {/* Form Content */}
       <section style={{ paddingBottom: "10rem" }}>
         <div
+          className="quote-layout"
           style={{
             maxWidth: "1400px",
             margin: "0 auto",
             padding: "0 2rem",
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1.5fr 1fr))",
+            gridTemplateColumns: "minmax(0, 1.5fr) minmax(0, 1fr)",
             gap: "6rem",
             alignItems: "start",
           }}
@@ -201,17 +202,17 @@ export default function QuotePage() {
           {/* Form */}
           <form
             onSubmit={handleSubmit}
-            className="reveal-fade"
+            className="reveal-fade quote-form"
             style={{
               backgroundColor: "white",
-              padding: "4rem",
+              padding: "clamp(1.25rem, 3vw, 4rem)",
               borderRadius: "2px",
               border: "1px solid var(--color-line)",
               display: "grid",
               gap: "2.5rem",
             }}
           >
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+            <div className="quote-field-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
               <div>
                 <label style={labelStyle}>Full Name</label>
                 <input
@@ -236,7 +237,7 @@ export default function QuotePage() {
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+            <div className="quote-field-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
               <div>
                 <label style={labelStyle}>Phone Number</label>
                 <input
@@ -266,7 +267,7 @@ export default function QuotePage() {
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+            <div className="quote-field-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
               <div>
                 <label style={labelStyle}>Required Pump Type</label>
                 <select
@@ -320,7 +321,7 @@ export default function QuotePage() {
             )}
             <button
               type="submit"
-              className="schedule-btn"
+              className="schedule-btn quote-submit-btn"
               disabled={submitting}
               style={{
                 width: "fit-content",
@@ -470,6 +471,30 @@ export default function QuotePage() {
 
       <Footer />
       <GSAPAnimations />
+      <style jsx>{`
+        @media (max-width: 1023px) {
+          .quote-layout {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+          }
+        }
+
+        @media (max-width: 767px) {
+          .quote-field-row {
+            grid-template-columns: 1fr !important;
+            gap: 1.25rem !important;
+          }
+
+          .quote-submit-btn {
+            width: 100% !important;
+            justify-content: center;
+          }
+
+          .quote-form {
+            gap: 1.75rem !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }
