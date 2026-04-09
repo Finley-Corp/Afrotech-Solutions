@@ -1,226 +1,260 @@
 import Link from "next/link";
+import { Icon } from "@iconify/react";
 
-const features = [
+const muted = "#5f5851";
+const label = "#6f675f";
+
+const guarantees = [
   {
-    name: "High-Efficiency Motors",
-    tag: "Energy Saving",
-    desc: "Up to 40% lower power consumption vs. standard pumps",
+    step: "01",
+    title: "Specification clarity",
+    text: "Duty profiling and water chemistry awareness before equipment selection.",
   },
   {
-    name: "Corrosion-Resistant Casing",
-    tag: "Stainless Steel",
-    desc: "316 stainless steel impellers for long-term durability",
+    step: "02",
+    title: "Supply continuity",
+    text: "Stocked critical spares and coordinated logistics across East Africa.",
   },
   {
-    name: "Auto Dry-Run Protection",
-    tag: "Smart Control",
-    desc: "Automatic shutdown prevents motor burnout in low-water conditions",
-  },
-  {
-    name: "2-Year Manufacturer Warranty",
-    tag: "Guaranteed",
-    desc: "Full parts and labour coverage on all Afrotech pumps",
+    step: "03",
+    title: "Technical response",
+    text: "Engineering support within 24 hours for commissioning and troubleshooting.",
   },
 ];
 
 export default function AmenitiesSection() {
   return (
     <section
+      className="premium-landing-section"
       style={{
-        paddingTop: "7rem",
-        paddingBottom: "8rem",
-        backgroundColor: "white",
+        position: "relative",
+        borderBottom: "1px solid var(--color-line)",
+        backgroundColor: "var(--color-surface)",
         overflow: "hidden",
       }}
     >
       <div
         style={{
-          maxWidth: "1400px",
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          background:
+            "radial-gradient(circle at top left, rgba(0,51,102,0.06) 0%, transparent 32%), radial-gradient(circle at bottom right, rgba(214,28,44,0.04) 0%, transparent 28%)",
+        }}
+      />
+      <div
+        style={{
+          position: "relative",
+          maxWidth: "1380px",
           margin: "0 auto",
-          paddingLeft: "3rem",
-          paddingRight: "3rem",
           display: "flex",
           flexWrap: "wrap",
-          gap: "3rem",
-          alignItems: "flex-start",
         }}
       >
-        {/* Left Label */}
+        {/* Left rail */}
         <div
           style={{
-            flex: "0 0 auto",
-            width: "220px",
-            paddingTop: "0.5rem",
-            borderTop: "1px solid var(--color-primary)",
+            flex: "1 1 260px",
+            maxWidth: "100%",
+            borderBottom: "1px solid var(--color-line)",
+            borderRight: "1px solid var(--color-line)",
+            padding: "clamp(2.5rem, 5vw, 4rem)",
           }}
-          className="reveal-fade"
         >
-          <span
-            style={{
-              display: "block",
-              fontSize: "0.625rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.15em",
-              marginTop: "1rem",
-            }}
-          >
-            03 — Why Afrotech
-          </span>
-        </div>
-
-        {/* Right Content */}
-        <div style={{ flex: "1", minWidth: "280px" }}>
-          <div className="reveal-fade" style={{ marginBottom: "3rem" }}>
-            <h2
+          <div className="reveal-fade" style={{ position: "sticky", top: "8rem" }}>
+            <div
               style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "clamp(1.875rem, 4vw, 3rem)",
-                fontWeight: 300,
-                color: "var(--color-primary)",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.65rem",
+                fontSize: "0.68rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.14em",
+                color: label,
                 marginBottom: "1.5rem",
-                lineHeight: 1.3,
-                letterSpacing: "-0.02em",
               }}
             >
-              Engineered for Africa&apos;s toughest conditions.
-            </h2>
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  backgroundColor: "var(--color-accent)",
+                }}
+              />
+              Service Guarantees
+            </div>
             <p
               style={{
-                color: "var(--color-secondary)",
-                fontWeight: 300,
-                fontSize: "0.9375rem",
-                maxWidth: "36rem",
+                maxWidth: "14rem",
+                fontSize: "0.8125rem",
                 lineHeight: 1.75,
+                color: muted,
+                fontWeight: 300,
               }}
             >
-              Every Afrotech pump is tested and certified for the unique demands
-              of East African operating environments — from remote off-grid
-              installations to high-pressure urban water networks.
+              Deionized water on demand — engineered delivery, documented performance, and
+              support you can reach when uptime matters.
             </p>
           </div>
+        </div>
 
-          {/* Row: Image + List */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: "3rem",
-              alignItems: "center",
-              borderTop: "1px solid rgba(231,229,228,0.6)",
-              paddingTop: "4rem",
-              paddingBottom: "4rem",
-            }}
-          >
-            {/* Image */}
-            <div className="reveal-fade img-zoom-container" style={{ borderRadius: "2px", border: "1px solid var(--color-line)", overflow: "hidden" }}>
-              <div style={{ aspectRatio: "4/5", overflow: "hidden" }}>
-                <img
-                  src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80"
-                  alt="High-efficiency water pump"
-                  className="img-zoom"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    filter: "grayscale(10%)",
-                    transition: "transform 1.2s cubic-bezier(0.22,1,0.36,1), filter 0.7s",
-                  }}
-                />
+        {/* Right content */}
+        <div style={{ flex: "1 1 560px", padding: "clamp(2.5rem, 5vw, 5rem)", minWidth: 0 }}>
+          <div className="reveal-fade" style={{ maxWidth: "980px" }}>
+            <h2
+              style={{
+                color: "var(--color-primary)",
+                letterSpacing: "-0.035em",
+                lineHeight: 1.05,
+                fontSize: "clamp(2rem, 4.5vw, 3.6rem)",
+                marginBottom: "2.5rem",
+              }}
+            >
+              We build water systems that{" "}
+              <span style={{ color: "var(--color-accent)", fontStyle: "italic" }}>
+                perform
+              </span>{" "}
+              — from specification through commissioning, with clarity at every phase.
+            </h2>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                gap: "2rem 3rem",
+                alignItems: "start",
+                paddingTop: "2rem",
+                borderTop: "1px solid var(--color-line)",
+              }}
+            >
+              <div data-anim="stagger" style={{ display: "grid", gap: "1.25rem" }}>
+                <p style={{ fontSize: "0.98rem", lineHeight: 1.8, color: muted, fontWeight: 300, margin: 0 }}>
+                  High-purity and treatment-ready applications need predictable flow,
+                  protected equipment, and documentation that matches your process. We
+                  align pump selection, controls, and service windows to your operating
+                  profile — not generic catalog defaults.
+                </p>
+                <p style={{ fontSize: "0.98rem", lineHeight: 1.8, color: muted, fontWeight: 300, margin: 0 }}>
+                  The outcome is infrastructure you can run with confidence: fewer
+                  surprises in the field, faster recovery when conditions shift, and a
+                  partner who understands regional constraints.
+                </p>
               </div>
-            </div>
 
-            {/* Feature List */}
-            <div>
-              <span
-                className="reveal-fade"
-                style={{
-                  display: "block",
-                  fontSize: "0.625rem",
-                  textTransform: "uppercase",
-                  color: "rgba(87,83,78,0.6)",
-                  letterSpacing: "0.15em",
-                  marginBottom: "2rem",
-                }}
-              >
-                Built to Perform
-              </span>
-              <ul
-                data-anim="stagger"
-                style={{ listStyle: "none", padding: 0, margin: 0 }}
-              >
-                {features.map(({ name, tag, desc }) => (
-                  <li
-                    key={name}
-                    className="amenity-item"
-                    style={{ marginBottom: "2rem" }}
+              <div className="img-zoom-container" style={{ position: "relative" }}>
+                <div
+                  style={{
+                    position: "relative",
+                    minHeight: "380px",
+                    backgroundColor: "var(--color-background)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src="/assets/images/afrotech-2.jpg"
+                    alt="Laboratory water quality testing"
+                    className="img-zoom"
+                    style={{ width: "100%", height: "100%", minHeight: "380px", objectFit: "cover" }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: "clamp(1rem, 3vw, 1.5rem)",
+                      border: "1px solid rgba(255,255,255,0.55)",
+                      pointerEvents: "none",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: "clamp(1rem, 3vw, 1.5rem)",
+                      right: "clamp(1rem, 3vw, 1.5rem)",
+                      bottom: "clamp(1rem, 3vw, 1.5rem)",
+                    }}
                   >
                     <div
                       style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "baseline",
-                        marginBottom: "0.5rem",
+                        border: "1px solid rgba(255,255,255,0.45)",
+                        backgroundColor: "rgba(255,255,255,0.92)",
+                        backdropFilter: "blur(10px)",
+                        WebkitBackdropFilter: "blur(10px)",
+                        padding: "1rem 1.1rem",
+                        boxShadow: "0 14px 36px rgba(23,18,14,0.1)",
                       }}
                     >
-                      <span
+                      <p
                         style={{
-                          fontFamily: "'Playfair Display', serif",
-                          fontSize: "1.25rem",
-                          color: "var(--color-primary)",
-                          letterSpacing: "-0.01em",
-                        }}
-                      >
-                        {name}
-                      </span>
-                      <span
-                        className="amenity-tag"
-                        style={{
-                          opacity: 0,
-                          transition: "opacity 0.5s",
-                          fontSize: "0.625rem",
+                          fontSize: "0.62rem",
                           textTransform: "uppercase",
-                          letterSpacing: "0.15em",
-                          color: "rgba(28,25,23,0.4)",
+                          letterSpacing: "0.12em",
+                          color: label,
+                          marginBottom: "0.35rem",
                         }}
                       >
-                        {tag}
-                      </span>
+                        Purity readiness
+                      </p>
+                      <p
+                        className="premium-plaque-title"
+                        style={{
+                          fontSize: "1.2rem",
+                          lineHeight: 1.15,
+                          letterSpacing: "-0.02em",
+                          color: "var(--color-primary)",
+                          margin: 0,
+                        }}
+                      >
+                        Treatment-aligned pumping &amp; distribution
+                      </p>
                     </div>
-                    <span
-                      style={{
-                        display: "block",
-                        fontSize: "0.75rem",
-                        color: "var(--color-secondary)",
-                        fontWeight: 300,
-                        borderBottom: "1px solid rgba(231,229,228,0.4)",
-                        paddingBottom: "1rem",
-                        transition: "border-color 0.3s",
-                      }}
-                    >
-                      {desc}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <div style={{ marginTop: "3rem" }} className="reveal-fade">
-                <Link
-                  href="/products"
-                  style={{
-                    fontSize: "0.625rem",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.15em",
-                    borderBottom: "1px solid var(--color-primary)",
-                    paddingBottom: "0.25rem",
-                    color: "var(--color-primary)",
-                    textDecoration: "none",
-                    fontWeight: 500,
-                    transition: "color 0.3s, border-color 0.3s",
-                  }}
-                  className="amenities-link"
-                >
-                  View All Product Specs
-                </Link>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div
+              data-anim="stagger"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+                gap: "1.25rem",
+                marginTop: "2.5rem",
+                paddingTop: "1.5rem",
+                borderTop: "1px solid var(--color-line)",
+              }}
+            >
+              {guarantees.map((g) => (
+                <div key={g.step} style={{ borderTop: "1px solid var(--color-line)", paddingTop: "1rem" }}>
+                  <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "#8a8178", marginBottom: "0.5rem" }}>
+                    {g.step}
+                  </p>
+                  <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-primary)", marginBottom: "0.35rem" }}>
+                    {g.title}
+                  </p>
+                  <p style={{ fontSize: "0.8rem", lineHeight: 1.55, color: muted, margin: 0 }}>{g.text}</p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: "2rem" }}>
+              <Link
+                href="/products"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                  fontSize: "0.68rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.14em",
+                  color: label,
+                  textDecoration: "none",
+                  borderBottom: "1px solid var(--color-line)",
+                  paddingBottom: "0.2rem",
+                }}
+              >
+                Explore product range
+                <Icon icon="solar:arrow-right-up-linear" width={16} />
+              </Link>
             </div>
           </div>
         </div>
