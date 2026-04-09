@@ -43,16 +43,8 @@ export default function AboutPage() {
           overflow: "hidden",
         }}
       >
-        <div 
-          style={{ 
-            position: "absolute", 
-            inset: 0, 
-            backgroundColor: "rgba(0, 51, 102, 0.45)",
-            zIndex: 1
-          }} 
-        />
         <img
-          src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1920&q=80"
+          src="/assets/images/afrotech-4.jpg"
           alt="Engineering site visit"
           style={{
             position: "absolute",
@@ -60,7 +52,16 @@ export default function AboutPage() {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            opacity: 0.5,
+            opacity: 1,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0.08) 100%)",
+            zIndex: 1,
           }}
         />
         <div
@@ -215,7 +216,7 @@ export default function AboutPage() {
                 }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80"
+                  src="/assets/images/afrotech-2.jpg"
                   alt="Quality testing laboratory"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -382,10 +383,10 @@ export default function AboutPage() {
       <section
         style={{
           padding: "8rem 3rem",
-          backgroundColor: "var(--color-primary)",
+          backgroundColor: "#111827",
           color: "white",
           textAlign: "center",
-          backgroundImage: "linear-gradient(rgba(0, 51, 102, 0.6), rgba(0, 51, 102, 0.6)), url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&q=80')",
+          backgroundImage: "linear-gradient(rgba(0,0,0,0.58), rgba(0,0,0,0.58)), url('/assets/images/afrotech-1.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

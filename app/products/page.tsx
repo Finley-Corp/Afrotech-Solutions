@@ -227,7 +227,7 @@ export default function ProductsPage() {
                       </div>
                       <div style={{ 
                         display: "flex", 
-                        justifyContent: "space-between", 
+                        justifyContent: "flex-start", 
                         alignItems: "baseline",
                         marginBottom: "0.5rem"
                       }}>
@@ -239,9 +239,6 @@ export default function ProductsPage() {
                         }}>
                           {p.name}
                         </h3>
-                        <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--color-primary)" }}>
-                          {p.price}
-                        </span>
                       </div>
                     </Link>
                     <div style={{ 

@@ -110,7 +110,7 @@ export default function PhilosophySection() {
             }}
           >
             <img
-              src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80"
+              src="/assets/images/afrotech-13.jpg"
               alt="Water pump installation"
               className="img-zoom"
               style={{

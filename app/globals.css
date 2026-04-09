@@ -13,6 +13,41 @@
   --color-background: #F8FAFC;  /* Cool Off-White - Clean Presence */
   --color-surface: #FFFFFF;    /* Pure White */
   --color-line: #E2E8F0;       /* Light border for technical grid */
+  /* Premium landing sections (Plus Jakarta + Geist, Aura-style) */
+  --font-premium-heading: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-premium-body: "Geist", "DM Sans", system-ui, sans-serif;
+}
+
+/* Typography for redesigned home sections — matches reference UI stack */
+.premium-landing-section {
+  font-family: var(--font-premium-body);
+  -webkit-font-smoothing: antialiased;
+}
+.premium-landing-section h2,
+.premium-landing-section h3,
+.premium-landing-section h4,
+.premium-landing-section blockquote {
+  font-family: var(--font-premium-heading);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+.premium-landing-section .premium-eyebrow,
+.premium-landing-section .premium-label {
+  font-family: var(--font-premium-body);
+  letter-spacing: 0.12em;
+}
+
+/* Display lines that use <p> for layout (plaque / card titles) */
+.premium-landing-section .premium-plaque-title {
+  font-family: var(--font-premium-heading);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.premium-landing-section .premium-quote-secondary {
+  font-family: var(--font-premium-heading);
+  font-weight: 300;
+  letter-spacing: -0.02em;
 }
 
 html { scroll-behavior: smooth; }

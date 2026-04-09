@@ -8,7 +8,7 @@ const products = [
     spec2: "3 HP Motor",
     spec3: "5 m³/hr",
     desc: "Ideal for deep boreholes and wells. SS impeller, auto dry-run protection.",
-    img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=800&q=80",
+    img: "/assets/images/afrotech-10.jpg",
     offsetY: false,
   },
   {
@@ -18,8 +18,8 @@ const products = [
     spec2: "Solar-Powered",
     spec3: "3 m³/hr",
     desc: "Off-grid water supply for remote farms and rural communities.",
-    img: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=800&q=80",
-    offsetY: true,
+    img: "/assets/images/afrotech-11.jpg",
+    offsetY: false,
   },
   {
     name: "TurboFlow Industrial",
@@ -28,7 +28,7 @@ const products = [
     spec2: "7.5 HP Motor",
     spec3: "30 m³/hr",
     desc: "Heavy-duty centrifugal pump for industrial and municipal applications.",
-    img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80",
+    img: "/assets/images/afrotech-13.jpg",
     offsetY: false,
   },
 ];
@@ -99,7 +99,7 @@ export default function FeaturedResidences() {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
             gap: "2rem 2rem",
-            alignItems: "start",
+            alignItems: "stretch",
           }}
         >
           {products.map((p) => (
@@ -112,7 +112,8 @@ export default function FeaturedResidences() {
                 flexDirection: "column",
                 textDecoration: "none",
                 transition: "transform 0.3s",
-                marginTop: p.offsetY ? "1.25rem" : 0,
+                marginTop: 0,
+                height: "100%",
               }}
             >
               {/* Image */}
@@ -162,7 +163,7 @@ export default function FeaturedResidences() {
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "flex-start",
                   alignItems: "baseline",
                   marginBottom: "0.5rem",
                 }}
@@ -180,17 +181,6 @@ export default function FeaturedResidences() {
                 >
                   {p.name}
                 </h4>
-                <span
-                  style={{
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                    color: "var(--color-primary)",
-                    whiteSpace: "nowrap",
-                    marginLeft: "0.5rem",
-                  }}
-                >
-                  {p.price}
-                </span>
               </div>
               <div
                 style={{
@@ -216,6 +206,7 @@ export default function FeaturedResidences() {
                   fontWeight: 300,
                   borderTop: "1px solid rgba(231,229,228,0.4)",
                   paddingTop: "0.75rem",
+                  marginTop: "auto",
                 }}
               >
                 {p.desc}
