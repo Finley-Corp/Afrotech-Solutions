@@ -67,7 +67,7 @@ export default function ContactPage() {
               width: "64px",
               height: "64px",
               borderRadius: "50%",
-              backgroundColor: "rgba(0,51,102,0.05)",
+              backgroundColor: "rgba(15,23,42,0.04)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

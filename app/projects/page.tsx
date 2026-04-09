@@ -17,7 +17,7 @@ const projectCaseStudies = [
         metric: "150 Hectares Irrigated",
         date: "2024",
         desc: "Installed high-efficiency AquaMax solar pumping systems to automate irrigation for dairy and vegetable farmers. Replaced unreliable petrol pumps, reducing fuel costs by 100%.",
-        img: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200&q=80",
+        img: "/assets/images/afrotech-1.jpg",
       },
     ],
   },
@@ -31,7 +31,7 @@ const projectCaseStudies = [
         metric: "35% Energy Savings",
         date: "2023",
         desc: "Upgraded port-side cooling and fire safety water networks with high-volume TurboFlow centrifugal pumps. Advanced motor optimization reduced daily energy consumption significantly.",
-        img: "https://images.unsplash.com/photo-1541888941294-118889412942?w=1200&q=80",
+        img: "/assets/images/afrotech-14.jpg",
       },
     ],
   },
@@ -45,7 +45,7 @@ const projectCaseStudies = [
         metric: "50,000+ People Served",
         date: "2024",
         desc: "Collaborated with regional water authorities to modernize the central pumping station. Installed synchronized multi-pump systems for consistent pressure throughout the city network.",
-        img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=1200&q=80",
+        img: "/assets/images/afrotech-9.jpg",
       },
     ],
   },
@@ -70,16 +70,8 @@ export default function ProjectsPage() {
           overflow: "hidden",
         }}
       >
-        <div 
-          style={{ 
-            position: "absolute", 
-            inset: 0, 
-            backgroundColor: "rgba(0, 51, 102, 0.45)",
-            zIndex: 1
-          }} 
-        />
         <img
-          src="https://images.unsplash.com/photo-1541888941294-118889412942?w=1920&q=80"
+          src="/assets/images/afrotech-14.jpg"
           alt="Large-scale water project"
           style={{
             position: "absolute",
@@ -87,7 +79,16 @@ export default function ProjectsPage() {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            opacity: 0.35,
+            opacity: 1,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0.08) 100%)",
+            zIndex: 1,
           }}
         />
         <div

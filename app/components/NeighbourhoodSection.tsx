@@ -44,7 +44,7 @@ export default function NeighbourhoodSection() {
             }}
           >
             <img
-              src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200&q=80"
+              src="/assets/images/afrotech-1.jpg"
               alt="Agricultural irrigation application"
               style={{
                 width: "100%",
