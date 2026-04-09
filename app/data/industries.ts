@@ -48,7 +48,7 @@ export const industries: Industry[] = [
       "Increased crop yield reliability",
     ],
     image:
-      "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200&q=80",
+      "/assets/images/afrotech-1.jpg",
     productsLink: "/products#solar",
   },
   {
@@ -85,7 +85,7 @@ export const industries: Industry[] = [
       "Fire suppression network support",
     ],
     image:
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&q=80",
+      "/assets/images/afrotech-14.jpg",
     productsLink: "/products#industrial",
   },
   {
@@ -122,7 +122,7 @@ export const industries: Industry[] = [
       "Energy-efficient upgrades",
     ],
     image:
-      "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=1200&q=80",
+      "/assets/images/afrotech-9.jpg",
     productsLink: "/products#submersible",
   },
   {
@@ -159,7 +159,7 @@ export const industries: Industry[] = [
       "Erosion and runoff control support",
     ],
     image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80",
+      "/assets/images/afrotech-5.jpg",
     productsLink: "/products#industrial",
   },
   {
@@ -196,7 +196,7 @@ export const industries: Industry[] = [
       "Lower lifecycle maintenance risk",
     ],
     image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80",
+      "/assets/images/afrotech-8.jpg",
     productsLink: "/products#submersible",
   },
   {
@@ -233,7 +233,7 @@ export const industries: Industry[] = [
       "Better continuity of production support systems",
     ],
     image:
-      "https://source.unsplash.com/1200x800/?mining,quarry,industry",
+      "/assets/images/afrotell-12.jpg",
     productsLink: "/products#industrial",
   },
   {
@@ -270,7 +270,7 @@ export const industries: Industry[] = [
       "Greater long-term infrastructure resilience",
     ],
     image:
-      "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=1200&q=80",
+      "/assets/images/afrotech-7.jpg",
     productsLink: "/products#industrial",
   },
   {
@@ -307,7 +307,7 @@ export const industries: Industry[] = [
       "Scalable design for future expansion",
     ],
     image:
-      "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80",
+      "/assets/images/afrotech-6.jpg",
     productsLink: "/products#submersible",
   },
   {
@@ -344,7 +344,7 @@ export const industries: Industry[] = [
       "Stronger resilience for critical port services",
     ],
     image:
-      "https://images.unsplash.com/photo-1475776408506-9a5371e7a068?w=1200&q=80",
+      "/assets/images/afrotech-11.jpg",
     productsLink: "/products#industrial",
   },
 ];
