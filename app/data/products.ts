@@ -21,7 +21,7 @@ export const productsList: Product[] = [
     shortDesc: "High-pressure borehole and well pumps engineered for industrial and agricultural water supply.",
     fullDesc: "The AquaMax 3000 is our flagship deep-borehole submersible pump. Designed for extreme durability in high-mineral water conditions, it features a unique stainless steel impeller system that resists abrasion and corrosion. Ideal for reliable agricultural irrigation and community water points.",
     price: "From $850",
-    mainImg: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=1200&q=80",
+    mainImg: "/assets/images/afrotech-10.jpg",
     specs: ["80m Max Head", "3 HP Motor", "5 m³/hr"],
     detailedSpecs: [
       { label: "Max Head", value: "80 Meters" },
@@ -46,7 +46,7 @@ export const productsList: Product[] = [
     shortDesc: "Heavy-duty borehole pump for large-scale agricultural irrigation.",
     fullDesc: "Engineered for high-volume extraction, the AquaMax 5000 delivers superior flow rates at significant depths. Its premium multi-stage design ensures consistent pressure for large-scale center-pivot and drip irrigation systems, even in challenging geological formations.",
     price: "From $1,450",
-    mainImg: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=1200&q=80",
+    mainImg: "/assets/images/afrotell-12.jpg",
     specs: ["120m Max Head", "5.5 HP Motor", "10 m³/hr"],
     detailedSpecs: [
       { label: "Max Head", value: "120 Meters" },
@@ -71,7 +71,7 @@ export const productsList: Product[] = [
     shortDesc: "Sustainable, off-grid water solutions for remote locations and rural communities.",
     fullDesc: "The SolarFlow Pro is a complete off-grid pumping solution that eliminates fuel costs entirely. Featuring an advanced MPPT controller, it maximizes energy capture even on cloudy days. Perfect for remote agricultural projects where grid access is limited or unreliable.",
     price: "From $1,200",
-    mainImg: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=1200&q=80",
+    mainImg: "/assets/images/afrotech-11.jpg",
     specs: ["60m Max Head", "Solar-Powered", "3 m³/hr"],
     detailedSpecs: [
       { label: "Max Head", value: "60 Meters" },
@@ -96,7 +96,7 @@ export const productsList: Product[] = [
     shortDesc: "Ultra-high volume pumping for large-scale industrial cooling and supply.",
     fullDesc: "Our most powerful surface pump, the TurboFlow Max is built for heavy industry. With a massive 15 HP motor and optimized intake geometry, it moves vast amounts of water for cooling towers, municipal distribution, and large-scale construction dewatering projects.",
     price: "From $3,800",
-    mainImg: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=1200&q=80",
+    mainImg: "/assets/images/afrotech-13.jpg",
     specs: ["55m Max Head", "15 HP Motor", "65 m³/hr"],
     detailedSpecs: [
       { label: "Max Head", value: "55 Meters" },

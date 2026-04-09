@@ -115,7 +115,7 @@ export default function ProductDetailPage() {
               {product.full_desc}
             </p>
 
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "2rem" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1rem" }}>
               <Link 
                 href="/quote" 
                 style={{ 
@@ -132,13 +132,6 @@ export default function ProductDetailPage() {
               >
                 Inquire About Model
               </Link>
-              <span style={{ 
-                fontSize: "1.25rem", 
-                color: "var(--color-primary)", 
-                fontWeight: 500
-              }}>
-                {product.price}
-              </span>
             </div>
           </div>
         </div>
