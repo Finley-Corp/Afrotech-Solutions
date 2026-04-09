@@ -124,7 +124,7 @@ export default function ProjectsPage() {
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(to bottom, rgba(8,8,5,0.35), rgba(8,8,5,0.25), rgba(8,8,5,0.92))",
+                "linear-gradient(to bottom, rgba(8,8,5,0.5), rgba(8,8,5,0.35), rgba(8,8,5,0.9))",
             }}
           />
           <div
@@ -153,11 +153,12 @@ export default function ProjectsPage() {
                 fontWeight: 500,
                 letterSpacing: "-0.03em",
                 maxWidth: "18ch",
+                color: "#ffffff",
               }}
             >
               Proven water infrastructure for demanding environments.
             </h1>
-            <p style={{ margin: 0, maxWidth: "42rem", color: "rgba(255,255,255,0.8)", fontSize: "1rem", lineHeight: 1.75, fontWeight: 300 }}>
+            <p style={{ margin: 0, maxWidth: "42rem", color: "rgba(255,255,255,0.92)", fontSize: "1rem", lineHeight: 1.75, fontWeight: 300 }}>
               A selection of deployments across agriculture, industrial, and municipal sectors
               showing measurable impact in reliability, efficiency, and service continuity.
             </p>
@@ -298,13 +299,13 @@ export default function ProjectsPage() {
               <img src={project.img} alt={project.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,15,14,0.78), rgba(15,15,14,0.18), transparent)" }} />
               <div style={{ position: "absolute", top: "1rem", left: "1rem", right: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: "999px", padding: "0.35rem 0.65rem", fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+                <span style={{ backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: "999px", padding: "0.35rem 0.65rem", fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "#ffffff" }}>
                   {project.category}
                 </span>
                 <span style={{ color: "var(--color-accent)", fontSize: "0.75rem", fontWeight: 400 }}>{project.date}</span>
               </div>
               <div style={{ position: "absolute", left: "1rem", right: "1rem", bottom: "1rem" }}>
-                <h3 style={{ margin: "0 0 0.65rem 0", fontSize: "1.9rem", lineHeight: 1.05, letterSpacing: "-0.02em", fontWeight: 500 }}>
+                <h3 style={{ margin: "0 0 0.65rem 0", fontSize: "1.9rem", lineHeight: 1.05, letterSpacing: "-0.02em", fontWeight: 500, color: "#ffffff" }}>
                   {project.title}
                 </h3>
                 <div style={{ backgroundColor: "rgba(255,255,255,0.9)", border: "1px solid var(--color-line)", borderRadius: "1rem", padding: "0.9rem" }}>
