@@ -1,0 +1,23 @@
+# Copy to .env.local and fill in values. (.env* files are gitignored.)
+
+# Supabase (browser) — Project Settings → API
+NEXT_PUBLIC_SUPABASE_URL=
+# Use either the anon key or publishable key name your project uses:
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+# NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
+
+# Resend — https://resend.com/api-keys
+RESEND_API_KEY=
+
+# Verified domain sender, e.g. Afrotech <notifications@yourdomain.com>
+# For Resend testing only, onboarding@resend.dev works when using their test domain.
+RESEND_FROM_EMAIL=
+
+# Site owner / team — receives branded lead emails (quote, contact, newsletter).
+# Prefer this; falls back to RESEND_NOTIFY_EMAIL if unset.
+# Comma-separated for multiple inboxes: owner@domain.com, ops@domain.com
+RESEND_OWNER_EMAIL=
+
+# Legacy alias for owner inbox (used if RESEND_OWNER_EMAIL is empty).
+# With Resend’s test sender, use an allowed recipient until your domain is verified.
+RESEND_NOTIFY_EMAIL=sales@afrotech-solutions.com

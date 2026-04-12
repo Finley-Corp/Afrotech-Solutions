@@ -7,6 +7,7 @@ import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { supabase } from "../lib/supabase";
+import { productsList, toProductDbRow } from "../data/products";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -21,9 +22,18 @@ export default function ProductsPage() {
 
       if (error) {
         console.error("Error fetching products:", error);
-      } else {
-        setProducts(data || []);
       }
+
+      const fromDb = Array.isArray(data) ? data : [];
+      const byId = new Map(fromDb.map((row: { id: string }) => [row.id, row]));
+      /** Always 10 catalog SKUs; DB text/specs merge in, but each keeps its paired `product-N.jpg` */
+      const merged = productsList.map((p) => {
+        const db = byId.get(p.id);
+        const catalog = toProductDbRow(p);
+        if (!db) return catalog;
+        return { ...db, main_img: catalog.main_img };
+      });
+      setProducts(merged);
       setLoading(false);
     }
     fetchProducts();
@@ -77,8 +87,8 @@ export default function ProductsPage() {
         }}
       >
         <img
-          src="/assets/images/water%20pump-1.jpg"
-          alt="Afrotech Product Catalog"
+          src="/assets/products/product-1.jpg"
+          alt="Afrotech water pumps"
           style={{
             position: "absolute",
             inset: 0,

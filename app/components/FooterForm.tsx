@@ -21,6 +21,16 @@ export default function FooterForm() {
       console.error("Newsletter Error:", error);
       setStatus("error");
     } else {
+      try {
+        const res = await fetch("/api/email/newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        if (!res.ok) console.error("Newsletter email notify failed:", await res.text());
+      } catch (err) {
+        console.error("Newsletter email notify error:", err);
+      }
       setStatus("success");
       setEmail("");
     }
