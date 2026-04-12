@@ -8,6 +8,7 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import { catalogMainImgForId, getCatalogProductRowById } from "../../data/products";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -17,18 +18,23 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     async function fetchProduct() {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("id", params.id)
-        .single();
+      const id = params.id as string;
+      const { data, error } = await supabase.from("products").select("*").eq("id", id).single();
 
-      if (error || !data) {
+      const fallback = getCatalogProductRowById(id);
+      const fromDb = data && !error ? data : null;
+      const row = fromDb
+        ? { ...fromDb, main_img: catalogMainImgForId(id) ?? fromDb.main_img }
+        : fallback;
+
+      if (!row) {
         console.error("Error fetching product:", error);
         router.push("/products");
-      } else {
-        setProduct(data);
+        setLoading(false);
+        return;
       }
+
+      setProduct(row);
       setLoading(false);
     }
     fetchProduct();

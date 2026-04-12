@@ -6,16 +6,17 @@ import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 export default function QuotePage() {
   const [submitted, setSubmitted] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     location: "Nairobi, Kenya",
-    pumpType: "Submersible",
+    pumpType: "Submersible (Borehole)",
     flowRate: "",
     depth: "",
     message: "",
@@ -29,30 +30,89 @@ export default function QuotePage() {
     setSubmitting(true);
     setError(null);
 
-    const { error: supabaseError } = await supabase
-      .from("quotations")
-      .insert([
-        {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          location: formData.location,
-          pump_type: formData.pumpType,
-          flow_rate: formData.flowRate,
-          depth: formData.depth,
-          message: formData.message,
-        },
-      ]);
+    const row = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      location: formData.location,
+      pump_type: formData.pumpType,
+      flow_rate: formData.flowRate,
+      depth: formData.depth,
+      message: formData.message,
+    };
+
+    const emailPayload = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      location: formData.location,
+      pumpType: formData.pumpType,
+      flowRate: formData.flowRate,
+      depth: formData.depth,
+      message: formData.message,
+    };
+
+    let dbError: { message: string; code?: string; details?: string; hint?: string } | null = null;
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.from("quotations").insert([row]);
+      dbError = error;
+      if (error) {
+        console.error(
+          "Supabase quotations insert failed:",
+          error.message,
+          "code:",
+          error.code,
+          "details:",
+          error.details,
+          "hint:",
+          error.hint,
+        );
+      }
+    }
+
+    let emailOk = false;
+    try {
+      const res = await fetch("/api/email/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(emailPayload),
+      });
+      emailOk = res.ok;
+      if (!res.ok) {
+        const detail = await res.text();
+        console.error("Quote email failed:", res.status, detail);
+      }
+    } catch (err) {
+      console.error("Quote email fetch error:", err);
+    }
 
     setSubmitting(false);
 
-    if (supabaseError) {
-      console.error("Supabase Error:", supabaseError);
-      setError("Failed to submit requirements. Please try again later.");
-    } else {
-      setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    const failed =
+      (!isSupabaseConfigured && !emailOk) ||
+      (isSupabaseConfigured && !!dbError && !emailOk);
+
+    if (failed) {
+      if (!isSupabaseConfigured && !emailOk) {
+        setError(
+          "Email delivery is not configured (set RESEND_API_KEY on the server). You can still reach us by phone or at sales@afrotech-solutions.com.",
+        );
+      } else {
+        const reason = dbError?.message?.trim() || "database rejected the request";
+        setError(
+          `We could not save your quote (${reason}). Email also failed — please call us or email sales@afrotech-solutions.com.`,
+        );
+      }
+      return;
     }
+
+    if (dbError && emailOk) {
+      console.warn("Quote: database insert failed but confirmation email was sent.");
+    }
+
+    setSubmittedEmail(formData.email.trim());
+    setSubmitted(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -103,11 +163,25 @@ export default function QuotePage() {
               fontSize: "1.125rem",
               fontWeight: 300,
               lineHeight: 1.6,
-              marginBottom: "3rem",
+              marginBottom: "1rem",
             }}
           >
             A technical advisor from our regional hub will review your requirements and provide a detailed quote within 24 hours.
           </p>
+          {submittedEmail && (
+            <p
+              style={{
+                color: "var(--color-primary)",
+                fontSize: "0.9375rem",
+                fontWeight: 400,
+                lineHeight: 1.6,
+                marginBottom: "3rem",
+              }}
+            >
+              We’ve sent a confirmation email to{" "}
+              <span style={{ wordBreak: "break-all" }}>{submittedEmail}</span>. Please check your inbox (and spam folder).
+            </p>
+          )}
           <Link
             href="/"
             style={{
@@ -219,21 +293,37 @@ export default function QuotePage() {
                   type="text"
                   name="name"
                   required
+                  autoComplete="name"
                   placeholder="e.g., John Doe"
                   style={inputStyle}
+                  value={formData.name}
                   onChange={handleChange}
                 />
               </div>
               <div>
-                <label style={labelStyle}>Email Address</label>
+                <label style={labelStyle}>Email address (for your confirmation)</label>
                 <input
                   type="email"
                   name="email"
                   required
+                  autoComplete="email"
+                  inputMode="email"
                   placeholder="e.g., john@company.com"
                   style={inputStyle}
+                  value={formData.email}
                   onChange={handleChange}
                 />
+                <p
+                  style={{
+                    marginTop: "0.75rem",
+                    fontSize: "0.8125rem",
+                    fontWeight: 300,
+                    color: "var(--color-secondary)",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  We’ll email you a confirmation as soon as you submit this quote request, and our team may follow up at this address.
+                </p>
               </div>
             </div>
 
@@ -244,8 +334,10 @@ export default function QuotePage() {
                   type="tel"
                   name="phone"
                   required
+                  autoComplete="tel"
                   placeholder="+254 --- --- ---"
                   style={inputStyle}
+                  value={formData.phone}
                   onChange={handleChange}
                 />
               </div>
@@ -289,6 +381,7 @@ export default function QuotePage() {
                   name="flowRate"
                   placeholder="e.g., 10"
                   style={inputStyle}
+                  value={formData.flowRate}
                   onChange={handleChange}
                 />
               </div>
@@ -301,6 +394,7 @@ export default function QuotePage() {
                 name="depth"
                 placeholder="e.g., 120"
                 style={inputStyle}
+                value={formData.depth}
                 onChange={handleChange}
               />
             </div>
@@ -312,6 +406,7 @@ export default function QuotePage() {
                 rows={4}
                 placeholder="Tell us about your technical requirements..."
                 style={{ ...inputStyle, resize: "none" }}
+                value={formData.message}
                 onChange={handleChange}
               />
             </div>

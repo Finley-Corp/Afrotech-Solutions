@@ -41,6 +41,21 @@ export default function ContactPage() {
       console.error("Supabase Error:", supabaseError);
       setError("Failed to send message. Please try again later.");
     } else {
+      try {
+        const res = await fetch("/api/email/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            subject: formData.subject,
+            message: formData.message,
+          }),
+        });
+        if (!res.ok) console.error("Contact email notify failed:", await res.text());
+      } catch (err) {
+        console.error("Contact email notify error:", err);
+      }
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
