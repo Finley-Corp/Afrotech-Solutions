@@ -1,21 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import { isSupabaseConfigured, supabase } from "../lib/supabase";
+import { productsList } from "../data/products";
 
 export default function QuotePage() {
+  const [modelFromQuery, setModelFromQuery] = useState("");
+  const [serviceFromQuery, setServiceFromQuery] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
+  const productOptions = Array.from(new Set(productsList.map((p) => p.name)));
+  const serviceOptions = [
+    "Pump Selection & Sizing",
+    "System Design & Integration",
+    "Installation & Commissioning",
+    "Maintenance & Technical Support",
+    "Remote Pump Monitoring",
+  ];
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     location: "Nairobi, Kenya",
+    inquiryType: "Product",
     pumpType: "Submersible (Borehole)",
     flowRate: "",
     depth: "",
@@ -24,90 +35,74 @@ export default function QuotePage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const genericOptions = [
+    "Submersible (Borehole)",
+    "Solar Pumping System",
+    "Industrial Centrifugal",
+    "Unsure / Need Assessment",
+  ];
+  const activeOptions =
+    formData.inquiryType === "Service"
+      ? serviceOptions
+      : formData.inquiryType === "Both"
+        ? ["Products and Services Package", ...productOptions, ...serviceOptions]
+        : [...productOptions, ...genericOptions];
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setModelFromQuery(params.get("model")?.trim() || "");
+    setServiceFromQuery(params.get("service")?.trim() || "");
+  }, []);
+
+  useEffect(() => {
+    if (!modelFromQuery && !serviceFromQuery) return;
+    setFormData((prev) => ({
+      ...prev,
+      inquiryType: serviceFromQuery ? "Service" : "Product",
+      pumpType: serviceFromQuery || modelFromQuery,
+    }));
+  }, [modelFromQuery, serviceFromQuery]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
 
-    const row = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      location: formData.location,
-      pump_type: formData.pumpType,
-      flow_rate: formData.flowRate,
-      depth: formData.depth,
-      message: formData.message,
-    };
-
     const emailPayload = {
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
       location: formData.location,
+      inquiryType: formData.inquiryType,
       pumpType: formData.pumpType,
       flowRate: formData.flowRate,
       depth: formData.depth,
       message: formData.message,
     };
 
-    let dbError: { message: string; code?: string; details?: string; hint?: string } | null = null;
-    if (isSupabaseConfigured) {
-      const { error } = await supabase.from("quotations").insert([row]);
-      dbError = error;
-      if (error) {
-        console.error(
-          "Supabase quotations insert failed:",
-          error.message,
-          "code:",
-          error.code,
-          "details:",
-          error.details,
-          "hint:",
-          error.hint,
-        );
-      }
-    }
-
-    let emailOk = false;
+    let requestOk = false;
     try {
       const res = await fetch("/api/email/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(emailPayload),
       });
-      emailOk = res.ok;
+      requestOk = res.ok;
       if (!res.ok) {
         const detail = await res.text();
-        console.error("Quote email failed:", res.status, detail);
+        console.error("Quote submit failed:", res.status, detail);
       }
     } catch (err) {
-      console.error("Quote email fetch error:", err);
+      console.error("Quote submit fetch error:", err);
     }
 
     setSubmitting(false);
 
-    const failed =
-      (!isSupabaseConfigured && !emailOk) ||
-      (isSupabaseConfigured && !!dbError && !emailOk);
-
-    if (failed) {
-      if (!isSupabaseConfigured && !emailOk) {
-        setError(
-          "Email delivery is not configured (set RESEND_API_KEY on the server). You can still reach us by phone or at sales@afrotech-solutions.com.",
-        );
-      } else {
-        const reason = dbError?.message?.trim() || "database rejected the request";
-        setError(
-          `We could not save your quote (${reason}). Email also failed — please call us or email sales@afrotech-solutions.com.`,
-        );
-      }
+    if (!requestOk) {
+      setError(
+        "We could not submit your request right now. Please call us or email sales@afrotech-solutions.com.",
+      );
       return;
-    }
-
-    if (dbError && emailOk) {
-      console.warn("Quote: database insert failed but confirmation email was sent.");
     }
 
     setSubmittedEmail(formData.email.trim());
@@ -116,7 +111,18 @@ export default function QuotePage() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "inquiryType") {
+      const nextDefault =
+        value === "Service"
+          ? serviceOptions[0]
+          : value === "Both"
+            ? "Products and Services Package"
+            : genericOptions[0];
+      setFormData({ ...formData, inquiryType: value, pumpType: nextDefault });
+      return;
+    }
+    setFormData({ ...formData, [name]: value });
   };
 
   if (submitted) {
@@ -361,19 +367,42 @@ export default function QuotePage() {
 
             <div className="quote-field-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
               <div>
-                <label style={labelStyle}>Required Pump Type</label>
+                <label style={labelStyle}>Inquiry Type</label>
+                <select
+                  name="inquiryType"
+                  style={inputStyle}
+                  onChange={handleChange}
+                  value={formData.inquiryType}
+                >
+                  <option>Product</option>
+                  <option>Service</option>
+                  <option>Both</option>
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>
+                  {formData.inquiryType === "Service"
+                    ? "Service Needed"
+                    : formData.inquiryType === "Both"
+                      ? "Products / Services"
+                      : "Product Model / Pump Type"}
+                </label>
                 <select
                   name="pumpType"
                   style={inputStyle}
                   onChange={handleChange}
                   value={formData.pumpType}
                 >
-                  <option>Submersible (Borehole)</option>
-                  <option>Solar Pumping System</option>
-                  <option>Industrial Centrifugal</option>
-                  <option>Unsure / Need Assessment</option>
+                  {formData.pumpType && !activeOptions.includes(formData.pumpType) && (
+                    <option>{formData.pumpType}</option>
+                  )}
+                  {activeOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
                 </select>
               </div>
+            </div>
+            <div className="quote-field-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
               <div>
                 <label style={labelStyle}>Required Flow Rate (m³/hr)</label>
                 <input

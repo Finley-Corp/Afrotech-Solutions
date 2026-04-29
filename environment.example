@@ -1,10 +1,21 @@
 # Copy to .env.local and fill in values. (.env* files are gitignored.)
 
+# Neon Postgres (server-only)
+# Example:
+# DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+DATABASE_URL=
+
 # Supabase (browser) — Project Settings → API
 NEXT_PUBLIC_SUPABASE_URL=
 # Use either the anon key or publishable key name your project uses:
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 # NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
+# Optional keep-alive settings for scripts/keep-supabase-awake.mjs
+SUPABASE_KEEPALIVE_TABLE=products
+SUPABASE_KEEPALIVE_INTERVAL_MINUTES=10
+# For automatic keep-alive in GitHub Actions, add these as repository secrets:
+# NEXT_PUBLIC_SUPABASE_URL
+# NEXT_PUBLIC_SUPABASE_ANON_KEY (or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY)
 
 # Resend — https://resend.com/api-keys
 RESEND_API_KEY=

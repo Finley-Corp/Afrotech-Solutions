@@ -5,7 +5,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import { Icon } from "@iconify/react";
-import { supabase } from "../lib/supabase";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -24,21 +23,30 @@ export default function ContactPage() {
     setSubmitting(true);
     setError(null);
 
-    const { error: supabaseError } = await supabase
-      .from("contacts")
-      .insert([
-        {
+    let sendOk = false;
+    try {
+      const res = await fetch("/api/email/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           name: formData.name,
           email: formData.email,
           subject: formData.subject,
           message: formData.message,
-        },
-      ]);
+        }),
+      });
+      sendOk = res.ok;
+      if (!res.ok) {
+        const detail = await res.text();
+        console.error("Contact submit failed:", res.status, detail);
+      }
+    } catch (err) {
+      console.error("Contact submit fetch error:", err);
+    }
 
     setSubmitting(false);
 
-    if (supabaseError) {
-      console.error("Supabase Error:", supabaseError);
+    if (!sendOk) {
       setError("Failed to send message. Please try again later.");
     } else {
       setSubmitted(true);
