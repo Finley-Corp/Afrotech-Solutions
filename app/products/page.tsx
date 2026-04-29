@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import { isSupabaseConfigured, logPostgrestError, supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { productsList, toProductDbRow } from "../data/products";
 
 export default function ProductsPage() {
@@ -24,7 +24,7 @@ export default function ProductsPage() {
           .order("created_at", { ascending: true });
 
         if (error) {
-          logPostgrestError("products list", error);
+          console.error("Error fetching products:", error.message);
         }
 
         fromDb = Array.isArray(data) ? (data as typeof fromDb) : [];
