@@ -29,7 +29,7 @@ NML Towers, Tsavo Road,
 South B, Nairobi, Kenya  
 
 - **Support**: support@afrotech-solutions.com  
-- **Technical Hotline**: +254 712 345 678
+- **Technical Hotline**: +254727565672
 
 ## 🏁 Development
 

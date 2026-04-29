@@ -472,7 +472,7 @@ export default function QuotePage() {
               </p>
               <div style={{ display: "grid", gap: "1.25rem" }}>
                 <a
-                  href="tel:+254712345678"
+                  href="tel:+254727565672"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -483,7 +483,7 @@ export default function QuotePage() {
                   }}
                 >
                   <Icon icon="lucide:phone" />
-                  +254 712 345 678
+                  +254727565672
                 </a>
                 <a
                   href="mailto:support@afrotechliving.com"
@@ -513,12 +513,15 @@ export default function QuotePage() {
                   marginBottom: "2rem",
                 }}
               >
-                Regional Technical Hubs
+                Headquarters
               </h4>
               <div style={{ display: "grid", gap: "2.5rem" }}>
                 {[
-                  { city: "Nairobi Hub", district: "Westlands", contact: "+254 20 445 000" },
-                  { city: "Dar es Salaam", district: "Masaki", contact: "+255 22 260 000" },
+                  {
+                    city: "Afrotech Nairobi",
+                    district: "NML Towers, 2nd Floor, Suite 212, South B",
+                    contact: "+254727565672",
+                  },
                 ].map((hub) => (
                   <div
                     key={hub.city}

@@ -41,21 +41,6 @@ export default function ContactPage() {
       console.error("Supabase Error:", supabaseError);
       setError("Failed to send message. Please try again later.");
     } else {
-      try {
-        const res = await fetch("/api/email/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            subject: formData.subject,
-            message: formData.message,
-          }),
-        });
-        if (!res.ok) console.error("Contact email notify failed:", await res.text());
-      } catch (err) {
-        console.error("Contact email notify error:", err);
-      }
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -295,7 +280,7 @@ export default function ContactPage() {
               <div style={{ display: "grid", gap: "2rem" }}>
                 <div>
                   <span style={detailLabelStyle}>Technical Support</span>
-                  <a href="tel:+254700000000" style={linkStyle}>+254 700 000 000</a>
+                  <a href="tel:+254727565672" style={linkStyle}>+254727565672</a>
                 </div>
                 <div>
                   <span style={detailLabelStyle}>Sales Inquiry</span>
@@ -303,7 +288,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <span style={detailLabelStyle}>Emergency Breakdown</span>
-                  <a href="tel:+254800000000" style={linkStyle}>+254 800 000 000 (24/7)</a>
+                  <a href="tel:+254727565672" style={linkStyle}>+254727565672 (24/7)</a>
                 </div>
               </div>
             </div>

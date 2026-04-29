@@ -196,7 +196,7 @@ export default function Footer() {
                 support@afrotech-solutions.com
               </a>
               <a
-                href="tel:+254712345678"
+                href="tel:+254727565672"
                 style={{
                   fontSize: "0.875rem",
                   fontWeight: 300,
@@ -206,7 +206,7 @@ export default function Footer() {
                 }}
                 className="footer-link"
               >
-                +254 712 345 678
+                +254727565672
               </a>
             </div>
           </div>
