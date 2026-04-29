@@ -7,9 +7,10 @@ export default function HeroSection() {
   const bgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const handleScroll = () => {
       if (!bgRef.current) return;
-      bgRef.current.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+      bgRef.current.style.transform = `translateY(${window.scrollY * (isMobile ? 0.05 : 0.12)}px)`;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -17,6 +18,7 @@ export default function HeroSection() {
 
   return (
     <header
+      className="hero-header"
       style={{
         position: "relative",
         width: "100%",
@@ -34,6 +36,7 @@ export default function HeroSection() {
       {/* Background */}
       <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
         <img
+          className="hero-bg-img"
           ref={bgRef}
           src="https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=1920&q=80"
           alt="Industrial water pump system"
