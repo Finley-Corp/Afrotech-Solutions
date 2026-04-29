@@ -75,6 +75,9 @@ export default function Navbar() {
             <Link href="/industries" className="nav-link">
               Industries
             </Link>
+            <Link href="/services" className="nav-link">
+              Services
+            </Link>
             <Link href="/about" className="nav-link">
               About Us
             </Link>
@@ -192,6 +195,14 @@ export default function Navbar() {
             onClick={() => setIsOpen(false)}
           >
             Industries
+          </Link>
+          <Link
+            href="/services"
+            className="mobile-nav-link text-reveal"
+            style={{ transitionDelay: "0.28s" }}
+            onClick={() => setIsOpen(false)}
+          >
+            Services
           </Link>
           <Link
             href="/projects"

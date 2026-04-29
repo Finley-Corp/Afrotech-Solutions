@@ -136,7 +136,7 @@ export default function ProductDetailPage() {
 
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1rem" }}>
               <Link 
-                href="/quote" 
+                href={{ pathname: "/quote", query: { model: product.name } }}
                 style={{ 
                   padding: "1.25rem 3rem", 
                   backgroundColor: "var(--color-accent)", 

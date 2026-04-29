@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { brandEmailShell, emailDetailRows, EMAIL_BRAND } from "@/lib/email-templates";
+import { neonQuery } from "@/lib/neon-db";
 import {
   escapeHtml,
   getFromEmail,
@@ -28,6 +29,18 @@ export async function POST(req: Request) {
 
   if (!name || !email || !message) {
     return NextResponse.json({ ok: false, error: "missing_fields" }, { status: 400 });
+  }
+
+  try {
+    await neonQuery(
+      `insert into contacts
+        (name, email, subject, message)
+       values ($1, $2, $3, $4)`,
+      [name, email, subject, message],
+    );
+  } catch (dbErr) {
+    console.error("[Neon] contact insert failed:", dbErr);
+    return NextResponse.json({ ok: false, error: "db_insert_failed" }, { status: 502 });
   }
 
   const from = getFromEmail();

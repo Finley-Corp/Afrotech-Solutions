@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { brandEmailShell, emailDetailRows, EMAIL_BRAND } from "@/lib/email-templates";
+import { neonQuery } from "@/lib/neon-db";
 import {
   escapeHtml,
   getFromEmail,
@@ -29,10 +30,23 @@ export async function POST(req: Request) {
   }
 
   const location = String(body.location ?? "").trim();
+  const inquiryType = String(body.inquiryType ?? "Product").trim();
   const pumpType = String(body.pumpType ?? "").trim();
   const flowRate = String(body.flowRate ?? "").trim();
   const depth = String(body.depth ?? "").trim();
   const message = String(body.message ?? "").trim();
+
+  try {
+    await neonQuery(
+      `insert into quotations
+        (name, email, phone, location, pump_type, flow_rate, depth, message)
+       values ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [name, email, phone, location, pumpType, flowRate, depth, message],
+    );
+  } catch (dbErr) {
+    console.error("[Neon] quote insert failed:", dbErr);
+    return NextResponse.json({ ok: false, error: "db_insert_failed" }, { status: 502 });
+  }
 
   const from = getFromEmail();
   const ownerInboxes = getOwnerNotifyEmails();
@@ -70,7 +84,8 @@ export async function POST(req: Request) {
       { label: "Email", value: email },
       { label: "Phone", value: phone },
       { label: "Location", value: location },
-      { label: "Pump type", value: pumpType },
+      { label: "Inquiry type", value: inquiryType },
+      { label: "Selected item", value: pumpType },
       { label: "Flow rate (m³/hr)", value: flowRate },
       { label: "Depth (m)", value: depth },
       { label: "Requirements", value: message },
