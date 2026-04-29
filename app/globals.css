@@ -388,6 +388,19 @@ body {
 @media (max-width: 767px) {
   .mobile-hidden { display: none !important; }
   .desktop-only { display: none !important; }
+
+  .hero-header {
+    min-height: 580px !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    padding-bottom: 5rem !important;
+  }
+
+  .hero-bg-img {
+    height: 100% !important;
+    top: 0 !important;
+    object-position: center top;
+  }
 }
 
 .mobile-menu-overlay {

@@ -91,9 +91,25 @@ export default function Navbar() {
                 letterSpacing: "-0.02em",
                 color: "var(--color-primary)",
                 textDecoration: "none",
+                display: "inline-flex",
+                flexDirection: "column",
+                alignItems: "center",
+                lineHeight: 1,
               }}
             >
-              AFROTECH
+              <span>AFROTECH</span>
+              <span
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "0.5rem",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  fontWeight: 500,
+                  marginTop: "0.2rem",
+                }}
+              >
+                Engineering sol.
+              </span>
             </Link>
           </div>
 

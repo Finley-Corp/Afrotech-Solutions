@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, logPostgrestError, supabase } from "../lib/supabase";
 import { productsList, toProductDbRow } from "../data/products";
 
 export default function ProductsPage() {
@@ -15,18 +15,23 @@ export default function ProductsPage() {
 
   useEffect(() => {
     async function fetchProducts() {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .order("created_at", { ascending: true });
+      let fromDb: Array<{ id: string } & Record<string, unknown>> = [];
 
-      if (error) {
-        console.error("Error fetching products:", error);
+      if (isSupabaseConfigured) {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .order("created_at", { ascending: true });
+
+        if (error) {
+          logPostgrestError("products list", error);
+        }
+
+        fromDb = Array.isArray(data) ? (data as typeof fromDb) : [];
       }
 
-      const fromDb = Array.isArray(data) ? data : [];
       const byId = new Map(fromDb.map((row: { id: string }) => [row.id, row]));
-      /** Always 10 catalog SKUs; DB text/specs merge in, but each keeps its paired `product-N.jpg` */
+      /** Catalog-first rendering; DB text/specs merge in when IDs match. */
       const merged = productsList.map((p) => {
         const db = byId.get(p.id);
         const catalog = toProductDbRow(p);
@@ -41,22 +46,34 @@ export default function ProductsPage() {
 
   const productCategories = [
     {
-      category: "Submersible Pumps",
-      id: "submersible",
-      description: "High-pressure borehole and well pumps engineered for industrial and agricultural water supply.",
-      products: products.filter(p => p.category_id === "submersible"),
+      category: "Domestic & Booster Pumps",
+      id: "domestic",
+      description: "Popular pressure boosting models for homes, apartments, and tank-fed domestic systems.",
+      products: products.filter(p => p.category_id === "domestic"),
     },
     {
-      category: "Solar Pumping Systems",
+      category: "Borehole / Submersible Pumps",
+      id: "borehole",
+      description: "High-demand deep-well and submersible models for farms, boreholes, and utility water supply.",
+      products: products.filter(p => p.category_id === "borehole"),
+    },
+    {
+      category: "Solar Water Pumps",
       id: "solar",
-      description: "Sustainable, off-grid water solutions for remote locations and rural communities.",
+      description: "Off-grid solar pumping systems with strong adoption across rural and agricultural applications.",
       products: products.filter(p => p.category_id === "solar"),
     },
     {
-      category: "Industrial Centrifugal",
+      category: "Industrial & Commercial Pumps",
       id: "industrial",
-      description: "High-volume pumps for industrial process, municipal supply, and construction dewatering.",
+      description: "Commercial and industrial pumps for HVAC, process systems, treatment plants, and pressure boosting.",
       products: products.filter(p => p.category_id === "industrial"),
+    },
+    {
+      category: "Bonus Models",
+      id: "bonus",
+      description: "Also-common models frequently used for circulation, heating, and drainage duty.",
+      products: products.filter(p => p.category_id === "bonus"),
     },
   ];
 
