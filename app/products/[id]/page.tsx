@@ -7,7 +7,8 @@ import GSAPAnimations from "../../components/GSAPAnimations";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import type { PostgrestError } from "@supabase/supabase-js";
+import { isSupabaseConfigured, supabase } from "../../lib/supabase";
 import { catalogMainImgForId, getCatalogProductRowById } from "../../data/products";
 
 export default function ProductDetailPage() {
@@ -19,7 +20,17 @@ export default function ProductDetailPage() {
   useEffect(() => {
     async function fetchProduct() {
       const id = params.id as string;
-      const { data, error } = await supabase.from("products").select("*").eq("id", id).single();
+      let data: Record<string, unknown> | null = null;
+      let error: PostgrestError | null = null;
+
+      if (isSupabaseConfigured) {
+        const res = await supabase.from("products").select("*").eq("id", id).single();
+        data = res.data as Record<string, unknown> | null;
+        error = res.error;
+        if (res.error && res.error.code !== "PGRST116") {
+          console.error(`Error fetching product ${id}:`, res.error.message);
+        }
+      }
 
       const fallback = getCatalogProductRowById(id);
       const fromDb = data && !error ? data : null;
@@ -28,7 +39,9 @@ export default function ProductDetailPage() {
         : fallback;
 
       if (!row) {
-        console.error("Error fetching product:", error);
+        if (error && error.code !== "PGRST116") {
+          console.error(`Error resolving product ${id}:`, error.message);
+        }
         router.push("/products");
         setLoading(false);
         return;
