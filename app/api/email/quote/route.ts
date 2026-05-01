@@ -54,7 +54,7 @@ export async function POST(req: Request) {
   const clientBody = `
               <p style="margin:0 0 16px;">Hi ${escapeHtml(name)},</p>
               <p style="margin:0 0 16px;">Thank you for requesting a quote. This message confirms we received your enquiry at <strong>${escapeHtml(email)}</strong>.</p>
-              <p style="margin:0 0 16px;">Our engineers will review your requirements (pump type, flow, depth, and location) and respond within <strong style="color:${EMAIL_BRAND.accent};">24 hours</strong>.</p>
+              <p style="margin:0 0 16px;">Our engineers are reviewing your request and will send your quote as soon as possible.</p>
               <p style="margin:0;">If anything changes or you need to add details, reply to this email or call our support line.</p>`;
 
   const clientHtml = brandEmailShell({
