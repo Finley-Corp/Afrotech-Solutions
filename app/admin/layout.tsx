@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Logo from "../components/Logo";
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react";
 
@@ -55,6 +56,9 @@ export default function AdminLayout({
           borderRadius: "2px",
           textAlign: "center"
         }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
+            <Logo height={44} href={null} />
+          </div>
           <h1 style={{ 
             fontFamily: "'Playfair Display', serif", 
             fontSize: "1.5rem", 
@@ -113,11 +117,9 @@ export default function AdminLayout({
         height: "100vh"
       }}>
         <div style={{ marginBottom: "4rem" }}>
-          <h2 style={{ 
-            fontFamily: "'Playfair Display', serif", 
-            fontSize: "1.5rem", 
-            letterSpacing: "-0.02em" 
-          }}>AFROTECH</h2>
+          <div style={{ filter: "brightness(0) invert(1)", marginBottom: "0.75rem" }}>
+            <Logo height={36} href={null} />
+          </div>
           <span style={{ fontSize: "0.625rem", textTransform: "uppercase", opacity: 0.6, letterSpacing: "0.1em" }}>Control Center</span>
         </div>
 
