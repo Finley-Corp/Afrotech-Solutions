@@ -15,7 +15,7 @@ export function getFromEmail(): string {
 export function getOwnerNotifyEmails(): string[] {
   const owner =
     process.env.RESEND_OWNER_EMAIL?.trim() || process.env.RESEND_NOTIFY_EMAIL?.trim() || "";
-  const fallback = "sales@afrotech-solutions.com";
+  const fallback = "contact@afrotechsolutions.com";
   const raw = owner || fallback;
   return raw
     .split(/[,;]+/)
@@ -26,7 +26,7 @@ export function getOwnerNotifyEmails(): string[] {
 /** @deprecated use getOwnerNotifyEmails — kept for callers expecting one string */
 export function getNotifyEmail(): string {
   const list = getOwnerNotifyEmails();
-  return list[0] ?? "sales@afrotech-solutions.com";
+  return list[0] ?? "contact@afrotechsolutions.com";
 }
 
 export function escapeHtml(s: string): string {
