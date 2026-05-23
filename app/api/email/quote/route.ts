@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { brandEmailShell, emailDetailRows, EMAIL_BRAND } from "@/lib/email-templates";
-import { neonQuery } from "@/lib/neon-db";
+import { getSupabaseServer } from "@/lib/supabase-server";
 import {
   escapeHtml,
   getFromEmail,
@@ -36,16 +36,23 @@ export async function POST(req: Request) {
   const depth = String(body.depth ?? "").trim();
   const message = String(body.message ?? "").trim();
 
-  try {
-    await neonQuery(
-      `insert into quotations
-        (name, email, phone, location, pump_type, flow_rate, depth, message)
-       values ($1, $2, $3, $4, $5, $6, $7, $8)`,
-      [name, email, phone, location, pumpType, flowRate, depth, message],
-    );
-  } catch (dbErr) {
-    console.error("[Neon] quote insert failed:", dbErr);
-    return NextResponse.json({ ok: false, error: "db_insert_failed" }, { status: 502 });
+  const supabase = getSupabaseServer();
+  if (supabase) {
+    const { error: dbErr } = await supabase.from("quotations").insert({
+      name,
+      email,
+      phone,
+      location,
+      pump_type: pumpType,
+      flow_rate: flowRate,
+      depth,
+      message,
+    });
+    if (dbErr) {
+      console.error("[Supabase] quote insert failed:", dbErr.message, dbErr.code);
+    }
+  } else {
+    console.warn("[Supabase] not configured; quote will be emailed but not stored in admin");
   }
 
   const from = getFromEmail();
@@ -54,7 +61,7 @@ export async function POST(req: Request) {
   const clientBody = `
               <p style="margin:0 0 16px;">Hi ${escapeHtml(name)},</p>
               <p style="margin:0 0 16px;">Thank you for requesting a quote. This message confirms we received your enquiry at <strong>${escapeHtml(email)}</strong>.</p>
-              <p style="margin:0 0 16px;">Our engineers will review your requirements (pump type, flow, depth, and location) and respond within <strong style="color:${EMAIL_BRAND.accent};">24 hours</strong>.</p>
+              <p style="margin:0 0 16px;">Our engineers are reviewing your request and will send your quote as soon as possible.</p>
               <p style="margin:0;">If anything changes or you need to add details, reply to this email or call our support line.</p>`;
 
   const clientHtml = brandEmailShell({

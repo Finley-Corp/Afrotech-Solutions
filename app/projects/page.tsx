@@ -5,45 +5,7 @@ import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-
-const featuredProjects = [
-  {
-    title: "Mau Forest Highland Irrigation",
-    location: "Nakuru, Kenya",
-    metric: "150 Hectares Irrigated",
-    date: "2024",
-    desc: "Installed high-efficiency AquaMax solar pumping systems to automate irrigation for dairy and vegetable farmers, replacing fuel-based pumps and stabilizing daily output.",
-    img: "/assets/images/afrotech-1.jpg",
-    category: "Agricultural",
-  },
-  {
-    title: "Mombasa Port Cooling Systems",
-    location: "Kilindini, Kenya",
-    metric: "35% Energy Savings",
-    date: "2023",
-    desc: "Upgraded port-side cooling and fire safety networks with high-volume TurboFlow centrifugal pumps, improving efficiency and reducing recurring utility costs.",
-    img: "/assets/images/afrotech-14.jpg",
-    category: "Industrial",
-  },
-  {
-    title: "Kisumu Central Water Hub",
-    location: "Kisumu, Kenya",
-    metric: "50,000+ People Served",
-    date: "2024",
-    desc: "Modernized the central pumping station with synchronized multi-pump systems to improve pressure stability and continuity across the municipal distribution network.",
-    img: "/assets/images/afrotech-9.jpg",
-    category: "Municipal",
-  },
-  {
-    title: "Industrial Supply Stabilization",
-    location: "Nairobi, Kenya",
-    metric: "99.9% Uptime Target",
-    date: "2024",
-    desc: "Delivered a duty/standby pumping architecture with monitoring points that improved reliability for continuous-duty process operations.",
-    img: "/assets/images/afrotech-13.jpg",
-    category: "Infrastructure",
-  },
-];
+import { featuredProjects } from "../data/projects";
 
 const impactStats = [
   { label: "Total Projects Delivered", value: "250+" },
@@ -283,7 +245,7 @@ export default function ProjectsPage() {
         <div style={{ display: "flex", gap: "1rem", overflowX: "auto", padding: "0 clamp(1.5rem, 5vw, 4rem) 1rem", scrollSnapType: "x mandatory" }}>
           {featuredProjects.map((project) => (
             <article
-              key={project.title}
+              key={project.id}
               style={{
                 minWidth: "320px",
                 width: "380px",

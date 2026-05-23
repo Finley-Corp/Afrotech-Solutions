@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { COMPANY_ADDRESS_LINES, COMPANY_NAME } from "@/lib/company";
 import FooterForm from "./FooterForm";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
@@ -27,18 +29,9 @@ export default function Footer() {
         >
           {/* Brand */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-            <h3
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "1.875rem",
-                fontWeight: 500,
-                letterSpacing: "-0.02em",
-                color: "var(--color-primary)",
-                marginBottom: "2rem",
-              }}
-            >
-              AFROTECH
-            </h3>
+            <div style={{ marginBottom: "2rem" }}>
+              <Logo height={48} href={null} />
+            </div>
             <p
               style={{
                 color: "var(--color-secondary)",
@@ -73,7 +66,6 @@ export default function Footer() {
                 { label: "Industries", href: "/industries" },
                 { label: "Our Projects", href: "/projects" },
                 { label: "About Us", href: "/about" },
-                { label: "Careers", href: "/careers" },
                 { label: "Get A Quote", href: "/quote" },
               ].map(({ label, href }) => (
                 <li key={label}>
@@ -116,17 +108,18 @@ export default function Footer() {
                 color: "var(--color-primary)",
                 lineHeight: 1.75,
                 marginBottom: "2rem",
+                maxWidth: "260px",
               }}
             >
-              Afrotech
+              {COMPANY_NAME}
               <br />
-              NML Towers
               <br />
-              Tsavo Road, South B
-              <br />
-              Nairobi
-              <br />
-              Kenya
+              {COMPANY_ADDRESS_LINES.map((line) => (
+                <span key={line}>
+                  {line}
+                  <br />
+                </span>
+              ))}
             </p>
             <span
               style={{
@@ -183,7 +176,7 @@ export default function Footer() {
             <FooterForm />
             <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
               <a
-                href="mailto:support@afrotech-solutions.com"
+                href="mailto:contact@afrotechsolutions.com"
                 style={{
                   fontSize: "0.875rem",
                   fontWeight: 300,
@@ -193,10 +186,10 @@ export default function Footer() {
                 }}
                 className="footer-link"
               >
-                support@afrotech-solutions.com
+                contact@afrotechsolutions.com
               </a>
               <a
-                href="tel:+254727565672"
+                href="tel:+254737628375"
                 style={{
                   fontSize: "0.875rem",
                   fontWeight: 300,
@@ -206,7 +199,7 @@ export default function Footer() {
                 }}
                 className="footer-link"
               >
-                +254727565672
+                +254737628375
               </a>
             </div>
           </div>
@@ -244,7 +237,7 @@ export default function Footer() {
                 color: "rgba(87,83,78,0.6)",
               }}
             >
-              © Afrotech. All rights reserved.
+              © {COMPANY_NAME}. All rights reserved.
             </p>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "2rem 2.5rem" }}>

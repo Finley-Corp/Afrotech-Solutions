@@ -24,12 +24,13 @@ This repository contains the official Afrotech web platform, built with a premiu
 
 ## 📍 Headquarters
 
-**Afrotech Solutions Limited**  
-NML Towers, Tsavo Road,  
-South B, Nairobi, Kenya  
+**Afrotech Engineering Solutions Limited**  
+NML Towers, Tsavo Road, South B  
+2nd Floor, Suite 212  
+Nairobi, Kenya  
 
-- **Support**: support@afrotech-solutions.com  
-- **Technical Hotline**: +254727565672
+- **Contact**: contact@afrotechsolutions.com  
+- **Phone**: +254737628375
 
 ## 🏁 Development
 

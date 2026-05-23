@@ -1,38 +1,17 @@
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 
-const services = [
-  {
-    title: "Pump Selection & Sizing",
-    text: "Duty-point analysis, head calculations, and model matching for reliable long-term operation.",
-    icon: "solar:tuning-2-linear",
-  },
-  {
-    title: "System Design & Integration",
-    text: "End-to-end design for borehole, booster, and transfer systems with controls and redundancy planning.",
-    icon: "solar:settings-minimalistic-linear",
-  },
-  {
-    title: "Installation & Commissioning",
-    text: "On-site setup guidance, performance checks, and startup validation to ensure systems run correctly.",
-    icon: "solar:shield-check-linear",
-  },
-  {
-    title: "Maintenance & Technical Support",
-    text: "Preventive maintenance, troubleshooting, and rapid response support for critical water operations.",
-    icon: "solar:headphones-round-sound-linear",
-  },
-];
+const label = "#6f675f";
+const muted = "#5f5851";
 
 export default function ServicesSection() {
   return (
     <section
-      className="premium-landing-section"
+      className="premium-landing-section services-bento-section"
       style={{
         position: "relative",
-        backgroundColor: "var(--color-surface)",
         borderBottom: "1px solid var(--color-line)",
-        padding: "clamp(3.5rem, 7vw, 6rem) 0",
+        backgroundColor: "var(--color-surface)",
         overflow: "hidden",
       }}
     >
@@ -42,28 +21,22 @@ export default function ServicesSection() {
           inset: 0,
           pointerEvents: "none",
           background:
-            "radial-gradient(circle at top left, rgba(0,51,102,0.05) 0%, transparent 28%), radial-gradient(circle at bottom right, rgba(24,21,18,0.03) 0%, transparent 24%)",
+            "radial-gradient(circle at top left, rgba(0,51,102,0.05) 0%, transparent 28%), radial-gradient(circle at bottom right, rgba(214,28,44,0.03) 0%, transparent 24%)",
         }}
       />
 
-      <div
-        style={{
-          position: "relative",
-          maxWidth: "1380px",
-          margin: "0 auto",
-          padding: "0 clamp(1.5rem, 4vw, 3.5rem)",
-        }}
-      >
+      <div className="services-bento-wrap">
         <div
+          className="reveal-fade services-bento__intro"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "2rem",
+            gap: "2rem 3rem",
             alignItems: "end",
-            marginBottom: "clamp(2rem, 4vw, 3rem)",
+            marginBottom: "clamp(2.5rem, 5vw, 3.5rem)",
           }}
         >
-          <div className="reveal-fade">
+          <div>
             <div
               style={{
                 display: "inline-flex",
@@ -72,7 +45,7 @@ export default function ServicesSection() {
                 fontSize: "0.68rem",
                 textTransform: "uppercase",
                 letterSpacing: "0.14em",
-                color: "#6f675f",
+                color: label,
                 marginBottom: "1rem",
               }}
             >
@@ -86,89 +59,77 @@ export default function ServicesSection() {
               />
               Services
             </div>
-            <p style={{ maxWidth: "16rem", fontSize: "0.85rem", lineHeight: 1.75, color: "#5f5851", margin: 0 }}>
-              Engineering support designed for domestic, agricultural, and industrial water systems.
+            <p style={{ maxWidth: "16rem", fontSize: "0.8125rem", lineHeight: 1.75, color: muted, margin: 0 }}>
+              Engineering support for domestic, agricultural, and industrial water systems across East Africa.
             </p>
           </div>
-
-          <div className="reveal-fade">
-            <h2
-              style={{
-                color: "var(--color-primary)",
-                letterSpacing: "-0.03em",
-                lineHeight: 1.03,
-                fontSize: "clamp(1.9rem, 4vw, 3.2rem)",
-                margin: 0,
-                maxWidth: "16ch",
-              }}
-            >
-              Practical services that keep your{" "}
-              <span style={{ color: "var(--color-accent)", fontStyle: "italic" }}>water systems</span> dependable.
-            </h2>
-          </div>
-        </div>
-
-        <div
-          data-anim="stagger"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
-            gap: "1rem",
-          }}
-        >
-          {services.map((service) => (
-            <article
-              key={service.title}
-              style={{
-                border: "1px solid var(--color-line)",
-                backgroundColor: "var(--color-background)",
-                padding: "1.2rem 1.15rem",
-                minHeight: "210px",
-                display: "grid",
-                alignContent: "start",
-                gap: "0.85rem",
-              }}
-            >
-              <div
-                style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: "999px",
-                  border: "1px solid rgba(0,51,102,0.2)",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "var(--color-primary)",
-                }}
-              >
-                <Icon icon={service.icon} width={18} />
-              </div>
-              <h3 style={{ color: "var(--color-primary)", margin: 0, fontSize: "1.2rem", lineHeight: 1.2 }}>
-                {service.title}
-              </h3>
-              <p style={{ color: "#5f5851", margin: 0, lineHeight: 1.65, fontSize: "0.88rem" }}>{service.text}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className="reveal-fade" style={{ marginTop: "1.75rem" }}>
-          <Link
-            href="/contact"
+          <h2
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.45rem",
-              textDecoration: "none",
               color: "var(--color-primary)",
-              fontSize: "0.68rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.14em",
-              fontWeight: 600,
+              letterSpacing: "-0.035em",
+              lineHeight: 1.02,
+              fontSize: "clamp(1.85rem, 4vw, 3.2rem)",
+              margin: 0,
+              maxWidth: "18ch",
+              fontWeight: 500,
             }}
           >
-            Talk to our service team
-            <Icon icon="solar:arrow-right-up-linear" width={16} />
-          </Link>
+            Practical services that keep your{" "}
+            <span style={{ color: "var(--color-accent)", fontStyle: "italic" }}>water systems</span> dependable.
+          </h2>
+        </div>
+
+        <div className="services-bento reveal-fade" data-anim="stagger">
+          <article className="services-bento__card services-bento__card--trusted">
+            <div className="services-bento__media">
+              <img src="/assets/images/afrotech-14.jpg" alt="" className="services-bento__card-bg" />
+              <div className="services-bento__frame" aria-hidden />
+              <div className="services-bento__card-overlay" />
+            </div>
+            <div className="services-bento__card-content services-bento__card-content--light">
+              <span className="services-bento__step">Field-proven</span>
+              <p className="services-bento__stat-lg">250+</p>
+              <span className="services-bento__caption">Active installations across the region</span>
+            </div>
+          </article>
+
+          <article className="services-bento__card services-bento__card--surface">
+            <span className="services-bento__step">01 — Selection</span>
+            <div className="services-bento__product-visual">
+              <img src="/assets/products/product-1.jpg" alt="Pump selection and sizing" />
+            </div>
+            <h3 className="services-bento__card-title">Pump selection &amp; sizing</h3>
+            <p className="services-bento__card-text">
+              Duty-point analysis, head calculations, and model matching for reliable operation.
+            </p>
+          </article>
+
+          <article className="services-bento__card services-bento__card--hero">
+            <div className="services-bento__media services-bento__media--tall">
+              <img src="/assets/images/afrotech-9.jpg" alt="Technical support" className="services-bento__card-bg" />
+              <div className="services-bento__frame" aria-hidden />
+              <div className="services-bento__card-overlay services-bento__card-overlay--navy" />
+            </div>
+            <div className="services-bento__card-content services-bento__card-content--light">
+              <span className="services-bento__step">04 — Support</span>
+              <h3 className="services-bento__hero-title">Maintenance &amp; technical support</h3>
+              <p className="services-bento__hero-meta">Response within 24 hours for critical operations</p>
+            </div>
+          </article>
+
+          <article className="services-bento__card services-bento__card--wide">
+            <span className="services-bento__step">02 — Engineering</span>
+            <h3 className="services-bento__wide-title">
+              System design &amp; integration for borehole, booster, and transfer systems.
+            </h3>
+            <p className="services-bento__card-text">
+              End-to-end layouts with controls, redundancy planning, and commissioning support.
+            </p>
+            <Link href="/services" className="services-bento__link">
+              View all services
+              <Icon icon="solar:arrow-right-up-linear" width={16} />
+            </Link>
+          </article>
         </div>
       </div>
     </section>

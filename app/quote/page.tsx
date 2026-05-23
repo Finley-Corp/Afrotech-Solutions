@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import { COMPANY_ADDRESS_ONE_LINE, COMPANY_NAME } from "@/lib/company";
 import { productsList } from "../data/products";
 
 export default function QuotePage() {
@@ -100,7 +101,7 @@ export default function QuotePage() {
 
     if (!requestOk) {
       setError(
-        "We could not submit your request right now. Please call us or email sales@afrotech-solutions.com.",
+        "We could not submit your request right now. Please call us or email contact@afrotechsolutions.com.",
       );
       return;
     }
@@ -501,7 +502,7 @@ export default function QuotePage() {
               </p>
               <div style={{ display: "grid", gap: "1.25rem" }}>
                 <a
-                  href="tel:+254727565672"
+                  href="tel:+254737628375"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -512,10 +513,10 @@ export default function QuotePage() {
                   }}
                 >
                   <Icon icon="lucide:phone" />
-                  +254727565672
+                  +254737628375
                 </a>
                 <a
-                  href="mailto:support@afrotechliving.com"
+                  href="mailto:contact@afrotechsolutions.com"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -526,7 +527,7 @@ export default function QuotePage() {
                   }}
                 >
                   <Icon icon="lucide:mail" />
-                  support@afrotech-solutions.com
+                  contact@afrotechsolutions.com
                 </a>
               </div>
             </div>
@@ -547,9 +548,9 @@ export default function QuotePage() {
               <div style={{ display: "grid", gap: "2.5rem" }}>
                 {[
                   {
-                    city: "Afrotech Nairobi",
-                    district: "NML Towers, 2nd Floor, Suite 212, South B",
-                    contact: "+254727565672",
+                    city: COMPANY_NAME,
+                    district: COMPANY_ADDRESS_ONE_LINE,
+                    contact: "+254737628375",
                   },
                 ].map((hub) => (
                   <div

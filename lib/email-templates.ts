@@ -1,3 +1,4 @@
+import { COMPANY_ADDRESS_ONE_LINE, COMPANY_NAME } from "./company";
 import { escapeHtml } from "./resend";
 
 /**
@@ -62,7 +63,7 @@ export function brandEmailShell({ eyebrow, title, bodyHtml, footerHtml }: ShellO
                 <tr>
                   <td style="padding-top:14px;">
                     <span style="display:inline-block;border:1px solid rgba(255,255,255,0.34);border-radius:999px;padding:6px 10px;font-family:${fontSans};font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#ffffff;">
-                      Afrotech Engineering Solutions
+                      ${escapeHtml(COMPANY_NAME)}
                     </span>
                   </td>
                 </tr>
@@ -91,7 +92,8 @@ export function brandEmailShell({ eyebrow, title, bodyHtml, footerHtml }: ShellO
 
 function defaultFooter(): string {
   const { secondary, accent, fontSans } = EMAIL_BRAND;
-  return `<span style="color:${secondary};">Afrotech Water Solutions · Industrial water systems across East Africa</span><br />
+  return `<span style="color:${secondary};">${escapeHtml(COMPANY_NAME)}</span><br />
+              <span style="color:${secondary};font-size:12px;">${escapeHtml(COMPANY_ADDRESS_ONE_LINE)}</span><br />
               <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:${accent};font-family:${fontSans};font-weight:600;">AFROTECH</span>`;
 }
 

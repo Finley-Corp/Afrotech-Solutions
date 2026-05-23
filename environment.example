@@ -1,15 +1,12 @@
 # Copy to .env.local and fill in values. (.env* files are gitignored.)
 
-# Neon Postgres (server-only)
-# Example:
-# DATABASE_URL=postgresql://user:password@host/database?sslmode=require
-DATABASE_URL=
-
-# Supabase (browser) — Project Settings → API
+# Supabase — Project Settings → API (quote/contact forms + admin dashboard)
 NEXT_PUBLIC_SUPABASE_URL=
 # Use either the anon key or publishable key name your project uses:
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 # NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
+# Optional: bypass RLS for server-side form inserts (Settings → API → service_role)
+# SUPABASE_SERVICE_ROLE_KEY=
 # Optional keep-alive settings for scripts/keep-supabase-awake.mjs
 SUPABASE_KEEPALIVE_TABLE=products
 SUPABASE_KEEPALIVE_INTERVAL_MINUTES=10
@@ -31,4 +28,4 @@ RESEND_OWNER_EMAIL=
 
 # Legacy alias for owner inbox (used if RESEND_OWNER_EMAIL is empty).
 # With Resend’s test sender, use an allowed recipient until your domain is verified.
-RESEND_NOTIFY_EMAIL=sales@afrotech-solutions.com
+RESEND_NOTIFY_EMAIL=contact@afrotechsolutions.com

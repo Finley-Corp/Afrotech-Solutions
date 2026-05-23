@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import { COMPANY_ADDRESS_ONE_LINE, COMPANY_NAME } from "@/lib/company";
 import { industries } from "../data/industries";
 
 const muted = "#5f5851";
@@ -36,21 +37,18 @@ const phases = [
     title: "Site & duty profiling.",
     text: "We review source, demand, power, and water quality targets before recommending equipment.",
     img: "/assets/images/afrotech-3.jpg",
-    icon: "solar:ruler-cross-pen-linear",
   },
   {
     step: "02 — Engineer",
     title: "System design & selection.",
     text: "Pump curves, controls, and redundancy are sized for your real operating envelope.",
     img: "/assets/images/afrotech-4.jpg",
-    icon: "solar:palette-round-linear",
   },
   {
     step: "03 — Deliver",
     title: "Commissioning & support.",
     text: "Installation guidance, startup checks, and ongoing technical response when you need it.",
     img: "/assets/images/afrotech-5.jpg",
-    icon: "solar:eye-linear",
   },
 ];
 
@@ -140,7 +138,12 @@ export default function LandingContentSections() {
                 color: "inherit",
               }}
             >
-              <img src={featured.image} alt={featured.title} className="img-zoom" style={{ width: "100%", height: "100%", minHeight: "420px", objectFit: "cover" }} />
+              <img
+                src={featured.image}
+                alt={featured.title}
+                className="img-zoom"
+                style={{ width: "100%", height: "100%", minHeight: "420px", objectFit: "cover" }}
+              />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(18,15,13,0.28), rgba(18,15,13,0.02) 45%, transparent)" }} />
               <div style={{ position: "absolute", inset: "clamp(1rem, 2.5vw, 2rem)", border: "1px solid rgba(255,255,255,0.46)", pointerEvents: "none" }} />
               <div style={{ position: "absolute", top: "clamp(1rem, 2.5vw, 2rem)", right: "clamp(1rem, 2.5vw, 2rem)" }}>
@@ -167,7 +170,12 @@ export default function LandingContentSections() {
                   style={{ textDecoration: "none", color: "inherit", display: "block" }}
                 >
                   <div className="img-zoom-container" style={{ position: "relative", minHeight: "200px", overflow: "hidden", backgroundColor: "var(--color-background)" }}>
-                    <img src={ind.image} alt={ind.title} className="img-zoom" style={{ width: "100%", height: "100%", minHeight: "200px", objectFit: "cover" }} />
+                    <img
+                      src={ind.image}
+                      alt={ind.title}
+                      className="img-zoom"
+                      style={{ width: "100%", height: "100%", minHeight: "200px", objectFit: "cover" }}
+                    />
                     <div style={{ position: "absolute", inset: "1rem", border: "1px solid rgba(255,255,255,0.44)", pointerEvents: "none" }} />
                   </div>
                   <div style={{ paddingTop: "1rem", borderBottom: "1px solid var(--color-line)", paddingBottom: "1.25rem" }}>
@@ -245,27 +253,13 @@ export default function LandingContentSections() {
             {phases.map((p) => (
               <div key={p.step} className="img-zoom-container">
                 <div style={{ position: "relative", minHeight: "320px", overflow: "hidden", backgroundColor: "var(--color-background)" }}>
-                  <img src={p.img} alt="" className="img-zoom" style={{ width: "100%", height: "100%", minHeight: "320px", objectFit: "cover" }} />
+                  <img
+                    src={p.img}
+                    alt=""
+                    className="img-zoom"
+                    style={{ width: "100%", height: "100%", minHeight: "320px", objectFit: "cover" }}
+                  />
                   <div style={{ position: "absolute", inset: "1rem", border: "1px solid rgba(255,255,255,0.48)", pointerEvents: "none" }} />
-                  <div style={{ position: "absolute", top: "1rem", left: "1rem" }}>
-                    <div
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: "50%",
-                        border: "1px solid rgba(255,255,255,0.45)",
-                        backgroundColor: "rgba(255,255,255,0.9)",
-                        backdropFilter: "blur(8px)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "var(--color-primary)",
-                        boxShadow: "0 10px 24px rgba(23,18,14,0.1)",
-                      }}
-                    >
-                      <Icon icon={p.icon} width={22} />
-                    </div>
-                  </div>
                 </div>
                 <div style={{ paddingTop: "1.1rem", borderBottom: "1px solid var(--color-line)", paddingBottom: "1.25rem" }}>
                   <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "#8a8178", marginBottom: "0.45rem" }}>{p.step}</p>
@@ -278,29 +272,17 @@ export default function LandingContentSections() {
         </div>
       </section>
 
-      {/* Careers · Resources · Locations */}
+      {/* Resources · Locations */}
       <section className="premium-landing-section" style={{ padding: "clamp(3.5rem, 7vw, 6rem) 0", backgroundColor: "var(--color-surface)", borderBottom: "1px solid var(--color-line)" }}>
         <div style={{ maxWidth: "1380px", margin: "0 auto", padding: "0 clamp(1.5rem, 4vw, 3.5rem)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
           <article style={{ border: "1px solid var(--color-line)", backgroundColor: "var(--color-surface)", overflow: "hidden" }}>
-            <div className="img-zoom-container" style={{ position: "relative", height: "200px" }}>
-              <img src="/assets/images/afrotech-6.jpg" alt="Careers" className="img-zoom" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", inset: "0.75rem", border: "1px solid rgba(255,255,255,0.4)", pointerEvents: "none" }} />
-            </div>
-            <div style={{ padding: "1.5rem 1.75rem 1.75rem" }}>
-              <span style={{ display: "block", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.14em", color: label, marginBottom: "0.65rem" }}>Careers</span>
-              <h3 style={{ fontSize: "1.65rem", color: "var(--color-primary)", margin: "0 0 0.65rem 0" }}>Join our engineering team.</h3>
-              <p style={{ margin: "0 0 1.1rem 0", color: muted, lineHeight: 1.7, fontSize: "0.92rem" }}>
-                Technical sales, field engineering, and operations roles across the region.
-              </p>
-              <Link href="/careers" style={{ fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--color-primary)", textDecoration: "none", borderBottom: "1px solid var(--color-line)", paddingBottom: "0.15rem", fontWeight: 600 }}>
-                View openings
-              </Link>
-            </div>
-          </article>
-
-          <article style={{ border: "1px solid var(--color-line)", backgroundColor: "var(--color-surface)", overflow: "hidden" }}>
-            <div className="img-zoom-container" style={{ position: "relative", height: "200px" }}>
-              <img src="/assets/images/afrotech-7.jpg" alt="Resources" className="img-zoom" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div className="img-zoom-container" style={{ position: "relative", height: "200px", overflow: "hidden" }}>
+              <img
+                src="/assets/images/afrotech-7.jpg"
+                alt="Resources"
+                className="img-zoom"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
               <div style={{ position: "absolute", inset: "0.75rem", border: "1px solid rgba(255,255,255,0.4)", pointerEvents: "none" }} />
             </div>
             <div style={{ padding: "1.5rem 1.75rem 1.75rem" }}>
@@ -321,15 +303,23 @@ export default function LandingContentSections() {
           </article>
 
           <article style={{ border: "1px solid var(--color-line)", backgroundColor: "var(--color-surface)", overflow: "hidden" }}>
-            <div className="img-zoom-container" style={{ position: "relative", height: "200px" }}>
-              <img src="/assets/images/afrotech-8.jpg" alt="Locations" className="img-zoom" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div className="img-zoom-container" style={{ position: "relative", height: "200px", overflow: "hidden" }}>
+              <img
+                src="/assets/images/afrotech-8.jpg"
+                alt="Locations"
+                className="img-zoom"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
               <div style={{ position: "absolute", inset: "0.75rem", border: "1px solid rgba(255,255,255,0.4)", pointerEvents: "none" }} />
             </div>
             <div style={{ padding: "1.5rem 1.75rem 1.75rem" }}>
               <span style={{ display: "block", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.14em", color: label, marginBottom: "0.65rem" }}>Locations &amp; Contact</span>
               <h3 style={{ fontSize: "1.65rem", color: "var(--color-primary)", margin: "0 0 0.65rem 0" }}>East Africa support.</h3>
+              <p style={{ margin: "0 0 0.35rem 0", color: muted, lineHeight: 1.7, fontSize: "0.92rem", fontWeight: 500 }}>
+                {COMPANY_NAME}
+              </p>
               <p style={{ margin: "0 0 1.1rem 0", color: muted, lineHeight: 1.7, fontSize: "0.92rem" }}>
-                NML Towers, Tsavo Road, South B, Nairobi, Kenya.
+                {COMPANY_ADDRESS_ONE_LINE}
               </p>
               <Link href="/contact" style={{ fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--color-primary)", textDecoration: "none", borderBottom: "1px solid var(--color-line)", paddingBottom: "0.15rem", fontWeight: 600 }}>
                 Contact our team

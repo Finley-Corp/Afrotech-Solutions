@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { COMPANY_LOGO_SRC, COMPANY_NAME } from "@/lib/company";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -6,11 +7,16 @@ export const metadata: Metadata = {
   description:
     "Industrial-grade water pump solutions for agriculture, construction, and municipal applications across East Africa.",
   keywords: "water pumps, industrial pumping, solar pumps, borehole pumps, Nairobi, Kenya, Afrotech",
+  icons: {
+    icon: COMPANY_LOGO_SRC,
+    apple: COMPANY_LOGO_SRC,
+  },
   openGraph: {
     title: "AFROTECH | Industrial Water Solutions",
     description:
       "Industrial-grade water pump solutions for agriculture, construction, and municipal applications across East Africa.",
     type: "website",
+    images: [{ url: COMPANY_LOGO_SRC, alt: COMPANY_NAME }],
   },
 };
 
