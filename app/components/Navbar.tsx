@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import Logo from "./Logo";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,24 +52,25 @@ export default function Navbar() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "0.75rem",
+            gap: "1.5rem",
           }}
         >
-          {/* Placeholder for center alignment on mobile */}
-          <div className="mobile-only" style={{ width: "2rem" }} />
+          {/* Logo — home link at start of navbar */}
+          <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+            <Logo height={40} priority />
+          </div>
 
-          {/* Left Links (Desktop Only) */}
+          {/* Nav links — all on the right (Desktop Only) */}
           <div
             className="mobile-hidden"
             style={{
-              gap: "3rem",
-              flex: "1",
+              display: "flex",
               alignItems: "center",
+              gap: "3rem",
+              marginLeft: "auto",
+              flexShrink: 0,
             }}
           >
-            <Link href="/" className="nav-link">
-              Home
-            </Link>
             <Link href="/products" className="nav-link">
               Our Products
             </Link>
@@ -80,54 +82,6 @@ export default function Navbar() {
             </Link>
             <Link href="/about" className="nav-link">
               About Us
-            </Link>
-          </div>
-
-          {/* Logo */}
-          <div style={{ display: "flex", justifyContent: "center", flex: "1" }}>
-            <Link
-              href="/"
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "1.5rem",
-                fontWeight: 500,
-                letterSpacing: "-0.02em",
-                color: "var(--color-primary)",
-                textDecoration: "none",
-                display: "inline-flex",
-                flexDirection: "column",
-                alignItems: "center",
-                lineHeight: 1,
-              }}
-            >
-              <span>AFROTECH</span>
-              <span
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "0.5rem",
-                  letterSpacing: "0.22em",
-                  textTransform: "uppercase",
-                  fontWeight: 500,
-                  marginTop: "0.2rem",
-                }}
-              >
-                Engineering sol.
-              </span>
-            </Link>
-          </div>
-
-          {/* Right Links (Desktop Only) */}
-          <div
-            className="mobile-hidden"
-            style={{
-              alignItems: "center",
-              gap: "3rem",
-              flex: "1",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Link href="/projects" className="nav-link">
-              Projects
             </Link>
             <Link href="/contact" className="nav-link">
               Contact Us
@@ -152,7 +106,10 @@ export default function Navbar() {
               alignItems: "center",
               justifyContent: "center",
               zIndex: 60,
+              flexShrink: 0,
+              marginLeft: "auto",
             }}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
           >
             <Icon icon={isOpen ? "lucide:x" : "lucide:menu"} />
           </button>
@@ -169,13 +126,10 @@ export default function Navbar() {
             marginTop: "2rem",
           }}
         >
-          <Link href="/" className="mobile-nav-link" onClick={() => setIsOpen(false)}>
-            Home
-          </Link>
           <Link
             href="/products"
             className="mobile-nav-link text-reveal"
-            style={{ transitionDelay: "0.1s" }}
+            style={{ transitionDelay: "0.05s" }}
             onClick={() => setIsOpen(false)}
           >
             Our Products
@@ -203,14 +157,6 @@ export default function Navbar() {
             onClick={() => setIsOpen(false)}
           >
             Services
-          </Link>
-          <Link
-            href="/projects"
-            className="mobile-nav-link text-reveal"
-            style={{ transitionDelay: "0.3s" }}
-            onClick={() => setIsOpen(false)}
-          >
-            Projects
           </Link>
           <Link
             href="/contact"
