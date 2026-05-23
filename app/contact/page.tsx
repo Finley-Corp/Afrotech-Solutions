@@ -5,6 +5,12 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import { Icon } from "@iconify/react";
+import {
+  COMPANY_ADDRESS_LINES,
+  COMPANY_ADDRESS_ONE_LINE,
+  COMPANY_MAP_EMBED_URL,
+  COMPANY_NAME,
+} from "@/lib/company";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -273,6 +279,28 @@ export default function ContactPage() {
 
           {/* Contact Details Column */}
           <div className="reveal-fade" style={{ display: "grid", gap: "4rem" }}>
+
+            <div style={{ borderBottom: "1px solid var(--color-line)", paddingBottom: "3rem" }}>
+              <h3
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: "1.5rem",
+                  fontWeight: 300,
+                  color: "var(--color-primary)",
+                  marginBottom: "1.25rem",
+                }}
+              >
+                {COMPANY_NAME}
+              </h3>
+              <p style={{ fontSize: "0.9375rem", fontWeight: 300, color: "var(--color-secondary)", lineHeight: 1.75, margin: 0 }}>
+                {COMPANY_ADDRESS_LINES.map((line, i) => (
+                  <span key={line}>
+                    {line}
+                    {i < COMPANY_ADDRESS_LINES.length - 1 && <br />}
+                  </span>
+                ))}
+              </p>
+            </div>
             
             {/* Immediate Support */}
             <div style={{ borderBottom: "1px solid var(--color-line)", paddingBottom: "3rem" }}>
@@ -288,15 +316,15 @@ export default function ContactPage() {
               <div style={{ display: "grid", gap: "2rem" }}>
                 <div>
                   <span style={detailLabelStyle}>Technical Support</span>
-                  <a href="tel:+254727565672" style={linkStyle}>+254727565672</a>
+                  <a href="tel:+254737628375" style={linkStyle}>+254737628375</a>
                 </div>
                 <div>
                   <span style={detailLabelStyle}>Sales Inquiry</span>
-                  <a href="mailto:sales@afrotech-solutions.com" style={linkStyle}>sales@afrotech-solutions.com</a>
+                  <a href="mailto:contact@afrotechsolutions.com" style={linkStyle}>contact@afrotechsolutions.com</a>
                 </div>
                 <div>
                   <span style={detailLabelStyle}>Emergency Breakdown</span>
-                  <a href="tel:+254727565672" style={linkStyle}>+254727565672 (24/7)</a>
+                  <a href="tel:+254737628375" style={linkStyle}>+254737628375 (24/7)</a>
                 </div>
               </div>
             </div>
@@ -357,7 +385,7 @@ export default function ContactPage() {
               fontWeight: 300,
               marginBottom: "3rem"
             }}>
-              NML Towers, South B, Nairobi, Kenya
+              {COMPANY_ADDRESS_ONE_LINE}
             </p>
           </div>
 
@@ -371,7 +399,7 @@ export default function ContactPage() {
             position: "relative"
           }}>
             <iframe
-              src="https://maps.google.com/maps?q=NML%20Towers,%20Tsavo%20Road,%20South%20B,%20Nairobi&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              src={COMPANY_MAP_EMBED_URL}
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -405,14 +433,19 @@ export default function ContactPage() {
                 fontWeight: 300,
                 color: "var(--color-primary)",
                 marginBottom: "0.5rem"
-              }}>Afrotech Nairobi</h4>
+              }}>{COMPANY_NAME}</h4>
               <p style={{ 
                 fontSize: "0.75rem", 
                 color: "var(--color-secondary)", 
-                fontWeight: 300 
+                fontWeight: 300,
+                lineHeight: 1.65,
               }}>
-                NML Towers, South B<br />
-                P.O. Box 4500-00100, Nairobi
+                {COMPANY_ADDRESS_LINES.map((line, i) => (
+                  <span key={line}>
+                    {line}
+                    {i < COMPANY_ADDRESS_LINES.length - 1 && <br />}
+                  </span>
+                ))}
               </p>
             </div>
           </div>
