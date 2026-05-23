@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { brandEmailShell, emailDetailRows, EMAIL_BRAND } from "@/lib/email-templates";
-import { neonQuery } from "@/lib/neon-db";
+import { getSupabaseServer } from "@/lib/supabase-server";
 import {
   escapeHtml,
   getFromEmail,
@@ -31,16 +31,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "missing_fields" }, { status: 400 });
   }
 
-  try {
-    await neonQuery(
-      `insert into contacts
-        (name, email, subject, message)
-       values ($1, $2, $3, $4)`,
-      [name, email, subject, message],
-    );
-  } catch (dbErr) {
-    console.error("[Neon] contact insert failed:", dbErr);
-    return NextResponse.json({ ok: false, error: "db_insert_failed" }, { status: 502 });
+  const supabase = getSupabaseServer();
+  if (supabase) {
+    const { error: dbErr } = await supabase.from("contacts").insert({
+      name,
+      email,
+      subject,
+      message,
+    });
+    if (dbErr) {
+      console.error("[Supabase] contact insert failed:", dbErr.message, dbErr.code);
+    }
+  } else {
+    console.warn("[Supabase] not configured; contact will be emailed but not stored in admin");
   }
 
   const from = getFromEmail();
