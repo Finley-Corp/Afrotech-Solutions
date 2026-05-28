@@ -15,6 +15,7 @@ export interface Product {
 /** Same shape as rows from the database `products` table */
 export type ProductDbRow = {
   id: string;
+  slug: string;
   name: string;
   category: string;
   category_id: string;
@@ -30,6 +31,7 @@ export type ProductDbRow = {
 export function toProductDbRow(p: Product): ProductDbRow {
   return {
     id: p.id,
+    slug: p.id,
     name: p.name,
     category: p.category,
     category_id: p.categoryId,

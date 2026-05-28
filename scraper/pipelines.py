@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 import hashlib
 import logging
@@ -32,6 +33,26 @@ def load_env_local():
 
 load_env_local()
 
+
+def _slugify_part(value: str) -> str:
+    text = value.lower()
+    text = re.sub(r"[^a-z0-9]+", "-", text)
+    return text.strip("-")[:100]
+
+
+def _slug_from_source_url(source_url: str | None) -> str | None:
+    if not source_url:
+        return None
+    segment = source_url.rstrip("/").split("/")[-1]
+    if segment and re.fullmatch(r"[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", segment):
+        return segment
+    return None
+
+
+def _build_product_slug(brand: str, name: str, source_url: str | None) -> str:
+    return _slug_from_source_url(source_url) or _slugify_part(f"{brand}-{name}") or "product"
+
+
 class PumpProductPipeline:
     def open_spider(self, spider):
         # Database connection setup
@@ -53,9 +74,14 @@ class PumpProductPipeline:
                 specs       JSONB,
                 image_url   TEXT,
                 source_url  TEXT,
-                scraped_at  TIMESTAMP DEFAULT NOW()
+                scraped_at  TIMESTAMP DEFAULT NOW(),
+                slug        TEXT
             );
         """)
+        self.cur.execute("ALTER TABLE products ADD COLUMN IF NOT EXISTS slug TEXT;")
+        self.cur.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS products_slug_unique_idx ON products (slug);"
+        )
         self.conn.commit()
 
         # ImageKit client setup
@@ -131,6 +157,13 @@ class PumpProductPipeline:
             self.cur.execute("SELECT id FROM products WHERE source_url = %s", (source_url,))
             row = self.cur.fetchone()
             
+            slug = _build_product_slug(item["brand"], item["name"], source_url)
+            self.cur.execute("SELECT id FROM products WHERE slug = %s", (slug,))
+            slug_row = self.cur.fetchone()
+            if slug_row and (not row or slug_row[0] != row[0]):
+                suffix = hashlib.sha1(source_url.encode("utf-8")).hexdigest()[:10]
+                slug = f"{slug}-{suffix}"
+
             if row:
                 # Update existing record
                 logging.info(f"Updating existing product record for URL: {source_url}")
@@ -141,6 +174,7 @@ class PumpProductPipeline:
                         description = %s,
                         specs = %s,
                         image_url = %s,
+                        slug = COALESCE(slug, %s),
                         scraped_at = NOW()
                     WHERE id = %s
                 """, (
@@ -149,21 +183,23 @@ class PumpProductPipeline:
                     item.get('description'),
                     Json(item.get('specs', {})),
                     imagekit_url,
+                    slug,
                     row[0]
                 ))
             else:
                 # Insert new record
                 logging.info(f"Inserting new product record for URL: {source_url}")
                 self.cur.execute("""
-                    INSERT INTO products (brand, name, description, specs, image_url, source_url, scraped_at)
-                    VALUES (%s, %s, %s, %s, %s, %s, NOW())
+                    INSERT INTO products (brand, name, description, specs, image_url, source_url, slug, scraped_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())
                 """, (
                     item['brand'],
                     item['name'],
                     item.get('description'),
                     Json(item.get('specs', {})),
                     imagekit_url,
-                    source_url
+                    source_url,
+                    slug,
                 ))
             
             self.conn.commit()
