@@ -81,6 +81,10 @@ class PumpProductPipeline:
         original_img_url = item.get("image_url")
         if original_img_url and "www.ksb.com/medias/" in original_img_url:
             original_img_url = original_img_url.replace("www.ksb.com/medias/", "live-commerce-proxy-e2e-sales.ksb.com/medias/")
+        if original_img_url and not original_img_url.startswith(("http://", "https://")):
+            # Skip inline SVG/data/blob placeholders that cannot be fetched by requests.
+            logging.info(f"Skipping non-http image URL for {item.get('name')}: {original_img_url[:40]}...")
+            original_img_url = None
             
         imagekit_url = None
         
