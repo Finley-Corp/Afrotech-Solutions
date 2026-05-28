@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
-import { getCachedProductById } from "@/lib/products-db";
+import { getCachedProductBySlugOrId } from "@/lib/products-db";
 
 export async function GET(
   _request: Request,
-  context: { params: Promise<{ id: string }> },
+  context: { params: Promise<{ slug: string }> },
 ) {
   try {
-    const { id } = await context.params;
+    const { slug } = await context.params;
 
-    if (!id) {
-      return NextResponse.json({ error: "Missing ID parameter" }, { status: 400 });
+    if (!slug) {
+      return NextResponse.json({ error: "Missing product slug" }, { status: 400 });
     }
 
-    const product = await getCachedProductById(id);
+    const product = await getCachedProductBySlugOrId(slug);
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });

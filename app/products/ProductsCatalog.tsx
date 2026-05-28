@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import type { BrandCounts, ProductListItem, ProductsPageResult } from "@/lib/products-db";
+import { productDetailPath } from "@/lib/product-slug";
 
 const BRANDS = [
   { id: "all", label: "All Brands" },
@@ -40,7 +41,7 @@ function BrandBadge({ brand }: { brand: string }) {
 function ProductCard({ product }: { product: ProductListItem }) {
   return (
     <article className="pc-card">
-      <Link href={`/products/${product.id}`} className="pc-card__media" tabIndex={-1} aria-hidden>
+      <Link href={productDetailPath(product.slug)} className="pc-card__media" tabIndex={-1} aria-hidden>
         <div className="pc-card__img-wrap">
           <Image
             src={product.main_img}
@@ -62,7 +63,7 @@ function ProductCard({ product }: { product: ProductListItem }) {
           <BrandBadge brand={product.category_id} />
         </div>
 
-        <Link href={`/products/${product.id}`} className="pc-card__name">
+        <Link href={productDetailPath(product.slug)} className="pc-card__name">
           {product.name}
         </Link>
 
@@ -70,7 +71,7 @@ function ProductCard({ product }: { product: ProductListItem }) {
 
         <div className="pc-card__footer">
           <span className="pc-card__price">{product.price}</span>
-          <Link href={`/products/${product.id}`} className="pc-card__cta">
+          <Link href={productDetailPath(product.slug)} className="pc-card__cta">
             Details
             <Icon icon="solar:arrow-right-linear" width={14} />
           </Link>
