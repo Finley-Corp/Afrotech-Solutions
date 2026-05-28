@@ -91,18 +91,18 @@ export default function BrandsPartnersSection() {
                 backgroundColor: "var(--color-accent)",
               }}
             />
-            Brands &amp; Partnerships
+            Partners &amp; Customers
           </div>
           <h2 className="brands-partners__title">
-            <span className="brands-partners__title-line">Industrial water solutions meet</span>
-            <span className="brands-partners__title-line">trusted global partners.</span>
+            <span className="brands-partners__title-line">Trusted partners and customers</span>
+            <span className="brands-partners__title-line">powering water solutions across East Africa.</span>
           </h2>
           <p style={{ margin: "1.25rem auto 0", maxWidth: "32rem", fontSize: "0.875rem", lineHeight: 1.75, color: muted }}>
-            Manufacturers and suppliers we work with across East Africa.
+            Manufacturers, suppliers, and organizations we proudly serve and work alongside.
           </p>
         </div>
 
-        <div className="brands-marquee reveal-fade" aria-label="Partner brands">
+        <div className="brands-marquee reveal-fade" aria-label="Partners and customers">
           <div className="brands-marquee__track">
             <BrandMarqueeGroup />
             <BrandMarqueeGroup ariaHidden />

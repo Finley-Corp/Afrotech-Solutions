@@ -7,3 +7,5 @@ build/
 .env*
 *.tsbuildinfo
 *:Zone.Identifier
+.venv/
+scratch/
