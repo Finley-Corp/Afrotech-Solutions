@@ -67,11 +67,10 @@ export default function QuotePage() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const res = await fetch("/api/products");
+        const res = await fetch("/api/products/names");
         if (res.ok) {
           const data = await res.json();
-          const names = Array.from(new Set(data.map((p: any) => p.name))) as string[];
-          setProductOptions(names);
+          setProductOptions(data.names ?? []);
         } else {
           const names = Array.from(new Set(productsList.map((p) => p.name)));
           setProductOptions(names);
