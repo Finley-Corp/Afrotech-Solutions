@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { neonQuery } from "./neon-db";
+import { buildProductSlug, isNumericProductId } from "./product-slug";
 import type { ProductDbRow } from "@/app/data/products";
 
 const FALLBACK_IMG =
@@ -7,7 +8,7 @@ const FALLBACK_IMG =
 
 export type ProductListItem = Pick<
   ProductDbRow,
-  "id" | "name" | "category" | "category_id" | "short_desc" | "main_img" | "price"
+  "id" | "slug" | "name" | "category" | "category_id" | "short_desc" | "main_img" | "price"
 >;
 
 export type ProductsPageResult = {
@@ -19,8 +20,10 @@ export type ProductsPageResult = {
 
 type DbListRow = {
   id: number | string;
+  slug: string | null;
   name: string;
   brand: string;
+  source_url: string | null;
   image_url: string | null;
   description: string | null;
   total_count: string | number;
@@ -28,12 +31,27 @@ type DbListRow = {
 
 type DbDetailRow = {
   id: number | string;
+  slug: string | null;
   name: string;
   brand: string;
+  source_url: string | null;
   description: string | null;
   image_url: string | null;
   specs: Record<string, unknown> | null;
 };
+
+function resolveSlug(row: {
+  id: number | string;
+  slug: string | null;
+  brand: string;
+  name: string;
+  source_url?: string | null;
+}): string {
+  return (
+    row.slug?.trim() ||
+    buildProductSlug(row.brand, row.name, row.source_url ?? null, row.id)
+  );
+}
 
 export function productThumbnailUrl(url: string | null | undefined, width = 480): string {
   if (!url) return FALLBACK_IMG;
@@ -67,6 +85,7 @@ function mapListRow(row: DbListRow): ProductListItem {
 
   return {
     id: String(row.id),
+    slug: resolveSlug(row),
     name: row.name,
     category: row.brand.toUpperCase(),
     category_id: row.brand.toLowerCase(),
@@ -84,6 +103,7 @@ function mapDetailRow(row: DbDetailRow): ProductDbRow {
 
   return {
     id: String(row.id),
+    slug: resolveSlug(row),
     name: row.name,
     category: row.brand.toUpperCase(),
     category_id: row.brand.toLowerCase(),
@@ -114,8 +134,10 @@ export async function fetchProductsPage(options: {
   const rows = await neonQuery<DbListRow>(
     `SELECT
        id,
+       slug,
        name,
        brand,
+       source_url,
        image_url,
        LEFT(COALESCE(description, ''), 200) AS description,
        COUNT(*) OVER() AS total_count
@@ -143,13 +165,31 @@ export async function fetchProductsPage(options: {
 
 export async function fetchProductById(id: string): Promise<ProductDbRow | null> {
   const rows = await neonQuery<DbDetailRow>(
-    `SELECT id, name, brand, description, image_url, specs
+    `SELECT id, slug, name, brand, source_url, description, image_url, specs
      FROM products
      WHERE id = $1`,
     [id],
   );
   if (!rows.length) return null;
   return mapDetailRow(rows[0]);
+}
+
+export async function fetchProductBySlug(slug: string): Promise<ProductDbRow | null> {
+  const rows = await neonQuery<DbDetailRow>(
+    `SELECT id, slug, name, brand, source_url, description, image_url, specs
+     FROM products
+     WHERE slug = $1`,
+    [slug],
+  );
+  if (!rows.length) return null;
+  return mapDetailRow(rows[0]);
+}
+
+export async function fetchProductBySlugOrId(param: string): Promise<ProductDbRow | null> {
+  if (isNumericProductId(param)) {
+    return fetchProductById(param);
+  }
+  return fetchProductBySlug(param);
 }
 
 export async function fetchProductNames(): Promise<string[]> {
@@ -182,8 +222,8 @@ const cachedProductsPage = unstable_cache(
   { revalidate: 120, tags: ["products"] },
 );
 
-const cachedProductById = unstable_cache(
-  async (id: string) => fetchProductById(id),
+const cachedProductBySlugOrId = unstable_cache(
+  async (param: string) => fetchProductBySlugOrId(param),
   ["product-detail"],
   { revalidate: 300, tags: ["products"] },
 );
@@ -209,8 +249,8 @@ export function getCachedProductsPage(
   );
 }
 
-export function getCachedProductById(id: string): Promise<ProductDbRow | null> {
-  return cachedProductById(id);
+export function getCachedProductBySlugOrId(param: string): Promise<ProductDbRow | null> {
+  return cachedProductBySlugOrId(param);
 }
 
 export function getCachedProductNames(): Promise<string[]> {
