@@ -3,255 +3,275 @@
 import { useParams, useRouter } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import GSAPAnimations from "../../components/GSAPAnimations";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import type { PostgrestError } from "@supabase/supabase-js";
-import { isSupabaseConfigured, supabase } from "../../lib/supabase";
-import { catalogMainImgForId, getCatalogProductRowById } from "../../data/products";
+
+const BRAND_COLOR: Record<string, string> = {
+  grundfos: "#00526E",
+  ksb: "#C8102E",
+  wilo: "#002D62",
+};
+const BRAND_BG: Record<string, string> = {
+  grundfos: "#E6F3F6",
+  ksb: "#FCE9EC",
+  wilo: "#E6EBF4",
+};
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     async function fetchProduct() {
       const id = params.id as string;
-      let data: Record<string, unknown> | null = null;
-      let error: PostgrestError | null = null;
-
-      if (isSupabaseConfigured) {
-        const res = await supabase.from("products").select("*").eq("id", id).single();
-        data = res.data as Record<string, unknown> | null;
-        error = res.error;
-        if (res.error && res.error.code !== "PGRST116") {
-          console.error(`Error fetching product ${id}:`, res.error.message);
+      try {
+        const res = await fetch(`/api/products/${id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setProduct(data);
+        } else {
+          router.push("/products");
         }
-      }
-
-      const fallback = getCatalogProductRowById(id);
-      const fromDb = data && !error ? data : null;
-      const row = fromDb
-        ? { ...fromDb, main_img: catalogMainImgForId(id) ?? fromDb.main_img }
-        : fallback;
-
-      if (!row) {
-        if (error && error.code !== "PGRST116") {
-          console.error(`Error resolving product ${id}:`, error.message);
-        }
+      } catch {
         router.push("/products");
+      } finally {
         setLoading(false);
-        return;
       }
-
-      setProduct(row);
-      setLoading(false);
     }
     fetchProduct();
   }, [params.id, router]);
 
   if (loading) {
     return (
-      <main style={{ backgroundColor: "var(--color-background)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Icon icon="lucide:loader-2" className="animate-spin" width="32" color="var(--color-primary)" />
+      <main className="pd-loading">
+        <Navbar />
+        <div className="pd-loading__inner">
+          <div className="pd-loading__spinner" />
+          <span className="pd-loading__label">Loading product…</span>
+        </div>
       </main>
     );
   }
 
   if (!product) return null;
 
+  const brandKey = product.category_id?.toLowerCase() ?? "";
+  const brandColor = BRAND_COLOR[brandKey] ?? "#003366";
+  const brandBg = BRAND_BG[brandKey] ?? "#E8EDF5";
+  const specs: { label: string; value: string }[] = product.detailed_specs ?? [];
+  const applications: string[] = product.applications ?? [];
+
   return (
-    <main style={{ backgroundColor: "var(--color-background)" }}>
+    <main className="pd-page">
       <Navbar />
 
-      {/* Product Hero: Image + Primary Info */}
-      <section style={{ paddingTop: "8rem", paddingBottom: "6rem" }}>
-        <div 
-          style={{ 
-            maxWidth: "1400px", 
-            margin: "0 auto", 
-            padding: "0 2rem",
-            display: "grid",
-            gridTemplateColumns: "1fr 1.2fr",
-            gap: "5rem",
-            alignItems: "center"
-          }}
-          className="product-detail-hero"
-        >
-          {/* Left: Product Image */}
-          <div className="reveal-fade">
-            <div style={{ 
-              aspectRatio: "1/1", 
-              width: "100%", 
-              backgroundColor: "white", 
-              borderRadius: "2px",
-              border: "1px solid var(--color-line)",
-              overflow: "hidden",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.03)"
-            }}>
-              <img 
-                src={product.main_img} 
-                alt={product.name} 
-                style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-              />
+      {/* ── Breadcrumb ─────────────────────────────────────── */}
+      <div className="pd-breadcrumb">
+        <div className="pd-breadcrumb__inner">
+          <Link href="/products" className="pd-breadcrumb__link">
+            <Icon icon="solar:arrow-left-linear" width={14} />
+            Back to Catalogue
+          </Link>
+          <span className="pd-breadcrumb__sep">/</span>
+          <span
+            className="pd-breadcrumb__badge"
+            style={{ color: brandColor, background: brandBg }}
+          >
+            {product.category}
+          </span>
+          <span className="pd-breadcrumb__sep">/</span>
+          <span className="pd-breadcrumb__current">{product.name}</span>
+        </div>
+      </div>
+
+      {/* ── Hero: Image + Primary Info ──────────────────────── */}
+      <section className="pd-hero">
+        <div className="pd-hero__inner">
+
+          {/* Left – Image panel */}
+          <div className="pd-hero__media">
+            <div className="pd-hero__img-frame">
+              {!imgError ? (
+                <img
+                  src={product.main_img}
+                  alt={product.name}
+                  className="pd-hero__img"
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <div className="pd-hero__img-fallback">
+                  <Icon icon="solar:box-minimalistic-linear" width={48} />
+                  <span>No image available</span>
+                </div>
+              )}
+            </div>
+
+            {/* Brand watermark */}
+            <div
+              className="pd-hero__brand-pill"
+              style={{ color: brandColor, background: brandBg }}
+            >
+              {product.category}
             </div>
           </div>
 
-          {/* Right: Primary Info */}
-          <div className="reveal-fade">
-            <span style={{ 
-              display: "block", 
-              fontSize: "0.75rem", 
-              textTransform: "uppercase", 
-              letterSpacing: "0.2em", 
-              color: "var(--color-secondary)",
-              marginBottom: "1.5rem"
-            }}>
-              {product.category}
-            </span>
-            <h1 style={{ 
-              fontFamily: "'Playfair Display', serif", 
-              fontSize: "clamp(2.5rem, 5vw, 4rem)", 
-              fontWeight: 300, 
-              color: "var(--color-primary)",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.1,
-              marginBottom: "2rem"
-            }}>
-              {product.name}
-            </h1>
-            <p style={{ 
-              fontSize: "1.125rem", 
-              color: "var(--color-secondary)", 
-              fontWeight: 300, 
-              lineHeight: 1.75, 
-              marginBottom: "3rem",
-              maxWidth: "36rem"
-            }}>
-              {product.full_desc}
-            </p>
+          {/* Right – Info panel */}
+          <div className="pd-hero__info">
+            <div className="pd-hero__eyebrow">
+              <span className="pd-hero__dot" style={{ background: brandColor }} />
+              {product.category} · Industrial Pump
+            </div>
 
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1rem" }}>
-              <Link 
+            <h1 className="pd-hero__title">{product.name}</h1>
+
+            <p className="pd-hero__desc">{product.full_desc}</p>
+
+            {/* Quick spec pills */}
+            {specs.length > 0 && (
+              <div className="pd-hero__spec-pills">
+                {specs.slice(0, 4).map((s, i) => (
+                  <div key={i} className="pd-hero__spec-pill">
+                    <span className="pd-hero__spec-label">{s.label}</span>
+                    <span className="pd-hero__spec-value">{s.value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* CTAs */}
+            <div className="pd-hero__actions">
+              <Link
                 href={{ pathname: "/quote", query: { model: product.name } }}
-                style={{ 
-                  padding: "1.25rem 3rem", 
-                  backgroundColor: "var(--color-accent)", 
-                  color: "white", 
-                  fontSize: "0.625rem", 
-                  textTransform: "uppercase", 
-                  letterSpacing: "0.2em",
-                  borderRadius: "2px",
-                  textDecoration: "none",
-                  fontWeight: 500
-                }}
+                className="pd-hero__cta-primary"
               >
-                Inquire About Model
+                <Icon icon="solar:document-text-linear" width={16} />
+                Request a Quote
+              </Link>
+              <Link href="/products" className="pd-hero__cta-secondary">
+                <Icon icon="solar:catalog-linear" width={16} />
+                Browse Catalogue
+              </Link>
+            </div>
+
+            {/* Trust badges */}
+            <div className="pd-hero__trust">
+              <div className="pd-hero__trust-item">
+                <Icon icon="solar:shield-check-linear" width={15} />
+                Quality Guaranteed
+              </div>
+              <div className="pd-hero__trust-item">
+                <Icon icon="solar:delivery-linear" width={15} />
+                EA-wide Delivery
+              </div>
+              <div className="pd-hero__trust-item">
+                <Icon icon="solar:headphones-round-sound-linear" width={15} />
+                Expert Support
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Technical Specs + Applications ─────────────────── */}
+      <section className="pd-details">
+        <div className="pd-details__inner">
+
+          {/* Specs table */}
+          <div className="pd-details__col">
+            <div className="pd-details__section-head">
+              <span className="pd-details__section-eyebrow">
+                <Icon icon="solar:settings-linear" width={13} />
+                Specifications
+              </span>
+              <h2 className="pd-details__section-title">Technical Data</h2>
+            </div>
+
+            {specs.length > 0 ? (
+              <div className="pd-specs-table">
+                {specs.map((s, i) => (
+                  <div key={i} className="pd-specs-table__row">
+                    <span className="pd-specs-table__label">{s.label}</span>
+                    <span className="pd-specs-table__value">{s.value}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="pd-specs-empty">
+                <Icon icon="solar:document-broken" width={28} />
+                <p>Detailed specs available on request.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Applications + Info card */}
+          <div className="pd-details__col">
+            <div className="pd-details__section-head">
+              <span className="pd-details__section-eyebrow">
+                <Icon icon="solar:target-linear" width={13} />
+                Use Cases
+              </span>
+              <h2 className="pd-details__section-title">Applications</h2>
+            </div>
+
+            <div className="pd-applications">
+              {applications.map((app, i) => (
+                <div key={i} className="pd-applications__item">
+                  <span
+                    className="pd-applications__icon"
+                    style={{ background: brandBg, color: brandColor }}
+                  >
+                    <Icon icon="solar:check-circle-linear" width={16} />
+                  </span>
+                  <span className="pd-applications__label">{app}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Quality card */}
+            <div className="pd-quality-card">
+              <div className="pd-quality-card__header">
+                <Icon icon="solar:medal-ribbons-star-linear" width={20} className="pd-quality-card__icon" />
+                <span className="pd-quality-card__title">Reliability Standards</span>
+              </div>
+              <p className="pd-quality-card__text">
+                All components in the <strong>{product.name}</strong> series undergo
+                rigorous quality testing including high-pressure endurance and motor
+                winding integrity checks — ensuring long-term performance in demanding environments.
+              </p>
+              <Link
+                href={{ pathname: "/quote", query: { model: product.name } }}
+                className="pd-quality-card__cta"
+              >
+                Inquire About This Model
+                <Icon icon="solar:arrow-right-linear" width={14} />
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Detailed Technical Specs & Applications (Below Hero) */}
-      <section style={{ padding: "8rem 2rem", backgroundColor: "white", borderTop: "1px solid var(--color-line)" }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-          <div 
-            style={{ 
-              display: "grid", 
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1.2fr 1fr))",
-              gap: "8rem",
-              alignItems: "start"
-            }}
+      {/* ── Bottom navigation ──────────────────────────────── */}
+      <div className="pd-bottom-nav">
+        <div className="pd-bottom-nav__inner">
+          <Link href="/products" className="pd-bottom-nav__back">
+            <Icon icon="solar:arrow-left-linear" width={16} />
+            Back to Catalogue
+          </Link>
+          <Link
+            href={{ pathname: "/quote", query: { model: product.name } }}
+            className="pd-bottom-nav__quote"
           >
-            {/* Detailed Stats Table */}
-            <div className="reveal-fade">
-              <h2 style={{ 
-                fontFamily: "'Playfair Display', serif", 
-                fontSize: "2rem", 
-                fontWeight: 300, 
-                color: "var(--color-primary)",
-                marginBottom: "3rem"
-              }}>
-                Technical specifications.
-              </h2>
-              <div style={{ borderTop: "1px solid var(--color-line)" }}>
-                {(product.detailed_specs || []).map((spec: any, i: number) => (
-                  <div 
-                    key={i} 
-                    style={{ 
-                      display: "flex", 
-                      justifyContent: "space-between", 
-                      padding: "1.5rem 0", 
-                      borderBottom: "1px solid var(--color-line)",
-                      fontSize: "0.9375rem"
-                    }}
-                  >
-                    <span style={{ color: "var(--color-secondary)", fontWeight: 300 }}>{spec.label}</span>
-                    <span style={{ color: "var(--color-primary)", fontWeight: 500 }}>{spec.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Application Use Cases */}
-            <div className="reveal-fade" style={{ paddingTop: "2rem" }}>
-              <div style={{ backgroundColor: "var(--color-background)", padding: "4rem", borderRadius: "2px" }}>
-                <h3 style={{ 
-                  fontFamily: "'Playfair Display', serif", 
-                  fontSize: "1.5rem", 
-                  fontWeight: 300, 
-                  color: "var(--color-primary)",
-                  marginBottom: "2rem"
-                }}>
-                  Primary applications.
-                </h3>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: "1.5rem" }}>
-                  {(product.applications || []).map((app: string, i: number) => (
-                    <li key={i} style={{ display: "flex", alignItems: "center", gap: "1rem", color: "var(--color-secondary)", fontSize: "1rem", fontWeight: 300 }}>
-                      <Icon icon="lucide:check" width="18" style={{ color: "var(--color-primary)" }} />
-                      {app}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div style={{ marginTop: "4rem", display: "grid", gap: "1.5rem" }}>
-                <span style={{ fontSize: "0.625rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(87,83,78,0.6)" }}>Reliability standards</span>
-                <p style={{ fontSize: "0.875rem", color: "var(--color-secondary)", fontWeight: 300, lineHeight: 1.6 }}>
-                  All components in the {product.name} series undergo our rigorous 12-point quality testing cycle, including high-pressure endurance and motor winding integrity checks.
-                </p>
-              </div>
-            </div>
-          </div>
+            Request a Quote
+            <Icon icon="solar:arrow-right-linear" width={16} />
+          </Link>
         </div>
-      </section>
-
-      {/* Navigation Footer */}
-      <section style={{ padding: "6rem 2rem", borderTop: "1px solid var(--color-line)", textAlign: "center" }}>
-        <Link 
-          href="/products" 
-          style={{ 
-            display: "inline-flex", 
-            alignItems: "center", 
-            gap: "0.75rem", 
-            color: "var(--color-primary)", 
-            textDecoration: "none",
-            fontSize: "0.625rem",
-            textTransform: "uppercase",
-            letterSpacing: "0.2em",
-            fontWeight: 500
-          }}
-        >
-          <Icon icon="lucide:arrow-left" width="16" />
-          Back to Catalog
-        </Link>
-      </section>
+      </div>
 
       <Footer />
-      <GSAPAnimations />
     </main>
   );
 }
