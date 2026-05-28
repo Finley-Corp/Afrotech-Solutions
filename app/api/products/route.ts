@@ -1,48 +1,26 @@
 import { NextResponse } from "next/server";
-import { neonQuery } from "../../../lib/neon-db";
+import { fetchProductsPage } from "@/lib/products-db";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+
+export async function GET(request: Request) {
   try {
-    // Fetch products from Neon database
-    const rows = await neonQuery<any>(
-      "SELECT * FROM products ORDER BY scraped_at DESC"
-    );
+    const { searchParams } = new URL(request.url);
+    const page = Number(searchParams.get("page") ?? "1");
+    const limit = Number(searchParams.get("limit") ?? "48");
+    const brand = searchParams.get("brand");
+    const search = searchParams.get("q") ?? searchParams.get("search");
 
-    // Map database rows to the ProductDbRow format expected by the UI
-    const mappedProducts = rows.map((row) => {
-      // Parse specs
-      const specsObj = row.specs || {};
-      const specsList = Object.entries(specsObj).map(
-        ([k, v]) => `${k.replace(/_/g, " ").toUpperCase()}: ${v}`
-      );
-      const detailedSpecs = Object.entries(specsObj).map(([k, v]) => ({
-        label: k.replace(/_/g, " "),
-        value: String(v),
-      }));
+    const result = await fetchProductsPage({ page, limit, brand, search });
 
-      return {
-        id: String(row.id),
-        name: row.name,
-        category: row.brand.toUpperCase(),
-        category_id: row.brand.toLowerCase(), // e.g. 'grundfos', 'ksb', 'wilo'
-        short_desc: row.description
-          ? row.description.substring(0, 150) + "..."
-          : "No description available.",
-        full_desc: row.description || "No description available.",
-        price: "Contact for Quote",
-        main_img: row.image_url || "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=600&q=80",
-        specs: specsList,
-        detailed_specs: detailedSpecs,
-        applications: ["Water Distribution", "Industrial Supply", "Pressure Boosting"],
-      };
+    return NextResponse.json(result, {
+      headers: {
+        "Cache-Control": "public, s-maxage=120, stale-while-revalidate=300",
+      },
     });
-
-    return NextResponse.json(mappedProducts);
-  } catch (error: any) {
-    console.error("Error in Next.js products API:", error);
-    return NextResponse.json(
-      { error: error.message || "Failed to fetch products" },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Failed to fetch products";
+    console.error("Error in products API:", error);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
