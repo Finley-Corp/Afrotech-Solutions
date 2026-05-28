@@ -1300,6 +1300,19 @@ body {
   transform: scale(1.06);
 }
 
+.pc-load-more {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0 0.5rem;
+}
+
+.pc-load-more__label {
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a8278;
+}
+
 .pc-card__zoom-hint {
   position: absolute;
   bottom: 0.75rem;
@@ -2883,208 +2896,6 @@ body {
   font-size: 0.875rem;
   line-height: 1.75;
   color: #5f5851;
-}
-
-.brands-partners-sphere {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  min-height: min(320px, var(--sphere-size, 52vw));
-}
-
-/* Interactive 3D partner sphere */
-.sphere-grid {
-  position: relative;
-  margin: 0 auto;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
-}
-
-.sphere-grid:active {
-  cursor: grabbing;
-}
-
-.sphere-grid__hint {
-  position: absolute;
-  bottom: 0.75rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #8a8278;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.sphere-grid__stage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.sphere-grid__node {
-  position: absolute;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.sphere-grid__node:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-}
-
-.sphere-grid__node-frame {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.85);
-  box-shadow:
-    0 8px 24px rgba(0, 51, 102, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.35rem;
-}
-
-.sphere-grid__node-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  pointer-events: none;
-}
-
-.sphere-grid__loading,
-.sphere-grid__empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  color: #8a8278;
-  font-size: 0.875rem;
-}
-
-.sphere-grid__modal {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.35);
-  animation: sphere-modal-fade 0.25s ease;
-}
-
-.sphere-grid__modal-card {
-  width: min(100%, 22rem);
-  background: #fff;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
-  animation: sphere-modal-scale 0.28s ease;
-}
-
-.sphere-grid__modal-media {
-  position: relative;
-  aspect-ratio: 1;
-  background: #f8f7f5;
-}
-
-.sphere-grid__modal-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 1.5rem;
-  display: block;
-}
-
-.sphere-grid__modal-close {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  width: 2.25rem;
-  height: 2.25rem;
-  border: none;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  font-size: 1.35rem;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease;
-}
-
-.sphere-grid__modal-close:hover {
-  background: rgba(0, 0, 0, 0.75);
-}
-
-.sphere-grid__modal-body {
-  padding: 1.25rem 1.5rem 1.5rem;
-  text-align: center;
-}
-
-.sphere-grid__modal-body h3 {
-  margin: 0 0 0.5rem;
-  font-family: var(--font-premium-heading);
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--color-primary);
-}
-
-.sphere-grid__modal-link {
-  display: inline-flex;
-  margin-top: 0.75rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  text-decoration: none;
-}
-
-.sphere-grid__modal-link:hover {
-  text-decoration: underline;
-}
-
-@keyframes sphere-modal-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes sphere-modal-scale {
-  from {
-    opacity: 0;
-    transform: scale(0.92);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sphere-grid__modal,
-  .sphere-grid__modal-card {
-    animation: none;
-  }
-
-  .brands-partners-sphere .sphere-grid {
-    cursor: default;
-  }
 }
 
 .brands-partners__title {
