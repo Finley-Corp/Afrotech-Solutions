@@ -1,47 +1,39 @@
-import Image from "next/image";
-import Link from "next/link";
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import { brandPartners } from "@/app/data/brands";
+import SphereImageGrid, { type ImageData } from "@/app/components/SphereImageGrid";
 
-const label = "#6f675f";
-const muted = "#5f5851";
-
-function BrandLogo({ name, logoSrc, href }: (typeof brandPartners)[number]) {
-  const img = logoSrc ? (
-    <Image src={logoSrc} alt={name} width={180} height={56} className="brands-marquee__img" />
-  ) : (
-    <span className="brands-marquee__wordmark">{name}</span>
-  );
-
-  if (href) {
-    return (
-      <Link
-        href={href}
-        className="brands-marquee__logo"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={name}
-      >
-        {img}
-      </Link>
-    );
-  }
-
-  return <div className="brands-marquee__logo">{img}</div>;
-}
-
-function BrandMarqueeGroup({ ariaHidden = false }: { ariaHidden?: boolean }) {
-  return (
-    <div className="brands-marquee__group" aria-hidden={ariaHidden || undefined}>
-      {brandPartners.map((brand) => (
-        <div key={`${ariaHidden ? "dup-" : ""}${brand.name}`} className="brands-marquee__item">
-          <BrandLogo {...brand} />
-        </div>
-      ))}
-    </div>
-  );
+function getSphereSize(width: number) {
+  if (width < 480) return Math.min(300, width - 32);
+  if (width < 900) return 360;
+  return 440;
 }
 
 export default function BrandsPartnersSection() {
+  const [containerSize, setContainerSize] = useState(420);
+
+  useEffect(() => {
+    const update = () => setContainerSize(getSphereSize(window.innerWidth));
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const sphereImages = useMemo<ImageData[]>(
+    () =>
+      brandPartners
+        .filter((b) => b.logoSrc)
+        .map((b) => ({
+          id: b.name,
+          src: b.logoSrc!,
+          alt: `${b.name} logo`,
+          title: b.name,
+          href: b.href,
+        })),
+    [],
+  );
+
   return (
     <section
       className="premium-landing-section brands-partners-section"
@@ -53,6 +45,7 @@ export default function BrandsPartnersSection() {
       }}
     >
       <div
+        className="brands-partners-section__bg"
         style={{
           position: "absolute",
           inset: 0,
@@ -62,51 +55,33 @@ export default function BrandsPartnersSection() {
         }}
       />
 
-      <div
-        style={{
-          position: "relative",
-          maxWidth: "1380px",
-          margin: "0 auto",
-          padding: "clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 4vw, 3.5rem)",
-        }}
-      >
+      <div className="brands-partners-section__inner">
         <div className="reveal-fade brands-partners__header">
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.65rem",
-              fontSize: "0.68rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.14em",
-              color: label,
-              marginBottom: "1.25rem",
-            }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                backgroundColor: "var(--color-accent)",
-              }}
-            />
+          <div className="brands-partners__eyebrow">
+            <span className="brands-partners__eyebrow-dot" />
             Brands &amp; Partnerships
           </div>
           <h2 className="brands-partners__title">
             <span className="brands-partners__title-line">Industrial water solutions meet</span>
             <span className="brands-partners__title-line">trusted global partners.</span>
           </h2>
-          <p style={{ margin: "1.25rem auto 0", maxWidth: "32rem", fontSize: "0.875rem", lineHeight: 1.75, color: muted }}>
-            Manufacturers and suppliers we work with across East Africa.
+          <p className="brands-partners__lead">
+            Drag the sphere to explore manufacturers and suppliers we work with across East Africa.
           </p>
         </div>
 
-        <div className="brands-marquee reveal-fade" aria-label="Partner brands">
-          <div className="brands-marquee__track">
-            <BrandMarqueeGroup />
-            <BrandMarqueeGroup ariaHidden />
-          </div>
+        <div className="brands-partners-sphere reveal-fade" style={{ ["--sphere-size" as string]: `${containerSize}px` }}>
+          <SphereImageGrid
+            images={sphereImages}
+            containerSize={containerSize}
+            sphereRadius={containerSize * 0.42}
+            dragSensitivity={0.55}
+            momentumDecay={0.95}
+            maxRotationSpeed={5}
+            baseImageScale={0.14}
+            autoRotate
+            autoRotateSpeed={0.3}
+          />
         </div>
       </div>
     </section>
