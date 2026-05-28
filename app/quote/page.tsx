@@ -14,7 +14,7 @@ export default function QuotePage() {
   const [serviceFromQuery, setServiceFromQuery] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
-  const productOptions = Array.from(new Set(productsList.map((p) => p.name)));
+  const [productOptions, setProductOptions] = useState<string[]>([]);
   const serviceOptions = [
     "Pump Selection & Sizing",
     "System Design & Integration",
@@ -63,6 +63,27 @@ export default function QuotePage() {
       pumpType: serviceFromQuery || modelFromQuery,
     }));
   }, [modelFromQuery, serviceFromQuery]);
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const res = await fetch("/api/products");
+        if (res.ok) {
+          const data = await res.json();
+          const names = Array.from(new Set(data.map((p: any) => p.name))) as string[];
+          setProductOptions(names);
+        } else {
+          const names = Array.from(new Set(productsList.map((p) => p.name)));
+          setProductOptions(names);
+        }
+      } catch (err) {
+        console.error("Failed to load products for quote options:", err);
+        const names = Array.from(new Set(productsList.map((p) => p.name)));
+        setProductOptions(names);
+      }
+    }
+    loadProducts();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
