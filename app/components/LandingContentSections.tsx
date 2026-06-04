@@ -52,9 +52,9 @@ const phases = [
   },
 ];
 
-const featured = industries[0];
-const sideA = industries[1];
-const sideB = industries[2];
+const featured = industries.find((i) => i.id === "construction") ?? industries[3];
+const sideA = industries.find((i) => i.id === "industrial") ?? industries[1];
+const sideB = industries.find((i) => i.id === "municipal") ?? industries[2];
 
 export default function LandingContentSections() {
   return (
@@ -124,14 +124,25 @@ export default function LandingContentSections() {
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(1.5rem, 3vw, 2.5rem)" }}>
+          <div
+            className="home-industries-showcase"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(224px, 1fr))",
+              gap: "clamp(1.2rem, 2.4vw, 2rem)",
+              maxWidth: "80%",
+              margin: "0 auto",
+              alignItems: "stretch",
+            }}
+          >
             <Link
               href={`/industries/${featured.id}`}
-              className="img-zoom-container"
+              className="img-zoom-container home-industries-featured"
               style={{
                 position: "relative",
                 display: "block",
-                minHeight: "420px",
+                height: "100%",
+                minHeight: "100%",
                 backgroundColor: "var(--color-background)",
                 overflow: "hidden",
                 textDecoration: "none",
@@ -142,7 +153,7 @@ export default function LandingContentSections() {
                 src={featured.image}
                 alt={featured.title}
                 className="img-zoom"
-                style={{ width: "100%", height: "100%", minHeight: "420px", objectFit: "cover" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(18,15,13,0.28), rgba(18,15,13,0.02) 45%, transparent)" }} />
               <div style={{ position: "absolute", inset: "clamp(1rem, 2.5vw, 2rem)", border: "1px solid rgba(255,255,255,0.46)", pointerEvents: "none" }} />
@@ -151,7 +162,7 @@ export default function LandingContentSections() {
                   Featured
                 </div>
               </div>
-              <div style={{ position: "absolute", left: "clamp(1rem, 2.5vw, 2rem)", right: "clamp(1rem, 2.5vw, 2rem)", bottom: "clamp(1rem, 2.5vw, 2rem)", maxWidth: "400px" }}>
+              <div style={{ position: "absolute", left: "clamp(1rem, 2.5vw, 2rem)", right: "clamp(1rem, 2.5vw, 2rem)", bottom: "clamp(1rem, 2.5vw, 2rem)", maxWidth: "320px" }}>
                     <div style={{ border: "1px solid rgba(255,255,255,0.45)", backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(10px)", padding: "1.1rem 1.25rem", boxShadow: "0 14px 40px rgba(23,18,14,0.12)" }}>
                   <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.12em", color: label, marginBottom: "0.35rem" }}>Sector focus</p>
                   <h3 style={{ fontSize: "clamp(1.4rem, 2.5vw, 1.85rem)", margin: "0 0 0.5rem 0", color: "var(--color-primary)", lineHeight: 1.05 }}>
@@ -162,29 +173,20 @@ export default function LandingContentSections() {
               </div>
             </Link>
 
-            <div style={{ display: "grid", gap: "clamp(1.5rem, 3vw, 2rem)" }}>
+            <div className="home-industries-side">
               {[sideA, sideB].map((ind) => (
-                <Link
-                  key={ind.id}
-                  href={`/industries/${ind.id}`}
-                  style={{ textDecoration: "none", color: "inherit", display: "block" }}
-                >
-                  <div className="img-zoom-container" style={{ position: "relative", minHeight: "200px", overflow: "hidden", backgroundColor: "var(--color-background)" }}>
-                    <img
-                      src={ind.image}
-                      alt={ind.title}
-                      className="img-zoom"
-                      style={{ width: "100%", height: "100%", minHeight: "200px", objectFit: "cover" }}
-                    />
-                    <div style={{ position: "absolute", inset: "1rem", border: "1px solid rgba(255,255,255,0.44)", pointerEvents: "none" }} />
+                <Link key={ind.id} href={`/industries/${ind.id}`} className="home-industries-side__card">
+                  <div className="img-zoom-container home-industries-side__media">
+                    <img src={ind.image} alt={ind.title} className="img-zoom" />
+                    <div className="home-industries-side__frame" aria-hidden />
                   </div>
-                  <div style={{ paddingTop: "1rem", borderBottom: "1px solid var(--color-line)", paddingBottom: "1.25rem" }}>
-                    <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "#8a8178", marginBottom: "0.35rem" }}>{ind.id}</p>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem" }}>
-                      <h4 style={{ fontSize: "1.35rem", margin: 0, color: "var(--color-primary)", fontWeight: 500 }}>{ind.title}</h4>
-                      <Icon icon="solar:arrow-right-up-linear" width={20} style={{ color: "#8a8178", flexShrink: 0 }} />
+                  <div className="home-industries-side__copy">
+                    <p className="home-industries-side__label">{ind.id}</p>
+                    <div className="home-industries-side__title-row">
+                      <h4 className="home-industries-side__title">{ind.title}</h4>
+                      <Icon icon="solar:arrow-right-up-linear" width={18} className="home-industries-side__arrow" />
                     </div>
-                    <p style={{ fontSize: "0.88rem", lineHeight: 1.65, color: muted, marginTop: "0.65rem", marginBottom: 0 }}>{ind.description}</p>
+                    <p className="home-industries-side__desc">{ind.description}</p>
                   </div>
                 </Link>
               ))}
