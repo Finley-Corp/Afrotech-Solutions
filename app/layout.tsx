@@ -1,23 +1,71 @@
 import type { Metadata } from "next";
-import { COMPANY_LOGO_SRC, COMPANY_NAME } from "@/lib/company";
+import { COMPANY_LOGO_SRC, COMPANY_NAME, FAVICON_SRC } from "@/lib/company";
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/app/components/JsonLd";
+import { getSiteUrl, SITE_NAME, SITE_NAME_LEGAL } from "@/lib/site";
 import "./globals.css";
 
+const siteUrl = getSiteUrl();
+const defaultTitle = `${SITE_NAME} | Industrial Water & Pump Solutions`;
+const defaultDescription =
+  "Afrotech Solutions — industrial water pumps, borehole systems, Grundfos, KSB & Wilo supply, and engineering support across Kenya and Eastern Africa.";
+
 export const metadata: Metadata = {
-  title: "AFROTECH | Industrial Water Solutions",
-  description:
-    "Industrial-grade water pump solutions for agriculture, construction, and municipal applications across East Africa.",
-  keywords: "water pumps, industrial pumping, solar pumps, borehole pumps, Nairobi, Kenya, Afrotech",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: defaultTitle,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: defaultDescription,
+  keywords: [
+    "Afrotech Solutions",
+    "afrotech solutions",
+    "Afrotech Engineering Solutions",
+    "water pumps Kenya",
+    "industrial pumps Nairobi",
+    "borehole pumps",
+    "Grundfos Kenya",
+    "KSB pumps",
+    "Wilo pumps",
+    "pump supplier East Africa",
+  ],
+  authors: [{ name: SITE_NAME_LEGAL }],
+  creator: SITE_NAME_LEGAL,
+  publisher: SITE_NAME_LEGAL,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
+  },
   icons: {
-    icon: COMPANY_LOGO_SRC,
-    apple: COMPANY_LOGO_SRC,
+    icon: [{ url: FAVICON_SRC, type: "image/png" }],
+    apple: [{ url: FAVICON_SRC, type: "image/png" }],
   },
   openGraph: {
-    title: "AFROTECH | Industrial Water Solutions",
-    description:
-      "Industrial-grade water pump solutions for agriculture, construction, and municipal applications across East Africa.",
     type: "website",
+    locale: "en_KE",
+    url: siteUrl,
+    siteName: SITE_NAME,
+    title: defaultTitle,
+    description: defaultDescription,
     images: [{ url: COMPANY_LOGO_SRC, alt: COMPANY_NAME }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: defaultTitle,
+    description: defaultDescription,
+    images: [COMPANY_LOGO_SRC],
+  },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
 export default function RootLayout({
@@ -35,7 +83,11 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <OrganizationJsonLd />
+        <WebSiteJsonLd />
+        {children}
+      </body>
     </html>
   );
 }

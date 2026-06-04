@@ -3,6 +3,9 @@ export const COMPANY_NAME = "Afrotech Engineering Solutions Limited";
 /** Public path to brand logo (file: public/assets/logo/afrotech logo.png) */
 export const COMPANY_LOGO_SRC = "/assets/logo/afrotech%20logo.png";
 
+/** Browser tab favicon (file: public/assets/logo/afrotech_logo__1_-removebg-preview.png) */
+export const FAVICON_SRC = "/assets/logo/afrotech_logo__1_-removebg-preview.png";
+
 export const COMPANY_ADDRESS_LINES = [
   "NML Towers, Tsavo Road, South B",
   "2nd Floor, Suite 212",
