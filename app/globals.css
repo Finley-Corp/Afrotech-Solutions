@@ -513,6 +513,120 @@ body {
   transform: scale(1.04);
 }
 
+/* --- Homepage industries showcase --- */
+.home-industries-showcase {
+  align-items: stretch;
+}
+
+@media (min-width: 640px) {
+  .home-industries-showcase {
+    grid-template-columns: 1.15fr 0.85fr !important;
+  }
+}
+
+.home-industries-featured {
+  min-height: 320px;
+}
+
+@media (min-width: 640px) {
+  .home-industries-featured {
+    min-height: 100%;
+  }
+}
+
+.home-industries-side {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(1.2rem, 2.4vw, 1.6rem);
+  height: 100%;
+  min-height: 100%;
+}
+
+.home-industries-side__card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.home-industries-side__media {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--color-background);
+}
+
+.home-industries-side__media .img-zoom {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.home-industries-side__frame {
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  pointer-events: none;
+}
+
+.home-industries-side__copy {
+  flex-shrink: 0;
+  padding-top: 0.75rem;
+  padding-bottom: 0;
+}
+
+.home-industries-side__label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8a8178;
+  margin: 0 0 0.25rem;
+}
+
+.home-industries-side__title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.home-industries-side__title {
+  font-size: 1.15rem;
+  margin: 0;
+  color: var(--color-primary);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.home-industries-side__arrow {
+  color: #8a8178;
+  flex-shrink: 0;
+}
+
+.home-industries-side__desc {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: #5f5851;
+  margin: 0.45rem 0 0;
+}
+
+@media (max-width: 639px) {
+  .home-industries-side {
+    height: auto;
+    min-height: 0;
+    grid-template-rows: auto auto;
+  }
+
+  .home-industries-side__media {
+    flex: none;
+    min-height: 160px;
+  }
+}
+
 /* --- Philosophy / Sections --- */
 .journal-link {
   display: inline-block;
