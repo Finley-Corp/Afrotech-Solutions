@@ -2,17 +2,17 @@ import Link from "next/link";
 
 const heroImages = [
   {
-    src: "/assets/images/afrotech-1.jpg",
+    src: "/assets/images/hero-section-3.jpg",
     alt: "Industrial water infrastructure",
     className: "hero-bento__lead",
   },
   {
-    src: "/assets/images/afrotech-14.jpg",
+    src: "/assets/images/hero-section-1.jpg",
     alt: "Water engineering project",
     className: "hero-bento__cell",
   },
   {
-    src: "/assets/images/afrotech-9.jpg",
+    src: "/assets/images/hero-section-2.jpg",
     alt: "Field operations and support",
     className: "hero-bento__cell",
   },
