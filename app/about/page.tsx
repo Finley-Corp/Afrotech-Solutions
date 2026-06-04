@@ -273,7 +273,7 @@ export default function AboutPage() {
                     Region
                   </span>
                   <p style={{ margin: 0, color: "var(--color-primary)", fontSize: "0.9rem", fontWeight: 500 }}>
-                    Kenya, Tanzania & nearby markets
+                    Kenya and Eastern Africa
                   </p>
                 </div>
               </div>

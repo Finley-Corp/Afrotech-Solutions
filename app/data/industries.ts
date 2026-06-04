@@ -1,3 +1,7 @@
+function industryImage(file: string): string {
+  return `/assets/industries/${encodeURIComponent(file)}`;
+}
+
 export type Industry = {
   id: string;
   title: string;
@@ -47,8 +51,7 @@ export const industries: Industry[] = [
       "Livestock water management",
       "Increased crop yield reliability",
     ],
-    image:
-      "/assets/images/afrotech-1.jpg",
+    image: industryImage("agriculture.jpg"),
     productsLink: "/products#solar",
   },
   {
@@ -84,8 +87,7 @@ export const industries: Industry[] = [
       "High-pressure wash systems",
       "Fire suppression network support",
     ],
-    image:
-      "/assets/images/afrotech-14.jpg",
+    image: industryImage("industrial and manufacturing.jpg"),
     productsLink: "/products#industrial",
   },
   {
@@ -121,8 +123,7 @@ export const industries: Industry[] = [
       "Borehole network management",
       "Energy-efficient upgrades",
     ],
-    image:
-      "/assets/images/afrotech-9.jpg",
+    image: industryImage("municipal and utility.jpg"),
     productsLink: "/products#submersible",
   },
   {
@@ -158,8 +159,7 @@ export const industries: Industry[] = [
       "Concrete batching supply continuity",
       "Erosion and runoff control support",
     ],
-    image:
-      "/assets/images/afrotech-5.jpg",
+    image: industryImage("construction and dewatering.jpg"),
     productsLink: "/products#industrial",
   },
   {
@@ -195,8 +195,7 @@ export const industries: Industry[] = [
       "Reduced complaints and operational disruptions",
       "Lower lifecycle maintenance risk",
     ],
-    image:
-      "/assets/images/afrotech-8.jpg",
+    image: industryImage("hospitality and real estate.jpg"),
     productsLink: "/products#submersible",
   },
   {
@@ -232,8 +231,7 @@ export const industries: Industry[] = [
       "Higher reliability in remote operations",
       "Better continuity of production support systems",
     ],
-    image:
-      "/assets/images/afrotell-12.jpg",
+    image: industryImage("mining and quarring.jpg"),
     productsLink: "/products#industrial",
   },
   {
@@ -269,8 +267,7 @@ export const industries: Industry[] = [
       "Lower risk of emergency service interruptions",
       "Greater long-term infrastructure resilience",
     ],
-    image:
-      "/assets/images/afrotech-7.jpg",
+    image: industryImage("healthcare facilities.jpg"),
     productsLink: "/products#industrial",
   },
   {
@@ -306,8 +303,7 @@ export const industries: Industry[] = [
       "Easier maintenance for institutional teams",
       "Scalable design for future expansion",
     ],
-    image:
-      "/assets/images/afrotech-6.jpg",
+    image: industryImage("education and institution cumpases.jpg"),
     productsLink: "/products#submersible",
   },
   {
@@ -343,8 +339,7 @@ export const industries: Industry[] = [
       "Lower long-term maintenance burden",
       "Stronger resilience for critical port services",
     ],
-    image:
-      "/assets/images/afrotech-11.jpg",
+    image: industryImage("marine and port.jpg"),
     productsLink: "/products#industrial",
   },
 ];

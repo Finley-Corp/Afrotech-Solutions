@@ -89,6 +89,16 @@ body {
    ========================================= */
 .line-mask { display: block; overflow: hidden; }
 .reveal-line { display: block; transform: translateY(110%); opacity: 0; will-change: transform, opacity; }
+
+/* Room for descenders (g, y, p, etc.) inside reveal masks */
+.hero-title .line-mask {
+  padding-bottom: 0.2em;
+  margin-bottom: -0.1em;
+}
+
+.hero-title .reveal-line {
+  padding-bottom: 0.06em;
+}
 .reveal-fade { opacity: 0; transform: translateY(14px); will-change: transform, opacity; }
 [data-anim="stagger"] > * { opacity: 0; transform: translateY(14px); will-change: transform, opacity; }
 [data-anim="fade-delayed"] { opacity: 0; transform: translateY(14px); will-change: transform, opacity; }
@@ -320,7 +330,7 @@ body {
   max-width: 1380px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.01fr);
   gap: clamp(2rem, 4vw, 3.5rem);
   align-items: center;
 }
@@ -377,7 +387,7 @@ body {
   font-weight: 500;
   color: var(--color-primary);
   letter-spacing: -0.035em;
-  line-height: 1.06;
+  line-height: 1.14;
   margin-bottom: 1.5rem;
 }
 
@@ -398,7 +408,7 @@ body {
   font-family: "DM Sans", sans-serif;
   max-width: 32rem;
   margin-bottom: 2.5rem;
-  line-height: 1.65;
+  line-height: 1.75;
 }
 
 .hero-actions {
@@ -448,11 +458,13 @@ body {
 
 .hero-bento {
   display: grid;
-  grid-template-columns: 1.12fr 0.88fr;
+  grid-template-columns: 1.344fr 0.88fr;
   grid-template-rows: 1fr 1fr;
-  gap: 1rem;
-  min-height: clamp(360px, 54vh, 580px);
+  gap: 0.8rem;
+  min-height: clamp(288px, 43.2vh, 464px);
   width: 100%;
+  max-width: 96%;
+  margin-left: auto;
 }
 
 .hero-bento__item {
@@ -466,7 +478,7 @@ body {
 
 .hero-bento__frame {
   position: absolute;
-  inset: 0.85rem;
+  inset: 0.68rem;
   border: 1px solid rgba(255, 255, 255, 0.5);
   pointer-events: none;
   z-index: 2;
@@ -499,6 +511,120 @@ body {
 
 .hero-bento__item:hover .hero-bento__img {
   transform: scale(1.04);
+}
+
+/* --- Homepage industries showcase --- */
+.home-industries-showcase {
+  align-items: stretch;
+}
+
+@media (min-width: 640px) {
+  .home-industries-showcase {
+    grid-template-columns: 1.15fr 0.85fr !important;
+  }
+}
+
+.home-industries-featured {
+  min-height: 320px;
+}
+
+@media (min-width: 640px) {
+  .home-industries-featured {
+    min-height: 100%;
+  }
+}
+
+.home-industries-side {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(1.2rem, 2.4vw, 1.6rem);
+  height: 100%;
+  min-height: 100%;
+}
+
+.home-industries-side__card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.home-industries-side__media {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--color-background);
+}
+
+.home-industries-side__media .img-zoom {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.home-industries-side__frame {
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  pointer-events: none;
+}
+
+.home-industries-side__copy {
+  flex-shrink: 0;
+  padding-top: 0.75rem;
+  padding-bottom: 0;
+}
+
+.home-industries-side__label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8a8178;
+  margin: 0 0 0.25rem;
+}
+
+.home-industries-side__title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.home-industries-side__title {
+  font-size: 1.15rem;
+  margin: 0;
+  color: var(--color-primary);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.home-industries-side__arrow {
+  color: #8a8178;
+  flex-shrink: 0;
+}
+
+.home-industries-side__desc {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: #5f5851;
+  margin: 0.45rem 0 0;
+}
+
+@media (max-width: 639px) {
+  .home-industries-side {
+    height: auto;
+    min-height: 0;
+    grid-template-rows: auto auto;
+  }
+
+  .home-industries-side__media {
+    flex: none;
+    min-height: 160px;
+  }
 }
 
 /* --- Philosophy / Sections --- */
@@ -754,9 +880,11 @@ body {
   }
 
   .hero-bento {
-    min-height: 340px;
+    min-height: 272px;
+    max-width: 100%;
+    margin-left: 0;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: minmax(200px, 1fr) minmax(120px, 0.5fr);
+    grid-template-rows: minmax(160px, 1fr) minmax(96px, 0.5fr);
   }
 
   .hero-bento__lead {
