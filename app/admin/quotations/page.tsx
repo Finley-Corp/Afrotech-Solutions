@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { useCallback, useState } from "react";
 import { Icon } from "@iconify/react";
+import { useAdminFetch } from "../hooks/useAdminFetch";
+import { AdminTableSkeleton } from "../components/AdminTableSkeleton";
 
 interface Quotation {
   id: string;
@@ -18,35 +19,16 @@ interface Quotation {
 }
 
 export default function AdminQuotations() {
-  const [quotations, setQuotations] = useState<Quotation[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedQuotation, setSelectedQuotation] = useState<Quotation | null>(null);
-
-  useEffect(() => {
-    async function fetchQuotations() {
-      const { data, error } = await supabase
-        .from("quotations")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching quotations:", error);
-      } else {
-        setQuotations(data || []);
-      }
-      setLoading(false);
-    }
-
-    fetchQuotations();
-  }, []);
-
-  if (loading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", paddingTop: "5rem" }}>
-        <Icon icon="lucide:loader-2" className="animate-spin" width="24" />
-      </div>
-    );
-  }
+  const selectItems = useCallback(
+    (json: unknown) => (json as { items: Quotation[] }).items ?? [],
+    []
+  );
+  const { data: quotations, loading, error } = useAdminFetch<Quotation[]>("/api/admin/quotations", {
+    cacheKey: "admin_quotations",
+    select: selectItems,
+  });
+  const rows = quotations ?? [];
 
   return (
     <div>
@@ -58,6 +40,10 @@ export default function AdminQuotations() {
           Detailed technical requirements from potential clients across East Africa.
         </p>
       </header>
+
+      {error && (
+        <p style={{ color: "#B45309", fontSize: "0.875rem", marginBottom: "1.5rem" }}>{error}</p>
+      )}
 
       <div style={{ 
         backgroundColor: "white", 
@@ -77,14 +63,16 @@ export default function AdminQuotations() {
             </tr>
           </thead>
           <tbody>
-            {quotations.length === 0 ? (
+            {loading && rows.length === 0 ? (
+              <AdminTableSkeleton rows={8} cols={6} />
+            ) : rows.length === 0 ? (
               <tr>
                 <td colSpan={6} style={{ padding: "3rem", textAlign: "center", color: "#6B7280", fontSize: "0.875rem" }}>
                   No quote requests found.
                 </td>
               </tr>
             ) : (
-              quotations.map((quote) => (
+              rows.map((quote) => (
                 <tr key={quote.id} style={{ borderBottom: "1px solid var(--color-line)" }}>
                   <td style={tdStyle}>{new Date(quote.created_at).toLocaleDateString()}</td>
                   <td style={tdStyle}>

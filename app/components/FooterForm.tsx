@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "../lib/supabase";
 
 export default function FooterForm() {
   const [email, setEmail] = useState("");
@@ -13,26 +12,22 @@ export default function FooterForm() {
 
     setStatus("submitting");
 
-    const { error } = await supabase
-      .from("newsletter_subscriptions")
-      .insert([{ email }]);
+    try {
+      const res = await fetch("/api/email/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
 
-    if (error) {
-      console.error("Newsletter Error:", error);
-      setStatus("error");
-    } else {
-      try {
-        const res = await fetch("/api/email/newsletter", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        });
-        if (!res.ok) console.error("Newsletter email notify failed:", await res.text());
-      } catch (err) {
-        console.error("Newsletter email notify error:", err);
+      if (!res.ok) {
+        setStatus("error");
+        return;
       }
+
       setStatus("success");
       setEmail("");
+    } catch {
+      setStatus("error");
     }
   };
 
@@ -51,13 +46,13 @@ export default function FooterForm() {
           disabled={status === "submitting" || status === "success"}
           required
         />
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className="send-btn"
           disabled={status === "submitting" || status === "success"}
-          style={{ 
+          style={{
             color: "var(--color-accent)",
-            opacity: (status === "submitting" || status === "success") ? 0.5 : 1
+            opacity: status === "submitting" || status === "success" ? 0.5 : 1,
           }}
         >
           {status === "submitting" ? "..." : "Send"}

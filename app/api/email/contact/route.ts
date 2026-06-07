@@ -1,20 +1,15 @@
 import { NextResponse } from "next/server";
 import { brandEmailShell, emailDetailRows, EMAIL_BRAND } from "@/lib/email-templates";
-import { getSupabaseServer } from "@/lib/supabase-server";
+import { insertContact, isFormDbConfigured } from "@/lib/form-db";
+import { sendLeadEmails } from "@/lib/form-email";
 import {
   escapeHtml,
   getFromEmail,
   getOwnerNotifyEmails,
   getResend,
-  resendErrorMessage,
 } from "@/lib/resend";
 
 export async function POST(req: Request) {
-  const resend = getResend();
-  if (!resend) {
-    return NextResponse.json({ ok: false, error: "not_configured" }, { status: 503 });
-  }
-
   let body: { name?: string; email?: string; subject?: string; message?: string };
   try {
     body = await req.json();
@@ -31,19 +26,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "missing_fields" }, { status: 400 });
   }
 
-  const supabase = getSupabaseServer();
-  if (supabase) {
-    const { error: dbErr } = await supabase.from("contacts").insert({
-      name,
-      email,
-      subject,
-      message,
-    });
-    if (dbErr) {
-      console.error("[Supabase] contact insert failed:", dbErr.message, dbErr.code);
+  let saved = false;
+  if (isFormDbConfigured()) {
+    try {
+      await insertContact({ name, email, subject, message });
+      saved = true;
+    } catch (err) {
+      console.error("[DB] contact insert failed:", err instanceof Error ? err.message : err);
     }
-  } else {
-    console.warn("[Supabase] not configured; contact will be emailed but not stored in admin");
+  }
+
+  const resend = getResend();
+  if (!resend) {
+    if (saved) {
+      return NextResponse.json({ ok: true, saved: true, warning: "email_not_configured" });
+    }
+    return NextResponse.json({ ok: false, error: "not_configured" }, { status: 503 });
   }
 
   const from = getFromEmail();
@@ -53,27 +51,6 @@ export async function POST(req: Request) {
               <p style="margin:0 0 16px;">Hi ${escapeHtml(name)},</p>
               <p style="margin:0 0 16px;">Thank you for contacting Afrotech. Our engineering team typically responds within <strong style="color:${EMAIL_BRAND.accent};">24 hours</strong>.</p>
               <p style="margin:0;">If your request is urgent, call our support line or reply to this email with more detail.</p>`;
-
-  const clientHtml = brandEmailShell({
-    eyebrow: "Afrotech Water Solutions",
-    title: "We received your message",
-    bodyHtml: clientBody,
-  });
-
-  const { error: clientErr } = await resend.emails.send({
-    from,
-    to: [email],
-    subject: "We received your message — Afrotech Water Solutions",
-    html: clientHtml,
-  });
-
-  if (clientErr) {
-    console.error("[Resend] contact client confirmation:", clientErr);
-    return NextResponse.json(
-      { ok: false, error: "send_failed", reason: resendErrorMessage(clientErr) },
-      { status: 502 },
-    );
-  }
 
   const ownerRows = emailDetailRows(
     [
@@ -90,28 +67,40 @@ export async function POST(req: Request) {
                 <strong style="color:${EMAIL_BRAND.primary};">Reply</strong> to this email to reach the visitor — Reply-To is set to their address.
               </p>`;
 
-  const ownerHtml = brandEmailShell({
-    eyebrow: "New lead · Website form",
-    title: "Contact enquiry",
-    bodyHtml: ownerBody,
-  });
-
-  const { error: teamErr } = await resend.emails.send({
+  const { clientSent, ownerSent, warnings } = await sendLeadEmails(resend, {
     from,
-    to: ownerInboxes,
-    replyTo: email,
-    subject: `[Afrotech] ${subject}`,
-    html: ownerHtml,
+    ownerInboxes,
+    client: {
+      to: email,
+      subject: "We received your message — Afrotech Water Solutions",
+      html: brandEmailShell({
+        eyebrow: "Afrotech Water Solutions",
+        title: "We received your message",
+        bodyHtml: clientBody,
+      }),
+    },
+    owner: {
+      subject: `[Afrotech] ${subject}`,
+      html: brandEmailShell({
+        eyebrow: "New lead · Website form",
+        title: "Contact enquiry",
+        bodyHtml: ownerBody,
+      }),
+      replyTo: email,
+    },
   });
 
-  if (teamErr) {
-    console.error("[Resend] contact owner notify:", teamErr);
+  if (saved || clientSent || ownerSent) {
     return NextResponse.json({
       ok: true,
-      warning: "team_notify_failed",
-      reason: resendErrorMessage(teamErr),
+      saved,
+      emails: { client: clientSent, owner: ownerSent },
+      ...(warnings.length ? { warning: warnings.join("; ") } : {}),
     });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json(
+    { ok: false, error: "submit_failed", reason: warnings.join("; ") || "Could not save or send" },
+    { status: 502 },
+  );
 }

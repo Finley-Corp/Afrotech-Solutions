@@ -1,20 +1,15 @@
 import { NextResponse } from "next/server";
 import { brandEmailShell, emailDetailRows, EMAIL_BRAND } from "@/lib/email-templates";
-import { getSupabaseServer } from "@/lib/supabase-server";
+import { insertQuotation, isFormDbConfigured } from "@/lib/form-db";
+import { sendLeadEmails } from "@/lib/form-email";
 import {
   escapeHtml,
   getFromEmail,
   getOwnerNotifyEmails,
   getResend,
-  resendErrorMessage,
 } from "@/lib/resend";
 
 export async function POST(req: Request) {
-  const resend = getResend();
-  if (!resend) {
-    return NextResponse.json({ ok: false, error: "not_configured" }, { status: 503 });
-  }
-
   let body: Record<string, string>;
   try {
     body = await req.json();
@@ -36,23 +31,31 @@ export async function POST(req: Request) {
   const depth = String(body.depth ?? "").trim();
   const message = String(body.message ?? "").trim();
 
-  const supabase = getSupabaseServer();
-  if (supabase) {
-    const { error: dbErr } = await supabase.from("quotations").insert({
-      name,
-      email,
-      phone,
-      location,
-      pump_type: pumpType,
-      flow_rate: flowRate,
-      depth,
-      message,
-    });
-    if (dbErr) {
-      console.error("[Supabase] quote insert failed:", dbErr.message, dbErr.code);
+  let saved = false;
+  if (isFormDbConfigured()) {
+    try {
+      await insertQuotation({
+        name,
+        email,
+        phone,
+        location,
+        pump_type: pumpType || inquiryType,
+        flow_rate: flowRate,
+        depth,
+        message,
+      });
+      saved = true;
+    } catch (err) {
+      console.error("[DB] quote insert failed:", err instanceof Error ? err.message : err);
     }
-  } else {
-    console.warn("[Supabase] not configured; quote will be emailed but not stored in admin");
+  }
+
+  const resend = getResend();
+  if (!resend) {
+    if (saved) {
+      return NextResponse.json({ ok: true, saved: true, warning: "email_not_configured" });
+    }
+    return NextResponse.json({ ok: false, error: "not_configured" }, { status: 503 });
   }
 
   const from = getFromEmail();
@@ -64,35 +67,14 @@ export async function POST(req: Request) {
               <p style="margin:0 0 16px;">Our engineers are reviewing your request and will send your quote as soon as possible.</p>
               <p style="margin:0;">If anything changes or you need to add details, reply to this email or call our support line.</p>`;
 
-  const clientHtml = brandEmailShell({
-    eyebrow: "Afrotech Water Solutions",
-    title: "Your quote request is received",
-    bodyHtml: clientBody,
-  });
-
-  const { error: clientErr } = await resend.emails.send({
-    from,
-    to: [email],
-    subject: "We received your quote request — Afrotech Water Solutions",
-    html: clientHtml,
-  });
-
-  if (clientErr) {
-    console.error("[Resend] quote client confirmation:", clientErr);
-    return NextResponse.json(
-      { ok: false, error: "send_failed", reason: resendErrorMessage(clientErr) },
-      { status: 502 },
-    );
-  }
-
   const ownerRows = emailDetailRows(
     [
       { label: "Name", value: name },
       { label: "Email", value: email },
       { label: "Phone", value: phone },
-      { label: "Location", value: location },
+      { label: "Location", value: location || "Not specified" },
       { label: "Inquiry type", value: inquiryType },
-      { label: "Selected item", value: pumpType },
+      { label: "Selected item", value: pumpType || inquiryType },
       { label: "Flow rate (m³/hr)", value: flowRate },
       { label: "Depth (m)", value: depth },
       { label: "Requirements", value: message },
@@ -105,28 +87,40 @@ export async function POST(req: Request) {
                 <strong style="color:${EMAIL_BRAND.primary};">Reply</strong> to this email to reach the customer — Reply-To is set to their address.
               </p>`;
 
-  const ownerHtml = brandEmailShell({
-    eyebrow: "New lead · Website form",
-    title: "Quote request",
-    bodyHtml: ownerBody,
-  });
-
-  const { error: teamErr } = await resend.emails.send({
+  const { clientSent, ownerSent, warnings } = await sendLeadEmails(resend, {
     from,
-    to: ownerInboxes,
-    replyTo: email,
-    subject: `[Afrotech] Quote request — ${name}`,
-    html: ownerHtml,
+    ownerInboxes,
+    client: {
+      to: email,
+      subject: "We received your quote request — Afrotech Water Solutions",
+      html: brandEmailShell({
+        eyebrow: "Afrotech Water Solutions",
+        title: "Your quote request is received",
+        bodyHtml: clientBody,
+      }),
+    },
+    owner: {
+      subject: `[Afrotech] Quote request — ${name}`,
+      html: brandEmailShell({
+        eyebrow: "New lead · Website form",
+        title: "Quote request",
+        bodyHtml: ownerBody,
+      }),
+      replyTo: email,
+    },
   });
 
-  if (teamErr) {
-    console.error("[Resend] quote owner notify:", teamErr);
+  if (saved || clientSent || ownerSent) {
     return NextResponse.json({
       ok: true,
-      warning: "team_notify_failed",
-      reason: resendErrorMessage(teamErr),
+      saved,
+      emails: { client: clientSent, owner: ownerSent },
+      ...(warnings.length ? { warning: warnings.join("; ") } : {}),
     });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json(
+    { ok: false, error: "submit_failed", reason: warnings.join("; ") || "Could not save or send" },
+    { status: 502 },
+  );
 }
