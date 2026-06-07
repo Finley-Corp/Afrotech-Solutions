@@ -8,6 +8,7 @@ import { Icon } from "@iconify/react";
 import {
   COMPANY_ADDRESS_LINES,
   COMPANY_ADDRESS_ONE_LINE,
+  COMPANY_CONTACTS,
   COMPANY_MAP_EMBED_URL,
   COMPANY_NAME,
 } from "@/lib/company";
@@ -302,7 +303,7 @@ export default function ContactPage() {
               </p>
             </div>
             
-            {/* Immediate Support */}
+            {/* Team & support */}
             <div style={{ borderBottom: "1px solid var(--color-line)", paddingBottom: "3rem" }}>
               <h3 style={{ 
                 fontFamily: "'Playfair Display', serif", 
@@ -314,17 +315,15 @@ export default function ContactPage() {
                 Regional Support.
               </h3>
               <div style={{ display: "grid", gap: "2rem" }}>
-                <div>
-                  <span style={detailLabelStyle}>Technical Support</span>
-                  <a href="tel:+254737628375" style={linkStyle}>+254737628375</a>
-                </div>
+                {COMPANY_CONTACTS.map((contact) => (
+                  <div key={contact.tel}>
+                    <span style={detailLabelStyle}>{contact.name}</span>
+                    <a href={`tel:${contact.tel}`} style={linkStyle}>{contact.phone}</a>
+                  </div>
+                ))}
                 <div>
                   <span style={detailLabelStyle}>Sales Inquiry</span>
                   <a href="mailto:contact@afrotechsolutions.com" style={linkStyle}>contact@afrotechsolutions.com</a>
-                </div>
-                <div>
-                  <span style={detailLabelStyle}>Emergency Breakdown</span>
-                  <a href="tel:+254737628375" style={linkStyle}>+254737628375 (24/7)</a>
                 </div>
               </div>
             </div>

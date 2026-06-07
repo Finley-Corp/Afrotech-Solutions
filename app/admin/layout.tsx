@@ -14,28 +14,63 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [password, setPassword] = useState("");
-  const [isClient, setIsClient] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
     const auth = localStorage.getItem("afrotech_admin_auth");
     if (auth === "true") {
       setIsAuthorized(true);
     }
+    setAuthChecked(true);
+
+    const onUnauthorized = () => {
+      localStorage.removeItem("afrotech_admin_auth");
+      setIsAuthorized(false);
+    };
+    window.addEventListener("afrotech-admin-unauthorized", onUnauthorized);
+    return () => window.removeEventListener("afrotech-admin-unauthorized", onUnauthorized);
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple master password for now as requested for the initial setup
-    if (password === "afrotech2026") {
-      localStorage.setItem("afrotech_admin_auth", "true");
-      setIsAuthorized(true);
-    } else {
-      alert("Invalid password");
+    const trimmed = password.trim();
+
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: trimmed }),
+      });
+
+      if (res.ok) {
+        localStorage.setItem("afrotech_admin_auth", "true");
+        setIsAuthorized(true);
+        setPassword("");
+        return;
+      }
+    } catch {
+      /* network error */
     }
+
+    alert("Invalid password");
   };
 
-  if (!isClient) return null;
+  if (!authChecked) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#F9FAFB",
+        }}
+      >
+        <Icon icon="lucide:loader-2" className="animate-spin" width="24" />
+      </div>
+    );
+  }
 
   if (!isAuthorized) {
     return (
@@ -129,7 +164,6 @@ export default function AdminLayout({
             { label: "Quotations", href: "/admin/quotations", icon: "lucide:file-text" },
             { label: "Inquiries", href: "/admin/contacts", icon: "lucide:mail" },
             { label: "Subscribers", href: "/admin/newsletter", icon: "lucide:users" },
-            { label: "Products", href: "/admin/products", icon: "lucide:package" },
           ].map((item) => (
             <Link 
               key={item.href}
@@ -156,7 +190,8 @@ export default function AdminLayout({
 
         <div style={{ marginTop: "auto" }}>
           <button 
-            onClick={() => {
+            onClick={async () => {
+              await fetch("/api/admin/logout", { method: "POST", credentials: "include" });
               localStorage.removeItem("afrotech_admin_auth");
               setIsAuthorized(false);
             }}

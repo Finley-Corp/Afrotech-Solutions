@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { useCallback, useState } from "react";
 import { Icon } from "@iconify/react";
+import { useAdminFetch } from "../hooks/useAdminFetch";
+import { AdminTableSkeleton } from "../components/AdminTableSkeleton";
 
 interface Contact {
   id: string;
@@ -14,35 +15,16 @@ interface Contact {
 }
 
 export default function AdminContacts() {
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
-
-  useEffect(() => {
-    async function fetchContacts() {
-      const { data, error } = await supabase
-        .from("contacts")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching contacts:", error);
-      } else {
-        setContacts(data || []);
-      }
-      setLoading(false);
-    }
-
-    fetchContacts();
-  }, []);
-
-  if (loading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", paddingTop: "5rem" }}>
-        <Icon icon="lucide:loader-2" className="animate-spin" width="24" />
-      </div>
-    );
-  }
+  const selectItems = useCallback(
+    (json: unknown) => (json as { items: Contact[] }).items ?? [],
+    []
+  );
+  const { data: contacts, loading, error } = useAdminFetch<Contact[]>("/api/admin/contacts", {
+    cacheKey: "admin_contacts",
+    select: selectItems,
+  });
+  const rows = contacts ?? [];
 
   return (
     <div>
@@ -54,6 +36,10 @@ export default function AdminContacts() {
           Manage and respond to direct messages from the contact page.
         </p>
       </header>
+
+      {error && (
+        <p style={{ color: "#B45309", fontSize: "0.875rem", marginBottom: "1.5rem" }}>{error}</p>
+      )}
 
       <div style={{ 
         backgroundColor: "white", 
@@ -72,14 +58,16 @@ export default function AdminContacts() {
             </tr>
           </thead>
           <tbody>
-            {contacts.length === 0 ? (
+            {loading && rows.length === 0 ? (
+              <AdminTableSkeleton rows={8} cols={5} />
+            ) : rows.length === 0 ? (
               <tr>
                 <td colSpan={5} style={{ padding: "3rem", textAlign: "center", color: "#6B7280", fontSize: "0.875rem" }}>
                   No inquiries found.
                 </td>
               </tr>
             ) : (
-              contacts.map((contact) => (
+              rows.map((contact) => (
                 <tr key={contact.id} style={{ borderBottom: "1px solid var(--color-line)" }}>
                   <td style={tdStyle}>{new Date(contact.created_at).toLocaleDateString()}</td>
                   <td style={tdStyle}>{contact.name}</td>

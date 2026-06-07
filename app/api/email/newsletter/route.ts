@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { brandEmailShell, emailDetailRows, EMAIL_BRAND } from "@/lib/email-templates";
+import { insertNewsletterSubscriber, isFormDbConfigured } from "@/lib/form-db";
 import {
   escapeHtml,
   getFromEmail,
@@ -24,6 +25,14 @@ export async function POST(req: Request) {
   const email = String(body.email ?? "").trim().toLowerCase();
   if (!email || !email.includes("@")) {
     return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
+  }
+
+  if (isFormDbConfigured()) {
+    try {
+      await insertNewsletterSubscriber(email);
+    } catch (err) {
+      console.error("[DB] newsletter insert failed:", err instanceof Error ? err.message : err);
+    }
   }
 
   const from = getFromEmail();

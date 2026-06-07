@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { useCallback, useState } from "react";
 import { Icon } from "@iconify/react";
+import { useAdminFetch } from "../hooks/useAdminFetch";
+import { AdminTableSkeleton } from "../components/AdminTableSkeleton";
 
 interface Subscriber {
   id: string;
@@ -11,48 +12,40 @@ interface Subscriber {
 }
 
 export default function AdminNewsletter() {
-  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchSubscribers();
-  }, []);
-
-  async function fetchSubscribers() {
-    const { data, error } = await supabase
-      .from("newsletter_subscriptions")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching subscribers:", error);
-    } else {
-      setSubscribers(data || []);
-    }
-    setLoading(false);
-  }
+  const selectItems = useCallback(
+    (json: unknown) => (json as { items: Subscriber[] }).items ?? [],
+    []
+  );
+  const { data: subscribers, loading, error, reload } = useAdminFetch<Subscriber[]>("/api/admin/newsletter", {
+    cacheKey: "admin_newsletter",
+    select: selectItems,
+  });
+  const rows = subscribers ?? [];
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   async function handleDelete(id: string) {
     if (!confirm("Remove this email from the subscriber list?")) return;
-    
-    const { error } = await supabase
-      .from("newsletter_subscriptions")
-      .delete()
-      .eq("id", id);
 
-    if (error) {
-      alert("Error removing subscriber: " + error.message);
-    } else {
-      fetchSubscribers();
+    setDeletingId(id);
+    try {
+      const res = await fetch("/api/admin/newsletter", {
+        method: "DELETE",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error((body as { error?: string }).error ?? "Delete failed");
+      }
+
+      await reload();
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Error removing subscriber");
+    } finally {
+      setDeletingId(null);
     }
-  }
-
-  if (loading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", paddingTop: "5rem" }}>
-        <Icon icon="lucide:loader-2" className="animate-spin" width="24" />
-      </div>
-    );
   }
 
   return (
@@ -66,33 +59,37 @@ export default function AdminNewsletter() {
             Management of captured emails for marketing and project updates.
           </p>
         </div>
-        <button 
+        <button
+          disabled={rows.length === 0}
           onClick={() => {
-            const csv = "Email,Subscribed Date\n" + subscribers.map(s => `${s.email},${new Date(s.created_at).toLocaleDateString()}`).join("\n");
-            const blob = new Blob([csv], { type: 'text/csv' });
+            const csv =
+              "Email,Subscribed Date\n" +
+              rows.map((s) => `${s.email},${new Date(s.created_at).toLocaleDateString()}`).join("\n");
+            const blob = new Blob([csv], { type: "text/csv" });
             const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.setAttribute('hidden', '');
-            a.setAttribute('href', url);
-            a.setAttribute('download', 'afrotech_subscribers.csv');
+            const a = document.createElement("a");
+            a.setAttribute("hidden", "");
+            a.setAttribute("href", url);
+            a.setAttribute("download", "afrotech_subscribers.csv");
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
           }}
-          style={{ 
-            padding: "0.75rem 1.5rem", 
-            backgroundColor: "#F3F4F6", 
-            color: "var(--color-primary)", 
-            border: "none", 
+          style={{
+            padding: "0.75rem 1.5rem",
+            backgroundColor: "#F3F4F6",
+            color: "var(--color-primary)",
+            border: "none",
             borderRadius: "2px",
             fontSize: "0.75rem",
             textTransform: "uppercase",
             letterSpacing: "0.15em",
             fontWeight: 600,
-            cursor: "pointer",
+            cursor: rows.length === 0 ? "not-allowed" : "pointer",
+            opacity: rows.length === 0 ? 0.5 : 1,
             display: "flex",
             alignItems: "center",
-            gap: "0.5rem"
+            gap: "0.5rem",
           }}
         >
           <Icon icon="lucide:download" />
@@ -100,12 +97,18 @@ export default function AdminNewsletter() {
         </button>
       </header>
 
-      <div style={{ 
-        backgroundColor: "white", 
-        border: "1px solid var(--color-line)", 
-        borderRadius: "2px",
-        overflow: "hidden"
-      }}>
+      {error && (
+        <p style={{ color: "#B45309", fontSize: "0.875rem", marginBottom: "1.5rem" }}>{error}</p>
+      )}
+
+      <div
+        style={{
+          backgroundColor: "white",
+          border: "1px solid var(--color-line)",
+          borderRadius: "2px",
+          overflow: "hidden",
+        }}
+      >
         <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
           <thead style={{ backgroundColor: "#F9FAFB", borderBottom: "1px solid var(--color-line)" }}>
             <tr>
@@ -116,43 +119,51 @@ export default function AdminNewsletter() {
             </tr>
           </thead>
           <tbody>
-            {subscribers.length === 0 ? (
+            {loading && rows.length === 0 ? (
+              <AdminTableSkeleton rows={8} cols={4} />
+            ) : rows.length === 0 ? (
               <tr>
                 <td colSpan={4} style={{ padding: "3rem", textAlign: "center", color: "#6B7280", fontSize: "0.875rem" }}>
                   No subscribers found.
                 </td>
               </tr>
             ) : (
-              subscribers.map((subs) => (
+              rows.map((subs) => (
                 <tr key={subs.id} style={{ borderBottom: "1px solid var(--color-line)" }}>
                   <td style={tdStyle}>{new Date(subs.created_at).toLocaleDateString()}</td>
                   <td style={tdStyle}>{subs.email}</td>
                   <td style={tdStyle}>
-                    <span style={{ 
-                      fontSize: "0.625rem", 
-                      padding: "0.25rem 0.5rem", 
-                      backgroundColor: "#ECFDF5", 
-                      color: "#065F46", 
-                      borderRadius: "10px", 
-                      fontWeight: 600,
-                      textTransform: "uppercase"
-                    }}>Active</span>
+                    <span
+                      style={{
+                        fontSize: "0.625rem",
+                        padding: "0.25rem 0.5rem",
+                        backgroundColor: "#ECFDF5",
+                        color: "#065F46",
+                        borderRadius: "10px",
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Active
+                    </span>
                   </td>
                   <td style={tdStyle}>
-                    <button 
+                    <button
                       onClick={() => handleDelete(subs.id)}
-                      style={{ 
-                        background: "none", 
-                        border: "none", 
-                        color: "#EF4444", 
-                        cursor: "pointer",
+                      disabled={deletingId === subs.id}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: "#EF4444",
+                        cursor: deletingId === subs.id ? "wait" : "pointer",
                         fontSize: "0.75rem",
                         textTransform: "uppercase",
                         letterSpacing: "0.05em",
-                        fontWeight: 600
+                        fontWeight: 600,
+                        opacity: deletingId === subs.id ? 0.5 : 1,
                       }}
                     >
-                      Remove
+                      {deletingId === subs.id ? "Removing…" : "Remove"}
                     </button>
                   </td>
                 </tr>
