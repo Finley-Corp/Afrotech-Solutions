@@ -315,6 +315,10 @@ export default function ContactPage() {
                 Regional Support.
               </h3>
               <div style={{ display: "grid", gap: "2rem" }}>
+                <div>
+                  <span style={detailLabelStyle}>Technical Support</span>
+                  <a href="tel:+254737628375" style={linkStyle}>+254737628375</a>
+                </div>
                 {COMPANY_CONTACTS.map((contact) => (
                   <div key={contact.tel}>
                     <span style={detailLabelStyle}>{contact.name}</span>
@@ -324,6 +328,10 @@ export default function ContactPage() {
                 <div>
                   <span style={detailLabelStyle}>Sales Inquiry</span>
                   <a href="mailto:contact@afrotechsolutions.com" style={linkStyle}>contact@afrotechsolutions.com</a>
+                </div>
+                <div>
+                  <span style={detailLabelStyle}>Emergency Breakdown</span>
+                  <a href="tel:+254737628375" style={linkStyle}>+254737628375 (24/7)</a>
                 </div>
               </div>
             </div>
