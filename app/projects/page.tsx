@@ -3,6 +3,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { featuredProjects } from "../data/projects";
@@ -69,14 +70,13 @@ export default function ProjectsPage() {
             overflow: "hidden",
           }}
         >
-          <img
+          <Image
             src="/assets/images/afrotech-14.jpg"
             alt="Afrotech engineering project"
+            fill
+            priority
+            sizes="100vw"
             style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
               objectFit: "cover",
               transform: "scale(1.04)",
             }}
@@ -258,7 +258,13 @@ export default function ProjectsPage() {
                 border: "1px solid var(--color-line)",
               }}
             >
-              <img src={project.img} alt={project.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+              <Image
+                src={project.img}
+                alt={project.title}
+                fill
+                sizes="380px"
+                style={{ objectFit: "cover" }}
+              />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,15,14,0.78), rgba(15,15,14,0.18), transparent)" }} />
               <div style={{ position: "absolute", top: "1rem", left: "1rem", right: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: "999px", padding: "0.35rem 0.65rem", fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "#ffffff" }}>

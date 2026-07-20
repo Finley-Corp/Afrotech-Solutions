@@ -3,6 +3,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 
@@ -49,14 +50,13 @@ export default function ServicesPage() {
           overflow: "hidden",
         }}
       >
-        <img
+        <Image
           src="/assets/images/afrotech-7.jpg"
           alt="Afrotech service team"
+          fill
+          priority
+          sizes="100vw"
           style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
             objectFit: "cover",
             opacity: 0.35,
           }}

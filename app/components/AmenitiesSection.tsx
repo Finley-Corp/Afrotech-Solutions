@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 
@@ -151,11 +152,13 @@ export default function AmenitiesSection() {
                     overflow: "hidden",
                   }}
                 >
-                  <img
+                  <Image
                     src="/assets/images/afrotech-2.jpg"
                     alt="Laboratory water quality testing"
+                    fill
+                    sizes="(max-width: 767px) 100vw, 50vw"
                     className="img-zoom"
-                    style={{ width: "100%", height: "100%", minHeight: "380px", objectFit: "cover" }}
+                    style={{ objectFit: "cover" }}
                   />
                   <div
                     style={{

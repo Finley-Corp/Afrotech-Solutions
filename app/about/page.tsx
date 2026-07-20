@@ -3,6 +3,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 
@@ -80,14 +81,13 @@ export default function AboutPage() {
           padding: "0 clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem)",
         }}
       >
-        <img
+        <Image
           src="/assets/images/afrotech-4.jpg"
           alt="Engineering site visit"
+          fill
+          priority
+          sizes="100vw"
           style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
             objectFit: "cover",
             opacity: 0.42,
           }}
@@ -303,6 +303,7 @@ export default function AboutPage() {
             <div className="reveal-fade">
               <div
                 style={{
+                  position: "relative",
                   aspectRatio: "16/10",
                   overflow: "hidden",
                   borderRadius: "2px",
@@ -310,10 +311,12 @@ export default function AboutPage() {
                   boxShadow: "0 20px 60px rgba(0,0,0,0.05)",
                 }}
               >
-                <img
+                <Image
                   src="/assets/images/afrotech-2.jpg"
                   alt="Quality testing laboratory"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  fill
+                  sizes="(max-width: 767px) 100vw, 50vw"
+                  style={{ objectFit: "cover" }}
                 />
               </div>
             </div>
@@ -472,11 +475,13 @@ export default function AboutPage() {
                   overflow: "hidden",
                 }}
               >
-                <div style={{ height: "220px", overflow: "hidden" }}>
-                  <img
+                <div style={{ position: "relative", height: "220px", overflow: "hidden" }}>
+                  <Image
                     src={pillar.image}
                     alt={pillar.title}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    fill
+                    sizes="(max-width: 767px) 100vw, 33vw"
+                    style={{ objectFit: "cover" }}
                   />
                 </div>
                 <div style={{ padding: "1.35rem 1.5rem 1.6rem" }}>
@@ -644,14 +649,32 @@ export default function AboutPage() {
               marginBottom: "2rem",
             }}
           >
-            <div style={{ minHeight: 220, overflow: "hidden", border: "1px solid rgba(15,15,14,0.08)" }}>
-              <img src="/assets/images/afrotech-14.jpg" alt="Industrial water infrastructure" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "relative", minHeight: 220, overflow: "hidden", border: "1px solid rgba(15,15,14,0.08)" }}>
+              <Image
+                src="/assets/images/afrotech-14.jpg"
+                alt="Industrial water infrastructure"
+                fill
+                sizes="(max-width: 767px) 100vw, 33vw"
+                style={{ objectFit: "cover" }}
+              />
             </div>
-            <div style={{ minHeight: 220, overflow: "hidden", border: "1px solid rgba(15,15,14,0.08)" }}>
-              <img src="/assets/images/afrotech-3.jpg" alt="Water engineering detail" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "relative", minHeight: 220, overflow: "hidden", border: "1px solid rgba(15,15,14,0.08)" }}>
+              <Image
+                src="/assets/images/afrotech-3.jpg"
+                alt="Water engineering detail"
+                fill
+                sizes="(max-width: 767px) 100vw, 33vw"
+                style={{ objectFit: "cover" }}
+              />
             </div>
-            <div style={{ minHeight: 220, overflow: "hidden", border: "1px solid rgba(15,15,14,0.08)" }}>
-              <img src="/assets/images/afrotech-11.jpg" alt="Operations and support" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "relative", minHeight: 220, overflow: "hidden", border: "1px solid rgba(15,15,14,0.08)" }}>
+              <Image
+                src="/assets/images/afrotech-11.jpg"
+                alt="Operations and support"
+                fill
+                sizes="(max-width: 767px) 100vw, 33vw"
+                style={{ objectFit: "cover" }}
+              />
             </div>
           </div>
           <div

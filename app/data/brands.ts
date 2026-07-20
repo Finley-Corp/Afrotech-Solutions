@@ -14,4 +14,5 @@ export const brandPartners: BrandPartner[] = [
   { name: "Wilo", logoSrc: "/assets/logo/wilo-logo.webp" },
   { name: "Grundfos", logoSrc: "/assets/logo/grundfos-logo.webp" },
   { name: "Davis & Shirtliff", logoSrc: "/assets/logo/davis-shirtliff-logo.webp" },
+  { name: "Kamder", logoSrc: "/assets/logo/kamder-logo.png" },
 ];

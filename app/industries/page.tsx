@@ -3,6 +3,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { industries } from "../data/industries";
@@ -98,14 +99,12 @@ export default function IndustriesPage() {
                   backgroundColor: "#0f172a",
                 }}
               >
-                <img
+                <Image
                   src={industry.image}
                   alt={industry.title}
+                  fill
+                  sizes="(max-width: 767px) 100vw, 33vw"
                   style={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
                     objectFit: "cover",
                     transform: "scale(1.02)",
                   }}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { COMPANY_ADDRESS_ONE_LINE, COMPANY_NAME } from "@/lib/company";
@@ -149,11 +150,13 @@ export default function LandingContentSections() {
                 color: "inherit",
               }}
             >
-              <img
+              <Image
                 src={featured.image}
                 alt={featured.title}
+                fill
+                sizes="(max-width: 767px) 100vw, 40vw"
                 className="img-zoom"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ objectFit: "cover" }}
               />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(18,15,13,0.28), rgba(18,15,13,0.02) 45%, transparent)" }} />
               <div style={{ position: "absolute", inset: "clamp(1rem, 2.5vw, 2rem)", border: "1px solid rgba(255,255,255,0.46)", pointerEvents: "none" }} />
@@ -177,7 +180,13 @@ export default function LandingContentSections() {
               {[sideA, sideB].map((ind) => (
                 <Link key={ind.id} href={`/industries/${ind.id}`} className="home-industries-side__card">
                   <div className="img-zoom-container home-industries-side__media">
-                    <img src={ind.image} alt={ind.title} className="img-zoom" />
+                    <Image
+                      src={ind.image}
+                      alt={ind.title}
+                      fill
+                      sizes="(max-width: 767px) 50vw, 20vw"
+                      className="img-zoom"
+                    />
                     <div className="home-industries-side__frame" aria-hidden />
                   </div>
                   <div className="home-industries-side__copy">
@@ -255,11 +264,13 @@ export default function LandingContentSections() {
             {phases.map((p) => (
               <div key={p.step} className="img-zoom-container">
                 <div style={{ position: "relative", minHeight: "320px", overflow: "hidden", backgroundColor: "var(--color-background)" }}>
-                  <img
+                  <Image
                     src={p.img}
-                    alt=""
+                    alt={p.title}
+                    fill
+                    sizes="(max-width: 767px) 100vw, 33vw"
                     className="img-zoom"
-                    style={{ width: "100%", height: "100%", minHeight: "320px", objectFit: "cover" }}
+                    style={{ objectFit: "cover" }}
                   />
                   <div style={{ position: "absolute", inset: "1rem", border: "1px solid rgba(255,255,255,0.48)", pointerEvents: "none" }} />
                 </div>
@@ -279,11 +290,13 @@ export default function LandingContentSections() {
         <div style={{ maxWidth: "1380px", margin: "0 auto", padding: "0 clamp(1.5rem, 4vw, 3.5rem)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
           <article style={{ border: "1px solid var(--color-line)", backgroundColor: "var(--color-surface)", overflow: "hidden" }}>
             <div className="img-zoom-container" style={{ position: "relative", height: "200px", overflow: "hidden" }}>
-              <img
+              <Image
                 src="/assets/images/afrotech-7.jpg"
                 alt="Resources"
+                fill
+                sizes="(max-width: 767px) 100vw, 33vw"
                 className="img-zoom"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ objectFit: "cover" }}
               />
               <div style={{ position: "absolute", inset: "0.75rem", border: "1px solid rgba(255,255,255,0.4)", pointerEvents: "none" }} />
             </div>
@@ -306,11 +319,13 @@ export default function LandingContentSections() {
 
           <article style={{ border: "1px solid var(--color-line)", backgroundColor: "var(--color-surface)", overflow: "hidden" }}>
             <div className="img-zoom-container" style={{ position: "relative", height: "200px", overflow: "hidden" }}>
-              <img
+              <Image
                 src="/assets/images/afrotech-8.jpg"
                 alt="Locations"
+                fill
+                sizes="(max-width: 767px) 100vw, 33vw"
                 className="img-zoom"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ objectFit: "cover" }}
               />
               <div style={{ position: "absolute", inset: "0.75rem", border: "1px solid rgba(255,255,255,0.4)", pointerEvents: "none" }} />
             </div>

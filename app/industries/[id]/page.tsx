@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Icon } from "@iconify/react";
@@ -41,14 +42,13 @@ export default async function IndustryDetailsPage({ params }: IndustryPageProps)
           overflow: "hidden",
         }}
       >
-        <img
+        <Image
           src={industry.image}
           alt={industry.title}
+          fill
+          priority
+          sizes="100vw"
           style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
             objectFit: "cover",
             opacity: 1,
           }}

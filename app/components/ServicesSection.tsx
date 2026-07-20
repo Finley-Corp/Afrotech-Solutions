@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 
@@ -82,7 +83,13 @@ export default function ServicesSection() {
         <div className="services-bento reveal-fade" data-anim="stagger">
           <article className="services-bento__card services-bento__card--trusted">
             <div className="services-bento__media">
-              <img src="/assets/images/afrotech-14.jpg" alt="" className="services-bento__card-bg" />
+              <Image
+                src="/assets/images/afrotech-14.jpg"
+                alt="Afrotech field installation"
+                fill
+                sizes="(max-width: 767px) 100vw, 33vw"
+                className="services-bento__card-bg"
+              />
               <div className="services-bento__frame" aria-hidden />
               <div className="services-bento__card-overlay" />
             </div>
@@ -96,7 +103,12 @@ export default function ServicesSection() {
           <article className="services-bento__card services-bento__card--surface">
             <span className="services-bento__step">01 — Selection</span>
             <div className="services-bento__product-visual">
-              <img src="/assets/products/product-1.jpg" alt="Pump selection and sizing" />
+              <Image
+                src="/assets/products/product-1.jpg"
+                alt="Pump selection and sizing"
+                fill
+                sizes="(max-width: 767px) 100vw, 33vw"
+              />
             </div>
             <h3 className="services-bento__card-title">Pump selection &amp; sizing</h3>
             <p className="services-bento__card-text">
@@ -106,7 +118,13 @@ export default function ServicesSection() {
 
           <article className="services-bento__card services-bento__card--hero">
             <div className="services-bento__media services-bento__media--tall">
-              <img src="/assets/images/afrotech-9.jpg" alt="Technical support" className="services-bento__card-bg" />
+              <Image
+                src="/assets/images/afrotech-9.jpg"
+                alt="Technical support"
+                fill
+                sizes="(max-width: 767px) 100vw, 33vw"
+                className="services-bento__card-bg"
+              />
               <div className="services-bento__frame" aria-hidden />
               <div className="services-bento__card-overlay services-bento__card-overlay--navy" />
             </div>

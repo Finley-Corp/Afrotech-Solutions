@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function EditorialBreak() {
   return (
     <section
@@ -10,13 +12,13 @@ export default function EditorialBreak() {
         backgroundColor: "#1c1917",
       }}
     >
-      <img
-        src="/assets/images/water%20pump-1.jpg"
+      <Image
+        src="/assets/images/water pump-1.jpg"
         alt="Industrial pump installation"
+        fill
+        sizes="100vw"
         data-anim="scale-scrub-editorial"
         style={{
-          width: "100%",
-          height: "100%",
           objectFit: "cover",
           transformOrigin: "center",
           willChange: "transform",
