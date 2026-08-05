@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import Logo from "./Logo";
+import { useQuoteCart } from "@/app/hooks/useQuoteCart";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const { count: quoteCount } = useQuoteCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,11 +82,22 @@ export default function Navbar() {
             <Link href="/services" className="nav-link">
               Services
             </Link>
+            <Link href="/partners" className="nav-link">
+              Partners
+            </Link>
             <Link href="/about" className="nav-link">
               About Us
             </Link>
             <Link href="/contact" className="nav-link">
               Contact Us
+            </Link>
+            <Link
+              href={quoteCount > 0 ? "/quote?cart=true" : "/quote"}
+              className="nav-quote-cart"
+              aria-label={`Quote cart, ${quoteCount} items`}
+            >
+              <Icon icon="solar:cart-3-linear" width={20} />
+              {quoteCount > 0 && <span className="nav-quote-cart__badge">{quoteCount}</span>}
             </Link>
             <Link href="/quote" className="nav-cta-link">
               Get A quote
@@ -159,6 +172,14 @@ export default function Navbar() {
             Services
           </Link>
           <Link
+            href="/partners"
+            className="mobile-nav-link text-reveal"
+            style={{ transitionDelay: "0.32s" }}
+            onClick={() => setIsOpen(false)}
+          >
+            Partners
+          </Link>
+          <Link
             href="/contact"
             className="mobile-nav-link text-reveal"
             style={{ transitionDelay: "0.4s" }}
@@ -167,7 +188,7 @@ export default function Navbar() {
             Contact Us
           </Link>
           <Link
-            href="/quote"
+            href={quoteCount > 0 ? "/quote?cart=true" : "/quote"}
             className="nav-cta-link"
             style={{
               alignSelf: "flex-start",
@@ -177,7 +198,7 @@ export default function Navbar() {
             }}
             onClick={() => setIsOpen(false)}
           >
-            Get A quote
+            Get A quote{quoteCount > 0 ? ` (${quoteCount})` : ""}
           </Link>
         </nav>
       </div>
