@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
-import AmenitiesSection from "./components/AmenitiesSection";
-import TestimonialsSection from "./components/TestimonialsSection";
-import LandingContentSections from "./components/LandingContentSections";
-import ProjectsSection from "./components/ProjectsSection";
+import PumpFinderBar from "./components/PumpFinderBar";
+import TrustStatsStrip from "./components/TrustStatsStrip";
+import CertificationsStrip from "./components/CertificationsStrip";
+import HowWeWorkSection from "./components/HowWeWorkSection";
 import ServicesSection from "./components/ServicesSection";
+import IndustriesSection from "./components/IndustriesSection";
+import ProjectsSection from "./components/ProjectsSection";
 import BrandsPartnersSection from "./components/BrandsPartnersSection";
+import TestimonialsSection from "./components/TestimonialsSection";
+import FinalCTASection from "./components/FinalCTASection";
 import Footer from "./components/Footer";
 import GSAPAnimations from "./components/GSAPAnimations";
 import { JsonLd } from "./components/JsonLd";
@@ -41,12 +45,16 @@ export default function Home() {
       />
       <Navbar />
       <HeroSection />
-      <AmenitiesSection />
-      <LandingContentSections />
-      <ProjectsSection />
+      <PumpFinderBar />
+      <TrustStatsStrip />
+      <CertificationsStrip />
+      <HowWeWorkSection />
       <ServicesSection />
+      <IndustriesSection />
+      <ProjectsSection />
       <BrandsPartnersSection />
       <TestimonialsSection />
+      <FinalCTASection />
       <Footer />
       <GSAPAnimations />
     </main>

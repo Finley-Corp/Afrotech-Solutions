@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import { services } from "../data/services";
 
 const label = "#6f675f";
 const muted = "#5f5851";
@@ -7,7 +8,7 @@ const muted = "#5f5851";
 export default function ServicesSection() {
   return (
     <section
-      className="premium-landing-section services-bento-section"
+      className="premium-landing-section services-grid-section"
       style={{
         position: "relative",
         borderBottom: "1px solid var(--color-line)",
@@ -25,9 +26,9 @@ export default function ServicesSection() {
         }}
       />
 
-      <div className="services-bento-wrap">
+      <div className="services-grid-wrap">
         <div
-          className="reveal-fade services-bento__intro"
+          className="reveal-fade services-grid__intro"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
@@ -79,57 +80,31 @@ export default function ServicesSection() {
           </h2>
         </div>
 
-        <div className="services-bento reveal-fade" data-anim="stagger">
-          <article className="services-bento__card services-bento__card--trusted">
-            <div className="services-bento__media">
-              <img src="/assets/images/afrotech-14.jpg" alt="" className="services-bento__card-bg" />
-              <div className="services-bento__frame" aria-hidden />
-              <div className="services-bento__card-overlay" />
-            </div>
-            <div className="services-bento__card-content services-bento__card-content--light">
-              <span className="services-bento__step">Field-proven</span>
-              <p className="services-bento__stat-lg">250+</p>
-              <span className="services-bento__caption">Active installations across the region</span>
-            </div>
-          </article>
-
-          <article className="services-bento__card services-bento__card--surface">
-            <span className="services-bento__step">01 — Selection</span>
-            <div className="services-bento__product-visual">
-              <img src="/assets/products/product-1.jpg" alt="Pump selection and sizing" />
-            </div>
-            <h3 className="services-bento__card-title">Pump selection &amp; sizing</h3>
-            <p className="services-bento__card-text">
-              Duty-point analysis, head calculations, and model matching for reliable operation.
-            </p>
-          </article>
-
-          <article className="services-bento__card services-bento__card--hero">
-            <div className="services-bento__media services-bento__media--tall">
-              <img src="/assets/images/afrotech-9.jpg" alt="Technical support" className="services-bento__card-bg" />
-              <div className="services-bento__frame" aria-hidden />
-              <div className="services-bento__card-overlay services-bento__card-overlay--navy" />
-            </div>
-            <div className="services-bento__card-content services-bento__card-content--light">
-              <span className="services-bento__step">04 — Support</span>
-              <h3 className="services-bento__hero-title">Maintenance &amp; technical support</h3>
-              <p className="services-bento__hero-meta">Response within 24 hours for critical operations</p>
-            </div>
-          </article>
-
-          <article className="services-bento__card services-bento__card--wide">
-            <span className="services-bento__step">02 — Engineering</span>
-            <h3 className="services-bento__wide-title">
-              System design &amp; integration for borehole, booster, and transfer systems.
-            </h3>
-            <p className="services-bento__card-text">
-              End-to-end layouts with controls, redundancy planning, and commissioning support.
-            </p>
-            <Link href="/services" className="services-bento__link">
-              View all services
-              <Icon icon="solar:arrow-right-up-linear" width={16} />
+        <div className="services-grid reveal-fade" data-anim="stagger">
+          {services.map((service) => (
+            <Link
+              key={service.slug}
+              href={service.path}
+              className="services-grid__card"
+            >
+              <div className="services-grid__icon-wrap">
+                <Icon icon={service.icon} width={20} />
+              </div>
+              <h3 className="services-grid__title">{service.title}</h3>
+              <p className="services-grid__text">{service.summary}</p>
+              <span className="services-grid__link">
+                Learn more
+                <Icon icon="solar:arrow-right-up-linear" width={16} />
+              </span>
             </Link>
-          </article>
+          ))}
+        </div>
+
+        <div className="services-grid__footer reveal-fade">
+          <Link href="/services" className="services-grid__all-link">
+            View all services
+            <Icon icon="solar:arrow-right-up-linear" width={16} />
+          </Link>
         </div>
       </div>
     </section>

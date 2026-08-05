@@ -1,29 +1,15 @@
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import { testimonials } from "@/app/data/testimonials";
 
 const muted = "#5f5851";
 const label = "#6f675f";
 
-const testimonials = [
-  {
-    quote:
-      "The AquaMax submersible has been running our borehole for two years without a single fault. Our farm irrigation runs 18 hours a day — it hasn't missed a beat.",
-    author: "James Mwangi, Farmer — Nakuru, Kenya",
-  },
-  {
-    quote:
-      "Afrotech's team helped us spec the right dewatering pump for our construction site. Fast delivery and the technical support was excellent throughout the project.",
-    author: "Priya Sharma, Site Engineer — Dar es Salaam, Tanzania",
-  },
-  {
-    quote:
-      "We switched our entire municipal supply pumping station to Afrotech TurboFlow units. Energy consumption dropped 35% in the first quarter.",
-    author: "David Otieno, Water Authority Director — Kisumu, Kenya",
-  },
-];
-
 export default function TestimonialsSection() {
   const primary = testimonials[0];
+  const primaryCredit = primary.location
+    ? `${primary.author} — ${primary.location}`
+    : primary.author;
 
   return (
     <section className="premium-landing-section" style={{ position: "relative", backgroundColor: "var(--color-surface)", borderBottom: "1px solid var(--color-line)", overflow: "hidden" }}>
@@ -105,7 +91,7 @@ export default function TestimonialsSection() {
             >
               &ldquo;{primary.quote}&rdquo;
             </blockquote>
-            <p style={{ fontSize: "0.85rem", color: muted, margin: "0 0 auto 0" }}>— {primary.author}</p>
+            <p style={{ fontSize: "0.85rem", color: muted, margin: "0 0 auto 0" }}>— {primaryCredit}</p>
 
             <div style={{ marginTop: "2rem", paddingTop: "1.5rem", borderTop: "1px solid var(--color-line)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.25rem" }}>
               <div>
@@ -164,7 +150,9 @@ export default function TestimonialsSection() {
               <p className="premium-quote-secondary" style={{ fontSize: "1.05rem", lineHeight: 1.55, color: "var(--color-primary)", margin: "0 0 1rem 0", fontWeight: 300 }}>
                 &ldquo;{t.quote}&rdquo;
               </p>
-              <span style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.12em", color: label }}>— {t.author}</span>
+              <span style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.12em", color: label }}>
+                — {t.location ? `${t.author} — ${t.location}` : t.author}
+              </span>
             </div>
           ))}
         </div>
