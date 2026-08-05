@@ -3,10 +3,14 @@
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import AddToQuoteButton from "../../components/AddToQuoteButton";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import Image from "next/image";
 import type { ProductDbRow } from "@/app/data/products";
+import type { ProductListItem } from "@/lib/products-db";
+import { productDetailPath } from "@/lib/product-slug";
+import { SPECS_UNAVAILABLE_MESSAGE } from "@/lib/product-metadata";
 
 const BRAND_COLOR: Record<string, string> = {
   grundfos: "#00526E",
@@ -19,7 +23,12 @@ const BRAND_BG: Record<string, string> = {
   wilo: "#E6EBF4",
 };
 
-export default function ProductDetailView({ product }: { product: ProductDbRow }) {
+type Props = {
+  product: ProductDbRow;
+  similarProducts: ProductListItem[];
+};
+
+export default function ProductDetailView({ product, similarProducts }: Props) {
   const [imgError, setImgError] = useState(false);
 
   const brandKey = product.category_id?.toLowerCase() ?? "";
@@ -86,8 +95,8 @@ export default function ProductDetailView({ product }: { product: ProductDbRow }
 
             {specs.length > 0 && (
               <div className="pd-hero__spec-pills">
-                {specs.slice(0, 4).map((s, i) => (
-                  <div key={i} className="pd-hero__spec-pill">
+                {specs.slice(0, 4).map((s) => (
+                  <div key={`${s.label}-${s.value}`} className="pd-hero__spec-pill">
                     <span className="pd-hero__spec-label">{s.label}</span>
                     <span className="pd-hero__spec-value">{s.value}</span>
                   </div>
@@ -96,8 +105,15 @@ export default function ProductDetailView({ product }: { product: ProductDbRow }
             )}
 
             <div className="pd-hero__actions">
+              <AddToQuoteButton
+                id={product.id}
+                slug={product.slug}
+                name={product.name}
+                brand={product.category}
+                variant="detail"
+              />
               <Link
-                href={{ pathname: "/quote", query: { model: product.name } }}
+                href={{ pathname: "/quote", query: { model: product.slug } }}
                 className="pd-hero__cta-primary"
               >
                 <Icon icon="solar:document-text-linear" width={16} />
@@ -140,8 +156,8 @@ export default function ProductDetailView({ product }: { product: ProductDbRow }
 
             {specs.length > 0 ? (
               <div className="pd-specs-table">
-                {specs.map((s, i) => (
-                  <div key={i} className="pd-specs-table__row">
+                {specs.map((s) => (
+                  <div key={`${s.label}-${s.value}`} className="pd-specs-table__row">
                     <span className="pd-specs-table__label">{s.label}</span>
                     <span className="pd-specs-table__value">{s.value}</span>
                   </div>
@@ -150,7 +166,7 @@ export default function ProductDetailView({ product }: { product: ProductDbRow }
             ) : (
               <div className="pd-specs-empty">
                 <Icon icon="solar:document-broken" width={28} />
-                <p>Detailed specs available on request.</p>
+                <p>{SPECS_UNAVAILABLE_MESSAGE}</p>
               </div>
             )}
           </div>
@@ -165,8 +181,8 @@ export default function ProductDetailView({ product }: { product: ProductDbRow }
             </div>
 
             <div className="pd-applications">
-              {applications.map((app, i) => (
-                <div key={i} className="pd-applications__item">
+              {applications.map((app) => (
+                <div key={app} className="pd-applications__item">
                   <span className="pd-applications__icon" style={{ background: brandBg, color: brandColor }}>
                     <Icon icon="solar:check-circle-linear" width={16} />
                   </span>
@@ -186,7 +202,7 @@ export default function ProductDetailView({ product }: { product: ProductDbRow }
                 performance in demanding environments.
               </p>
               <Link
-                href={{ pathname: "/quote", query: { model: product.name } }}
+                href={{ pathname: "/quote", query: { model: product.slug } }}
                 className="pd-quality-card__cta"
               >
                 Inquire About This Model
@@ -197,6 +213,33 @@ export default function ProductDetailView({ product }: { product: ProductDbRow }
         </div>
       </section>
 
+      {similarProducts.length > 0 && (
+        <section className="pd-similar">
+          <div className="pd-similar__inner">
+            <h2 className="pd-similar__title">Similar products</h2>
+            <div className="pd-similar__grid">
+              {similarProducts.map((p) => (
+                <Link key={p.id} href={productDetailPath(p.slug)} className="pd-similar__card">
+                  <div className="pd-similar__media">
+                    <Image
+                      src={p.main_img}
+                      alt={p.name}
+                      width={320}
+                      height={240}
+                      className="pd-similar__img"
+                    />
+                  </div>
+                  <div className="pd-similar__body">
+                    <span className="pd-similar__brand">{p.category}</span>
+                    <span className="pd-similar__name">{p.name}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <div className="pd-bottom-nav">
         <div className="pd-bottom-nav__inner">
           <Link href="/products" className="pd-bottom-nav__back">
@@ -204,7 +247,7 @@ export default function ProductDetailView({ product }: { product: ProductDbRow }
             Back to Catalogue
           </Link>
           <Link
-            href={{ pathname: "/quote", query: { model: product.name } }}
+            href={{ pathname: "/quote", query: { model: product.slug } }}
             className="pd-bottom-nav__quote"
           >
             Request a Quote
