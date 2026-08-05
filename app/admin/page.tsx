@@ -35,6 +35,7 @@ export default function AdminDashboard() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "2rem", marginBottom: "4rem" }}>
           {[
             { label: "Quote Requests", count: stats?.quotations ?? 0, color: "var(--color-accent)", icon: "lucide:file-text" },
+            { label: "Service Requests", count: stats?.serviceInquiries ?? 0, color: "#0EA5E9", icon: "lucide:wrench" },
             { label: "Direct Inquiries", count: stats?.contacts ?? 0, color: "var(--color-primary)", icon: "lucide:mail" },
             { label: "Newsletter Subscribers", count: stats?.newsletter ?? 0, color: "#10B981", icon: "lucide:users" },
           ].map((stat) => (

@@ -49,6 +49,10 @@ export default function AdminLayout({
         setPassword("");
         return;
       }
+      if (res.status === 503) {
+        alert("Admin login is not configured. Set ADMIN_PASSWORD in the server environment.");
+        return;
+      }
     } catch {
       /* network error */
     }
@@ -162,6 +166,7 @@ export default function AdminLayout({
           {[
             { label: "Dashboard", href: "/admin", icon: "lucide:layout-dashboard" },
             { label: "Quotations", href: "/admin/quotations", icon: "lucide:file-text" },
+            { label: "Service Requests", href: "/admin/service-inquiries", icon: "lucide:wrench" },
             { label: "Inquiries", href: "/admin/contacts", icon: "lucide:mail" },
             { label: "Subscribers", href: "/admin/newsletter", icon: "lucide:users" },
           ].map((item) => (
