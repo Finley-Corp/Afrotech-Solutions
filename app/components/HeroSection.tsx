@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const heroImages = [
@@ -5,16 +6,22 @@ const heroImages = [
     src: "/assets/images/hero-section-3.jpg",
     alt: "Industrial water infrastructure",
     className: "hero-bento__lead",
+    sizes: "(max-width: 767px) 100vw, 30vw",
+    priority: true,
   },
   {
     src: "/assets/images/hero-section-1.jpg",
     alt: "Water engineering project",
     className: "hero-bento__cell",
+    sizes: "(max-width: 767px) 50vw, 20vw",
+    priority: false,
   },
   {
     src: "/assets/images/hero-section-2.jpg",
     alt: "Field operations and support",
     className: "hero-bento__cell",
+    sizes: "(max-width: 767px) 50vw, 20vw",
+    priority: false,
   },
 ];
 
@@ -87,7 +94,14 @@ export default function HeroSection() {
               className={`hero-bento__item ${img.className}`}
               data-anim="hero-bento-item"
             >
-              <img src={img.src} alt={img.alt} className="hero-bento__img" />
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                sizes={img.sizes}
+                priority={img.priority}
+                className="hero-bento__img"
+              />
               <span className="hero-bento__frame" aria-hidden />
             </div>
           ))}

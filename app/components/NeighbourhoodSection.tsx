@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const applications = [
@@ -43,12 +44,12 @@ export default function NeighbourhoodSection() {
               boxShadow: "0 18px 60px rgba(0,0,0,0.06)",
             }}
           >
-            <img
+            <Image
               src="/assets/images/afrotech-1.jpg"
               alt="Agricultural irrigation application"
+              fill
+              sizes="(max-width: 767px) 100vw, 50vw"
               style={{
-                width: "100%",
-                height: "100%",
                 objectFit: "cover",
                 transition: "transform 0.7s ease, filter 0.7s ease",
               }}

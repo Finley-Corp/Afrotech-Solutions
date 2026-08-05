@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { testimonials } from "@/app/data/testimonials";
@@ -117,11 +118,13 @@ export default function TestimonialsSection() {
 
           {/* Supporting image + plaque */}
           <div className="img-zoom-container" style={{ position: "relative", minHeight: "360px", backgroundColor: "var(--color-background)", overflow: "hidden" }}>
-            <img
+            <Image
               src="/assets/images/afrotech-9.jpg"
               alt="Industrial water installation"
+              fill
+              sizes="(max-width: 767px) 100vw, 50vw"
               className="img-zoom"
-              style={{ width: "100%", height: "100%", minHeight: "360px", objectFit: "cover" }}
+              style={{ objectFit: "cover" }}
             />
             <div style={{ position: "absolute", inset: "1.25rem", border: "1px solid rgba(255,255,255,0.48)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", left: "1.25rem", right: "1.25rem", bottom: "1.25rem" }}>

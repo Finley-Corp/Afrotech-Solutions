@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function PhilosophySection() {
@@ -101,6 +102,7 @@ export default function PhilosophySection() {
           <div
             className="reveal-fade img-zoom-container group"
             style={{
+              position: "relative",
               width: "100%",
               aspectRatio: "21/9",
               overflow: "hidden",
@@ -109,13 +111,13 @@ export default function PhilosophySection() {
               marginBottom: "3.5rem",
             }}
           >
-            <img
+            <Image
               src="/assets/images/afrotech-13.jpg"
               alt="Water pump installation"
+              fill
+              sizes="100vw"
               className="img-zoom"
               style={{
-                width: "100%",
-                height: "100%",
                 objectFit: "cover",
               }}
             />

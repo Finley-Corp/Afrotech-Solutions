@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const products = [
@@ -129,13 +130,13 @@ export default function FeaturedResidences() {
                   boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
                 }}
               >
-                <img
+                <Image
                   src={p.img}
                   alt={p.name}
+                  fill
+                  sizes="(max-width: 767px) 90vw, 280px"
                   className="residence-img"
                   style={{
-                    width: "100%",
-                    height: "100%",
                     objectFit: "cover",
                     transition: "transform 0.3s ease, filter 0.3s",
                   }}

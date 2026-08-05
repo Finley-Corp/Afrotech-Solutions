@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { featuredProjects } from "@/app/data/projects";
@@ -9,7 +10,13 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[number] }
   return (
     <Link href={`/projects/${project.slug}`} className="projects-marquee__card">
       <div className="projects-marquee__media">
-        <img src={project.img} alt={project.title} className="projects-marquee__img" />
+        <Image
+          src={project.img}
+          alt={project.title}
+          fill
+          sizes="(max-width: 767px) 80vw, 380px"
+          className="projects-marquee__img"
+        />
         <span className="projects-marquee__frame" aria-hidden />
         <div className="projects-marquee__overlay" />
         <div className="projects-marquee__top">
