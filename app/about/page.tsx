@@ -5,67 +5,20 @@ import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-
-const coreValues = [
-  {
-    title: "Engineering Reliability",
-    icon: "lucide:settings",
-    desc: "Every product is tested in laboratory conditions that exceed the toughest real-world demands.",
-  },
-  {
-    title: "Energy Efficiency",
-    icon: "lucide:zap",
-    desc: "Optimizing flow-to-power ratios to reduce operational costs and environmental impact.",
-  },
-  {
-    title: "Local Support",
-    icon: "lucide:map-pin",
-    desc: "A full technical network across East Africa for rapid response and site maintenance.",
-  },
-];
-
-const deliveryPillars = [
-  {
-    title: "Assessment & Sizing",
-    text: "We evaluate source reliability, duty profile, elevation, and expected peak demand before recommending any system.",
-    image: "/assets/images/afrotech-6.jpg",
-  },
-  {
-    title: "Installation & Commissioning",
-    text: "Our team supports installation quality checks, startup verification, and handover testing to confirm real-world performance.",
-    image: "/assets/images/afrotech-7.jpg",
-  },
-  {
-    title: "After-Sales Support",
-    text: "From spare parts to troubleshooting, we keep systems running with practical technical support and fast response.",
-    image: "/assets/images/afrotech-8.jpg",
-  },
-];
-
-const studioTeam = [
-  {
-    name: "Field Engineering",
-    quote:
-      "We size systems for actual operating pressure, not ideal lab assumptions.",
-  },
-  {
-    name: "Technical Support",
-    quote:
-      "Fast diagnostics and practical recommendations keep uptime stable on active sites.",
-  },
-  {
-    name: "Operations",
-    quote:
-      "Availability, logistics, and spare readiness are part of performance.",
-  },
-];
+import { COMPANY_CONTACTS, COMPANY_NAME } from "@/lib/company";
+import {
+  REGIONAL_PRESENCE_COPY,
+  coreValues,
+  howWeWorkPhases,
+  qualityCommitments,
+  teamCapabilities,
+} from "@/app/data/about";
 
 export default function AboutPage() {
   return (
     <main style={{ backgroundColor: "var(--color-background)" }}>
       <Navbar />
 
-      {/* About Hero */}
       <section
         style={{
           position: "relative",
@@ -101,14 +54,7 @@ export default function AboutPage() {
             zIndex: 1,
           }}
         />
-        <div
-          style={{
-            position: "relative",
-            zIndex: 10,
-            textAlign: "left",
-            maxWidth: "78rem",
-          }}
-        >
+        <div style={{ position: "relative", zIndex: 10, textAlign: "left", maxWidth: "78rem" }}>
           <span
             data-anim="hero-eyebrow"
             style={{
@@ -121,7 +67,7 @@ export default function AboutPage() {
               fontWeight: 600,
             }}
           >
-            000 / About Afrotech
+            About Afrotech
           </span>
           <h1
             style={{
@@ -130,14 +76,14 @@ export default function AboutPage() {
               color: "white",
               fontWeight: 300,
               letterSpacing: "-0.02em",
-              textTransform: "none",
               lineHeight: 0.95,
               marginBottom: "1.1rem",
             }}
             className="reveal-line-group"
           >
-            We build water systems
-            <br />that keep East Africa moving.
+            We supply and support
+            <br />
+            water systems that last.
           </h1>
           <p
             data-anim="hero-p"
@@ -150,14 +96,13 @@ export default function AboutPage() {
               lineHeight: 1.7,
             }}
           >
-            From agricultural fields and construction sites to industrial and utility
-            environments, Afrotech designs pumping systems for real conditions and
-            long-term reliability.
+            {COMPANY_NAME} is an authorized distributor of Grundfos, KSB, and Wilo pumps —
+            specifying, supplying, and supporting industrial, municipal, and agricultural water
+            systems across East Africa.
           </p>
         </div>
       </section>
 
-      {/* Marquee */}
       <section
         style={{
           width: "100%",
@@ -169,16 +114,16 @@ export default function AboutPage() {
         }}
       >
         <div className="about-marquee">
-          WATER INFRASTRUCTURE // FIELD ENGINEERING // COMMISSIONING // RELIABLE SUPPLY //
-          REGIONAL SUPPORT // INDUSTRIAL PERFORMANCE // WATER INFRASTRUCTURE // FIELD
+          AUTHORIZED DISTRIBUTION // FIELD ENGINEERING // COMMISSIONING // RELIABLE SUPPLY //
+          REGIONAL SUPPORT // INDUSTRIAL PERFORMANCE // AUTHORIZED DISTRIBUTION // FIELD
           ENGINEERING // COMMISSIONING // RELIABLE SUPPLY // REGIONAL SUPPORT // INDUSTRIAL
           PERFORMANCE //
         </div>
       </section>
 
-      {/* Our Mission Section */}
-      <section style={{ padding: "10rem 0", backgroundColor: "white" }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 3rem" }}>
+      {/* Who we are */}
+      <section style={{ padding: "clamp(5rem, 10vw, 8rem) 0", backgroundColor: "white" }}>
+        <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 clamp(1.5rem, 4vw, 3rem)" }}>
           <div
             style={{
               display: "grid",
@@ -201,7 +146,7 @@ export default function AboutPage() {
                   width: "120px",
                 }}
               >
-                Our Mission
+                Who We Are
               </span>
               <h2
                 style={{
@@ -211,11 +156,12 @@ export default function AboutPage() {
                   color: "var(--color-primary)",
                   lineHeight: 1.2,
                   letterSpacing: "-0.02em",
+                  margin: 0,
                 }}
               >
-                Water security,
+                Distributor-led engineering
                 <br />
-                engineered for reliability.
+                for East African duty cycles.
               </h2>
             </div>
             <div className="reveal-fade">
@@ -225,10 +171,12 @@ export default function AboutPage() {
                   fontSize: "1.125rem",
                   fontWeight: 300,
                   lineHeight: 1.75,
-                  marginBottom: "2rem",
+                  marginBottom: "1.5rem",
                 }}
               >
-                Afrotech was founded with a clear vision: to redefine water supply in East Africa by providing industrial-grade pumping systems that don&apos;t just work — they last. 
+                We help farms, factories, utilities, and contractors get the right pump into the
+                right duty — then stay available for commissioning and support when conditions in
+                the field demand it.
               </p>
               <p
                 style={{
@@ -239,21 +187,25 @@ export default function AboutPage() {
                   marginBottom: "1.5rem",
                 }}
               >
-                We believe that access to water is the foundation of agricultural growth and industrial development. By combining global engineering standards with local technical expertise, we ensure that every community, farm, and factory can depend on a consistent water supply, regardless of external conditions.
+                Our focus has centered on specialized pump distribution and water-system
+                engineering: sourcing from leading manufacturers, matching equipment to site duty,
+                and delivering practical installation and after-sales support across the region.
               </p>
+              {/* TODO(content): Add founding year and milestone timeline when confirmed from company records. */}
               <p
                 style={{
                   color: "var(--color-secondary)",
-                  fontSize: "0.9375rem",
+                  fontSize: "0.875rem",
                   fontWeight: 300,
-                  lineHeight: 1.75,
+                  lineHeight: 1.65,
                   marginBottom: "2rem",
+                  fontStyle: "italic",
                 }}
               >
-                Beyond product supply, we focus on long-term operating value. That means selecting fit-for-purpose equipment, reducing avoidable energy loss, and planning systems that are easier to maintain in the field.
+                Detailed founding history and milestone dates will be published here once confirmed
+                from company records.
               </p>
               <div
-                className="reveal-fade"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
@@ -261,19 +213,54 @@ export default function AboutPage() {
                 }}
               >
                 <div style={{ borderTop: "1px solid var(--color-line)", paddingTop: "0.75rem" }}>
-                  <span style={{ display: "block", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--color-secondary)", marginBottom: "0.35rem" }}>
-                    Focus
+                  <span
+                    style={{
+                      display: "block",
+                      fontSize: "0.7rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.14em",
+                      color: "var(--color-secondary)",
+                      marginBottom: "0.35rem",
+                    }}
+                  >
+                    Role
                   </span>
                   <p style={{ margin: 0, color: "var(--color-primary)", fontSize: "0.9rem", fontWeight: 500 }}>
-                    Reliable field performance
+                    Authorized pump distributor
                   </p>
                 </div>
                 <div style={{ borderTop: "1px solid var(--color-line)", paddingTop: "0.75rem" }}>
-                  <span style={{ display: "block", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--color-secondary)", marginBottom: "0.35rem" }}>
+                  <span
+                    style={{
+                      display: "block",
+                      fontSize: "0.7rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.14em",
+                      color: "var(--color-secondary)",
+                      marginBottom: "0.35rem",
+                    }}
+                  >
+                    Brands
+                  </span>
+                  <p style={{ margin: 0, color: "var(--color-primary)", fontSize: "0.9rem", fontWeight: 500 }}>
+                    Grundfos · KSB · Wilo
+                  </p>
+                </div>
+                <div style={{ borderTop: "1px solid var(--color-line)", paddingTop: "0.75rem" }}>
+                  <span
+                    style={{
+                      display: "block",
+                      fontSize: "0.7rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.14em",
+                      color: "var(--color-secondary)",
+                      marginBottom: "0.35rem",
+                    }}
+                  >
                     Region
                   </span>
                   <p style={{ margin: 0, color: "var(--color-primary)", fontSize: "0.9rem", fontWeight: 500 }}>
-                    Kenya and Eastern Africa
+                    Kenya &amp; Eastern Africa
                   </p>
                 </div>
               </div>
@@ -282,10 +269,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Engineering Excellence */}
+      {/* Quality — distributor QA (option B) */}
       <section
         style={{
-          padding: "8rem 3rem",
+          padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3rem)",
           backgroundColor: "var(--color-warm)",
           borderTop: "1px solid var(--color-line)",
           borderBottom: "1px solid var(--color-line)",
@@ -296,7 +283,7 @@ export default function AboutPage() {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1.2fr 1fr))",
-              gap: "5rem",
+              gap: "4rem",
               alignItems: "center",
             }}
           >
@@ -307,12 +294,11 @@ export default function AboutPage() {
                   overflow: "hidden",
                   borderRadius: "2px",
                   border: "1px solid var(--color-line)",
-                  boxShadow: "0 20px 60px rgba(0,0,0,0.05)",
                 }}
               >
                 <img
                   src="/assets/images/afrotech-2.jpg"
-                  alt="Quality testing laboratory"
+                  alt="Pump equipment ready for site delivery"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
@@ -328,7 +314,7 @@ export default function AboutPage() {
                   marginBottom: "1.5rem",
                 }}
               >
-                Engineering / Quality Standards
+                Quality &amp; Assurance
               </span>
               <h2
                 style={{
@@ -336,11 +322,11 @@ export default function AboutPage() {
                   fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
                   fontWeight: 300,
                   color: "var(--color-primary)",
-                  marginBottom: "2rem",
+                  marginBottom: "1.5rem",
                   lineHeight: 1.3,
                 }}
               >
-                Tested for Africa&apos;s toughest conditions.
+                Quality starts with the right source — and the right duty match.
               </h2>
               <p
                 style={{
@@ -348,10 +334,13 @@ export default function AboutPage() {
                   fontSize: "0.9375rem",
                   fontWeight: 300,
                   lineHeight: 1.75,
-                  marginBottom: "2rem",
+                  marginBottom: "1.25rem",
                 }}
               >
-                Every Afrotech pump undergoes a rigorous 12-point testing cycle before it leaves our facility. We simulate deep-borehole pressure, high-ambient temperatures, and variable voltage to ensure that when a pump is installed in the field, it performs beyond expectations.
+                We do not manufacture pumps. We supply equipment from manufacturers whose
+                production and product certification processes are established — then we add the
+                engineering judgment and handling discipline that matter before equipment reaches
+                your site.
               </p>
               <p
                 style={{
@@ -362,43 +351,50 @@ export default function AboutPage() {
                   marginBottom: "2rem",
                 }}
               >
-                This quality discipline is what allows our clients to trust Afrotech in mission-critical environments, from irrigation blocks and construction sites to municipal distribution nodes and industrial utility loops.
+                That means correct specification against your duty point, careful receipt and
+                storage practices, and manufacturer warranty pathways supported by our regional
+                team when issues arise in the field.
               </p>
+              {/* TODO(content): Re-add ISO / warranty claims only with certificate files or verification links. */}
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                {[
-                  "ISO 9001 Certified Manufacturing",
-                  "SS316 Anti-Corrosion impellers",
-                  "Energy Optimized Motor Design",
-                  "2-Year Performance Guarantee",
-                ].map((item) => (
-                      <li
-                        key={item}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.75rem",
-                          fontSize: "0.75rem",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.12em",
-                          color: "var(--color-primary)",
-                          fontWeight: 500,
-                          marginBottom: "1rem",
-                        }}
-                      >
-                        <Icon icon="lucide:check" style={{ color: "var(--color-accent)" }} />
-                        {item}
-                      </li>
+                {qualityCommitments.map((item) => (
+                  <li
+                    key={item}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "0.75rem",
+                      fontSize: "0.8rem",
+                      letterSpacing: "0.02em",
+                      color: "var(--color-primary)",
+                      fontWeight: 500,
+                      marginBottom: "0.85rem",
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    <Icon
+                      icon="lucide:check"
+                      style={{ color: "var(--color-accent)", flexShrink: 0, marginTop: "0.1rem" }}
+                    />
+                    {item}
+                  </li>
                 ))}
               </ul>
+              <p style={{ margin: "1.25rem 0 0", fontSize: "0.8125rem", color: "var(--color-secondary)" }}>
+                Browse our catalogue brands:{" "}
+                <Link href="/partners" style={{ color: "var(--color-primary)" }}>
+                  Partners &amp; manufacturers
+                </Link>
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Delivery Journey */}
+      {/* How We Work — same framework as homepage */}
       <section
         style={{
-          padding: "9rem 3rem",
+          padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3rem)",
           backgroundColor: "white",
           borderBottom: "1px solid var(--color-line)",
         }}
@@ -408,7 +404,7 @@ export default function AboutPage() {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: "3rem 4rem",
+              gap: "2rem 4rem",
               alignItems: "end",
               marginBottom: "3rem",
             }}
@@ -424,7 +420,7 @@ export default function AboutPage() {
                   marginBottom: "1rem",
                 }}
               >
-                How We Deliver
+                How We Work
               </span>
               <h2
                 style={{
@@ -437,7 +433,7 @@ export default function AboutPage() {
                   margin: 0,
                 }}
               >
-                End-to-end delivery from design to long-term support.
+                Assess. Engineer. Deliver.
               </h2>
             </div>
             <p
@@ -451,7 +447,8 @@ export default function AboutPage() {
                 maxWidth: "40rem",
               }}
             >
-              We structure each project around clear technical milestones and practical service continuity. This keeps implementation predictable and ensures equipment performance remains stable after commissioning.
+              The same three-phase process used across the site — expanded here with the delivery
+              detail clients ask about most often.
             </p>
           </div>
 
@@ -463,9 +460,9 @@ export default function AboutPage() {
               gap: "1.25rem",
             }}
           >
-            {deliveryPillars.map((pillar) => (
+            {howWeWorkPhases.map((phase) => (
               <article
-                key={pillar.title}
+                key={phase.step}
                 style={{
                   border: "1px solid var(--color-line)",
                   backgroundColor: "var(--color-background)",
@@ -474,12 +471,23 @@ export default function AboutPage() {
               >
                 <div style={{ height: "220px", overflow: "hidden" }}>
                   <img
-                    src={pillar.image}
-                    alt={pillar.title}
+                    src={phase.image}
+                    alt=""
                     style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   />
                 </div>
                 <div style={{ padding: "1.35rem 1.5rem 1.6rem" }}>
+                  <p
+                    style={{
+                      margin: "0 0 0.45rem",
+                      fontSize: "0.62rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.12em",
+                      color: "#8a8178",
+                    }}
+                  >
+                    {phase.step}
+                  </p>
                   <h3
                     style={{
                       fontFamily: "'Playfair Display', serif",
@@ -489,7 +497,7 @@ export default function AboutPage() {
                       margin: "0 0 0.75rem 0",
                     }}
                   >
-                    {pillar.title}
+                    {phase.title}
                   </h3>
                   <p
                     style={{
@@ -500,7 +508,7 @@ export default function AboutPage() {
                       fontWeight: 300,
                     }}
                   >
-                    {pillar.text}
+                    {phase.text}
                   </p>
                 </div>
               </article>
@@ -509,10 +517,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Core Values Section */}
-      <section style={{ padding: "10rem 3rem", backgroundColor: "white" }}>
+      {/* Core values */}
+      <section style={{ padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3rem)", backgroundColor: "white" }}>
         <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "6rem" }} className="reveal-fade">
+          <div style={{ textAlign: "center", marginBottom: "3.5rem" }} className="reveal-fade">
             <span
               style={{
                 display: "block",
@@ -523,7 +531,7 @@ export default function AboutPage() {
                 marginBottom: "1.5rem",
               }}
             >
-              The Afrotech Code
+              How we operate
             </span>
             <h2
               style={{
@@ -531,9 +539,10 @@ export default function AboutPage() {
                 fontSize: "2.5rem",
                 fontWeight: 300,
                 color: "var(--color-primary)",
+                margin: 0,
               }}
             >
-              Principles for a resilient future.
+              Principles for dependable delivery.
             </h2>
           </div>
           <div
@@ -541,20 +550,17 @@ export default function AboutPage() {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: "3rem",
+              gap: "1.5rem",
             }}
           >
             {coreValues.map((val) => (
               <div
                 key={val.title}
                 style={{
-                  padding: "3rem",
+                  padding: "2rem",
                   border: "1px solid var(--color-line)",
-                  borderRadius: "2px",
                   backgroundColor: "var(--color-background)",
-                  transition: "transform 0.3s, background-color 0.3s",
                 }}
-                className="value-card"
               >
                 <div
                   style={{
@@ -565,7 +571,7 @@ export default function AboutPage() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    marginBottom: "2rem",
+                    marginBottom: "1.5rem",
                     color: "var(--color-primary)",
                     border: "1px solid var(--color-line)",
                   }}
@@ -577,7 +583,7 @@ export default function AboutPage() {
                     fontFamily: "'Playfair Display', serif",
                     fontSize: "1.5rem",
                     fontWeight: 300,
-                    marginBottom: "1.5rem",
+                    marginBottom: "1rem",
                     color: "var(--color-primary)",
                   }}
                 >
@@ -589,6 +595,7 @@ export default function AboutPage() {
                     fontSize: "0.9375rem",
                     fontWeight: 300,
                     lineHeight: 1.6,
+                    margin: 0,
                   }}
                 >
                   {val.desc}
@@ -599,10 +606,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Studio Section */}
+      {/* Team */}
       <section
         style={{
-          padding: "8rem 3rem",
+          padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3rem)",
           backgroundColor: "#EBEBE8",
           borderBottom: "1px solid var(--color-line)",
         }}
@@ -619,80 +626,138 @@ export default function AboutPage() {
               fontWeight: 600,
             }}
           >
-            004 / Studio
+            Our Team
           </span>
           <h2
             style={{
               fontFamily: "'Playfair Display', serif",
-              fontSize: "clamp(2rem, 5vw, 4rem)",
+              fontSize: "clamp(2rem, 5vw, 3.5rem)",
               lineHeight: 1.05,
-              textTransform: "none",
               letterSpacing: "-0.02em",
               fontWeight: 300,
-              margin: "0 0 2.25rem 0",
+              margin: "0 0 1rem 0",
               color: "var(--color-primary)",
-              maxWidth: "18ch",
+              maxWidth: "20ch",
             }}
           >
             A technical team built for field realities.
           </h2>
-          <div
+          {/* TODO(content): Replace capability cards with named leadership bios when approved. */}
+          <p
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: "1rem",
-              marginBottom: "2rem",
+              margin: "0 0 2rem",
+              maxWidth: "40rem",
+              color: "var(--color-secondary)",
+              fontSize: "0.9375rem",
+              lineHeight: 1.7,
+              fontWeight: 300,
             }}
           >
-            <div style={{ minHeight: 220, overflow: "hidden", border: "1px solid rgba(15,15,14,0.08)" }}>
-              <img src="/assets/images/afrotech-14.jpg" alt="Industrial water infrastructure" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            </div>
-            <div style={{ minHeight: 220, overflow: "hidden", border: "1px solid rgba(15,15,14,0.08)" }}>
-              <img src="/assets/images/afrotech-3.jpg" alt="Water engineering detail" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            </div>
-            <div style={{ minHeight: 220, overflow: "hidden", border: "1px solid rgba(15,15,14,0.08)" }}>
-              <img src="/assets/images/afrotech-11.jpg" alt="Operations and support" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            </div>
-          </div>
+            Named leadership biographies and titles will be published once confirmed. Until then,
+            these are the capability areas that support every engagement — and the published
+            contacts you can reach today.
+          </p>
+
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
               gap: "1rem",
+              marginBottom: "2rem",
             }}
           >
-            {studioTeam.map((member) => (
-              <article key={member.name} style={{ borderTop: "1px solid rgba(15,15,14,0.22)", paddingTop: "1rem" }}>
+            {teamCapabilities.map((member) => (
+              <article
+                key={member.name}
+                style={{
+                  border: "1px solid rgba(15,15,14,0.12)",
+                  backgroundColor: "rgba(255,255,255,0.55)",
+                  padding: "1.25rem 1.35rem",
+                }}
+              >
                 <h3
                   style={{
                     fontFamily: "'Playfair Display', serif",
                     margin: "0 0 0.55rem 0",
                     fontSize: "1.2rem",
-                    textTransform: "none",
-                    letterSpacing: "-0.01em",
                     color: "var(--color-primary)",
                     fontWeight: 300,
                   }}
                 >
                   {member.name}
                 </h3>
-                <p style={{ margin: 0, color: "var(--color-secondary)", lineHeight: 1.7, fontSize: "0.88rem", fontWeight: 300 }}>
-                  {member.quote}
+                <p
+                  style={{
+                    margin: 0,
+                    color: "var(--color-secondary)",
+                    lineHeight: 1.7,
+                    fontSize: "0.88rem",
+                    fontWeight: 300,
+                  }}
+                >
+                  {member.detail}
                 </p>
               </article>
             ))}
           </div>
+
+          <div
+            style={{
+              borderTop: "1px solid rgba(15,15,14,0.15)",
+              paddingTop: "1.5rem",
+            }}
+          >
+            <p
+              style={{
+                margin: "0 0 1rem",
+                fontSize: "0.68rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                color: "var(--color-secondary)",
+              }}
+            >
+              Published contacts
+            </p>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "0.85rem",
+              }}
+            >
+              {COMPANY_CONTACTS.map((c) => (
+                <a
+                  key={c.tel}
+                  href={`tel:${c.tel}`}
+                  style={{
+                    textDecoration: "none",
+                    color: "var(--color-primary)",
+                    borderBottom: "1px solid var(--color-line)",
+                    paddingBottom: "0.65rem",
+                  }}
+                >
+                  <strong style={{ display: "block", fontSize: "0.95rem", fontWeight: 500 }}>
+                    {c.name}
+                  </strong>
+                  <span style={{ fontSize: "0.85rem", color: "var(--color-secondary)" }}>
+                    {c.phone}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Regional Focus Banner */}
+      {/* Regional presence — no unsubstantiated hub count */}
       <section
         style={{
-          padding: "8rem 3rem",
+          padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3rem)",
           backgroundColor: "#111827",
           color: "white",
           textAlign: "center",
-          backgroundImage: "linear-gradient(rgba(0,0,0,0.58), rgba(0,0,0,0.58)), url('/assets/images/afrotech-1.jpg')",
+          backgroundImage:
+            "linear-gradient(rgba(0,0,0,0.58), rgba(0,0,0,0.58)), url('/assets/images/afrotech-1.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -716,10 +781,10 @@ export default function AboutPage() {
               fontSize: "clamp(2rem, 5vw, 3rem)",
               fontWeight: 300,
               lineHeight: 1.25,
-              marginBottom: "2rem",
+              marginBottom: "1.5rem",
             }}
           >
-            From Nairobi to the Coast.
+            From Nairobi across Eastern Africa.
           </h2>
           <p
             style={{
@@ -727,11 +792,12 @@ export default function AboutPage() {
               fontWeight: 300,
               color: "rgba(255,255,255,0.8)",
               lineHeight: 1.75,
-              marginBottom: "3rem",
+              marginBottom: "2.5rem",
             }}
           >
-            With major technical hubs in Kenya and Tanzania, we provide on-the-ground support to ensure your water solutions operate at peak performance, year-round.
+            {REGIONAL_PRESENCE_COPY}
           </p>
+          {/* TODO(content): Publish verified office / service-point list when confirmed. */}
           <Link
             href="/contact"
             style={{
@@ -745,11 +811,9 @@ export default function AboutPage() {
               borderRadius: "2px",
               fontWeight: 500,
               textDecoration: "none",
-              transition: "transform 0.3s, opacity 0.3s",
             }}
-            className="find-hub-btn"
           >
-            Contact Regional Hub
+            Contact Our Team
           </Link>
         </div>
       </section>
