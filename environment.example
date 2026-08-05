@@ -34,5 +34,10 @@ RESEND_OWNER_EMAIL=
 # Set RESEND_OWNER_EMAIL to that address until you verify a domain at resend.com/domains.
 RESEND_NOTIFY_EMAIL=
 
-# Admin dashboard login
+# Admin dashboard login — REQUIRED (no hardcoded fallback).
+# Generate with: openssl rand -base64 24
 ADMIN_PASSWORD=
+
+# Preferred session signing secret (falls back to ADMIN_PASSWORD if unset).
+# Generate with: openssl rand -hex 32
+ADMIN_SESSION_SECRET=
