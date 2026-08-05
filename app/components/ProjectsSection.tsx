@@ -7,7 +7,7 @@ const muted = "#5f5851";
 
 function ProjectCard({ project }: { project: (typeof featuredProjects)[number] }) {
   return (
-    <article className="projects-marquee__card">
+    <Link href={`/projects/${project.slug}`} className="projects-marquee__card">
       <div className="projects-marquee__media">
         <img src={project.img} alt={project.title} className="projects-marquee__img" />
         <span className="projects-marquee__frame" aria-hidden />
@@ -22,7 +22,7 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[number] }
         <p className="projects-marquee__metric">{project.metric}</p>
         <p className="projects-marquee__location">{project.location}</p>
       </div>
-    </article>
+    </Link>
   );
 }
 
