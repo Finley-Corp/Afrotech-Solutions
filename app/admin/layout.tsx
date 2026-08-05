@@ -14,6 +14,7 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
@@ -105,33 +106,56 @@ export default function AdminLayout({
             color: "var(--color-primary)" 
           }}>Admin Portal</h1>
           <form onSubmit={handleLogin}>
-            <input 
-              type="password" 
-              placeholder="Master Password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{ 
-                width: "100%", 
-                padding: "1rem", 
-                marginBottom: "1.5rem", 
-                border: "1px solid var(--color-line)",
-                outline: "none",
-                fontSize: "0.875rem"
-              }}
-            />
-            <button 
-              type="submit" 
-              style={{ 
-                width: "100%", 
-                padding: "1rem", 
-                backgroundColor: "var(--color-primary)", 
-                color: "white", 
+            <div style={{ position: "relative", marginBottom: "1.5rem" }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Master Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                style={{
+                  width: "100%",
+                  padding: "1rem 3rem 1rem 1rem",
+                  border: "1px solid var(--color-line)",
+                  outline: "none",
+                  fontSize: "0.875rem",
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                title={showPassword ? "Hide password" : "Show password"}
+                style={{
+                  position: "absolute",
+                  right: "0.75rem",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  border: "none",
+                  background: "none",
+                  cursor: "pointer",
+                  color: "#6B7280",
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "0.25rem",
+                }}
+              >
+                <Icon icon={showPassword ? "lucide:eye-off" : "lucide:eye"} width={18} />
+              </button>
+            </div>
+            <button
+              type="submit"
+              style={{
+                width: "100%",
+                padding: "1rem",
+                backgroundColor: "var(--color-primary)",
+                color: "white",
                 border: "none",
                 fontSize: "0.75rem",
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
                 fontWeight: 600,
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             >
               Enter Dashboard
