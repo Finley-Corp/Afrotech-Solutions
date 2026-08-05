@@ -7,6 +7,7 @@ export type AdminStats = {
   quotations: number;
   contacts: number;
   newsletter: number;
+  serviceInquiries: number;
 };
 
 function hasDatabase(): boolean {
@@ -30,7 +31,7 @@ async function tableExists(name: string): Promise<boolean> {
 
 async function fetchStats(): Promise<AdminStats> {
   if (!hasDatabase()) {
-    return { quotations: 0, contacts: 0, newsletter: 0 };
+    return { quotations: 0, contacts: 0, newsletter: 0, serviceInquiries: 0 };
   }
 
   const [quotations, contacts] = await Promise.all([
@@ -46,10 +47,19 @@ async function fetchStats(): Promise<AdminStats> {
     newsletter = parseCount(rows);
   }
 
+  let serviceInquiries = 0;
+  if (await tableExists("service_inquiries")) {
+    const rows = await neonQuery<{ count: string }>(
+      `SELECT COUNT(*)::text AS count FROM service_inquiries`,
+    );
+    serviceInquiries = parseCount(rows);
+  }
+
   return {
     quotations: parseCount(quotations),
     contacts: parseCount(contacts),
     newsletter,
+    serviceInquiries,
   };
 }
 
@@ -79,6 +89,19 @@ export type AdminSubscriber = {
   id: string;
   created_at: string;
   email: string;
+};
+
+export type AdminServiceInquiry = {
+  id: string;
+  created_at: string;
+  service_slug: string;
+  service_title: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  priority: string | null;
+  variant: string | null;
+  details: string | null;
 };
 
 async function fetchQuotations(): Promise<AdminQuotation[]> {
@@ -119,6 +142,20 @@ async function fetchNewsletter(): Promise<AdminSubscriber[]> {
   );
 }
 
+async function fetchServiceInquiries(): Promise<AdminServiceInquiry[]> {
+  if (!hasDatabase() || !(await tableExists("service_inquiries"))) {
+    return [];
+  }
+
+  return neonQuery<AdminServiceInquiry>(
+    `SELECT id::text, created_at::text, service_slug, service_title, name, email, phone, priority, variant, details
+     FROM service_inquiries
+     ORDER BY created_at DESC
+     LIMIT $1`,
+    [LIST_LIMIT],
+  );
+}
+
 const cachedStats = unstable_cache(fetchStats, ["admin-stats"], { revalidate: 20, tags: ["admin"] });
 const cachedQuotations = unstable_cache(fetchQuotations, ["admin-quotations"], {
   revalidate: 20,
@@ -126,6 +163,10 @@ const cachedQuotations = unstable_cache(fetchQuotations, ["admin-quotations"], {
 });
 const cachedContacts = unstable_cache(fetchContacts, ["admin-contacts"], { revalidate: 20, tags: ["admin"] });
 const cachedNewsletter = unstable_cache(fetchNewsletter, ["admin-newsletter"], {
+  revalidate: 20,
+  tags: ["admin"],
+});
+const cachedServiceInquiries = unstable_cache(fetchServiceInquiries, ["admin-service-inquiries"], {
   revalidate: 20,
   tags: ["admin"],
 });
@@ -144,6 +185,10 @@ export function getAdminContacts() {
 
 export function getAdminNewsletter() {
   return cachedNewsletter();
+}
+
+export function getAdminServiceInquiries() {
+  return cachedServiceInquiries();
 }
 
 export async function deleteNewsletterSubscriber(id: string): Promise<boolean> {

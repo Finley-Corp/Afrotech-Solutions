@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import ProductDetailView from "./ProductDetailView";
-import { getCachedProductBySlugOrId } from "@/lib/products-db";
+import { fetchSimilarProducts, getCachedProductBySlugOrId } from "@/lib/products-db";
 import { isNumericProductId, productDetailPath } from "@/lib/product-slug";
 
 export const revalidate = 300;
@@ -21,5 +21,7 @@ export default async function ProductDetailPage({ params }: Props) {
     redirect(productDetailPath(product.slug));
   }
 
-  return <ProductDetailView product={product} />;
+  const similar = await fetchSimilarProducts(product.category_id, product.slug, 4);
+
+  return <ProductDetailView product={product} similarProducts={similar} />;
 }

@@ -1,6 +1,13 @@
 "use client";
 
+/**
+ * `/contact` vs `/quote` (see also lib/company.ts):
+ * Use this page for general inquiries, partnership, and non-transactional questions.
+ * Use `/quote` for product, service, pricing, or site-visit / system-design requests.
+ */
+
 import { useState } from "react";
+import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GSAPAnimations from "../components/GSAPAnimations";
@@ -9,16 +16,24 @@ import {
   COMPANY_ADDRESS_LINES,
   COMPANY_ADDRESS_ONE_LINE,
   COMPANY_CONTACTS,
+  COMPANY_HOURS,
   COMPANY_MAP_EMBED_URL,
   COMPANY_NAME,
+  CONTACT_SUBJECTS,
+  EMERGENCY_TEL,
+  SALES_EMAIL,
+  TECHNICAL_SUPPORT_TEL,
 } from "@/lib/company";
+import { URGENCY_OPTIONS } from "@/lib/quote-form";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     subject: "General Inquiry",
+    urgency: "routine",
     message: "",
   });
 
@@ -35,12 +50,7 @@ export default function ContactPage() {
       const res = await fetch("/api/email/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-        }),
+        body: JSON.stringify(formData),
       });
       sendOk = res.ok;
       if (!res.ok) {
@@ -61,7 +71,9 @@ export default function ContactPage() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -112,10 +124,21 @@ export default function ContactPage() {
               marginBottom: "3rem",
             }}
           >
-            Thank you for reaching out to Afrotech. Our team will review your message and get back to you shortly.
+            Thank you for reaching out to Afrotech. Our team will review your message and get back
+            to you shortly.
           </p>
           <button
-            onClick={() => setSubmitted(false)}
+            onClick={() => {
+              setSubmitted(false);
+              setFormData({
+                name: "",
+                email: "",
+                phone: "",
+                subject: "General Inquiry",
+                urgency: "routine",
+                message: "",
+              });
+            }}
             style={{
               display: "inline-block",
               padding: "1rem 2.5rem",
@@ -125,10 +148,9 @@ export default function ContactPage() {
               textTransform: "uppercase",
               letterSpacing: "0.2em",
               borderRadius: "2px",
-              textDecoration: "none",
               fontWeight: 500,
               cursor: "pointer",
-              border: "none"
+              border: "none",
             }}
           >
             Send Another Message
@@ -144,7 +166,6 @@ export default function ContactPage() {
     <main style={{ backgroundColor: "var(--color-background)" }}>
       <Navbar />
 
-      {/* Hero Section */}
       <section
         style={{
           padding: "10rem 2rem 6rem",
@@ -189,222 +210,274 @@ export default function ContactPage() {
             lineHeight: 1.6,
           }}
         >
-          Connect with our technical advisors, sales team, or regional support hubs to find the right water solution for your project.
+          General questions, partnerships, and advisor chat. For product or service pricing, use
+          our{" "}
+          <Link href="/quote" style={{ color: "var(--color-primary)" }}>
+            quote form
+          </Link>
+          .
         </p>
       </section>
 
-      {/* Form & Info Section */}
       <section style={{ paddingBottom: "8rem" }}>
-        <div 
-          style={{ 
-            maxWidth: "1400px", 
-            margin: "0 auto", 
+        <div
+          style={{
+            maxWidth: "1400px",
+            margin: "0 auto",
             padding: "0 2rem",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1.2fr 1fr))",
             gap: "5rem",
-            alignItems: "start"
+            alignItems: "start",
           }}
         >
-          {/* Inquiry Form */}
-          <form 
+          <form
             onSubmit={handleSubmit}
             className="reveal-fade"
-            style={{ 
-              backgroundColor: "white", 
-              padding: "4rem", 
-              borderRadius: "2px", 
+            style={{
+              backgroundColor: "white",
+              padding: "clamp(1.5rem, 4vw, 4rem)",
+              borderRadius: "2px",
               border: "1px solid var(--color-line)",
               display: "grid",
-              gap: "2.5rem"
+              gap: "2rem",
             }}
           >
             <div>
               <label style={labelStyle}>Full Name</label>
-              <input 
-                type="text" 
-                name="name" 
-                required 
-                placeholder="John Doe" 
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder="John Doe"
                 style={inputStyle}
+                value={formData.name}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label style={labelStyle}>Email Address</label>
-              <input 
-                type="email" 
-                name="email" 
-                required 
-                placeholder="john@company.com" 
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="john@company.com"
                 style={inputStyle}
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Phone (optional)</label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="+254 --- --- ---"
+                style={inputStyle}
+                value={formData.phone}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label style={labelStyle}>Subject</label>
-              <select 
-                name="subject" 
+              <select
+                name="subject"
                 style={inputStyle}
                 onChange={handleChange}
                 value={formData.subject}
               >
-                <option>General Inquiry</option>
-                <option>Technical Support</option>
-                <option>Sales Inquiry</option>
-                <option>Partnership Opportunity</option>
+                {CONTACT_SUBJECTS.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label style={labelStyle}>How urgent is this? *</label>
+              <select
+                name="urgency"
+                required
+                style={inputStyle}
+                onChange={handleChange}
+                value={formData.urgency}
+              >
+                {URGENCY_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
               <label style={labelStyle}>Message</label>
-              <textarea 
-                name="message" 
-                rows={5} 
-                placeholder="How can we help you today?" 
-                style={{ ...inputStyle, resize: "none" }}
+              <textarea
+                name="message"
+                rows={5}
+                required
+                placeholder="How can we help you today?"
+                style={{ ...inputStyle, resize: "vertical" }}
+                value={formData.message}
                 onChange={handleChange}
               />
             </div>
             {error && (
-              <p style={{ color: "var(--color-accent)", fontSize: "0.875rem", marginBottom: "1rem" }}>{error}</p>
+              <p style={{ color: "var(--color-accent)", fontSize: "0.875rem", margin: 0 }}>{error}</p>
             )}
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="consult-btn"
               disabled={submitting}
-              style={{ backgroundColor: "var(--color-accent)", color: "white", padding: "1rem 3rem", width: "fit-content", cursor: "pointer", border: "none", borderRadius: "2px", textTransform: "uppercase", fontSize: "0.625rem", letterSpacing: "0.2em", fontWeight: 500, opacity: submitting ? 0.7 : 1 }}
+              style={{
+                backgroundColor: "var(--color-accent)",
+                color: "white",
+                padding: "1rem 3rem",
+                width: "fit-content",
+                cursor: "pointer",
+                border: "none",
+                borderRadius: "2px",
+                textTransform: "uppercase",
+                fontSize: "0.625rem",
+                letterSpacing: "0.2em",
+                fontWeight: 500,
+                opacity: submitting ? 0.7 : 1,
+              }}
             >
               {submitting ? "Sending..." : "Send Message"}
             </button>
           </form>
 
-          {/* Contact Details Column */}
-          <div className="reveal-fade" style={{ display: "grid", gap: "4rem" }}>
-
-            <div style={{ borderBottom: "1px solid var(--color-line)", paddingBottom: "3rem" }}>
+          <div className="reveal-fade" style={{ display: "grid", gap: "3.5rem" }}>
+            <div style={{ borderBottom: "1px solid var(--color-line)", paddingBottom: "2.5rem" }}>
               <h3
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontSize: "1.5rem",
                   fontWeight: 300,
                   color: "var(--color-primary)",
-                  marginBottom: "1.25rem",
+                  marginBottom: "1.5rem",
                 }}
               >
-                {COMPANY_NAME}
-              </h3>
-              <p style={{ fontSize: "0.9375rem", fontWeight: 300, color: "var(--color-secondary)", lineHeight: 1.75, margin: 0 }}>
-                {COMPANY_ADDRESS_LINES.map((line, i) => (
-                  <span key={line}>
-                    {line}
-                    {i < COMPANY_ADDRESS_LINES.length - 1 && <br />}
-                  </span>
-                ))}
-              </p>
-            </div>
-            
-            {/* Team & support */}
-            <div style={{ borderBottom: "1px solid var(--color-line)", paddingBottom: "3rem" }}>
-              <h3 style={{ 
-                fontFamily: "'Playfair Display', serif", 
-                fontSize: "1.5rem", 
-                fontWeight: 300, 
-                color: "var(--color-primary)",
-                marginBottom: "2rem"
-              }}>
                 Regional Support.
               </h3>
-              <div style={{ display: "grid", gap: "2rem" }}>
+              <div style={{ display: "grid", gap: "1.75rem" }}>
                 <div>
                   <span style={detailLabelStyle}>Technical Support</span>
-                  <a href="tel:+254737628375" style={linkStyle}>+254737628375</a>
+                  <a href={`tel:${TECHNICAL_SUPPORT_TEL}`} style={linkStyle}>
+                    {TECHNICAL_SUPPORT_TEL}
+                  </a>
                 </div>
                 {COMPANY_CONTACTS.map((contact) => (
                   <div key={contact.tel}>
-                    <span style={detailLabelStyle}>{contact.name}</span>
-                    <a href={`tel:${contact.tel}`} style={linkStyle}>{contact.phone}</a>
+                    <span style={detailLabelStyle}>
+                      {contact.name}
+                      {contact.role ? ` — ${contact.role}` : ""}
+                    </span>
+                    <a href={`tel:${contact.tel}`} style={linkStyle}>
+                      {contact.phone}
+                    </a>
                   </div>
                 ))}
                 <div>
                   <span style={detailLabelStyle}>Sales Inquiry</span>
-                  <a href="mailto:contact@afrotechsolutions.com" style={linkStyle}>contact@afrotechsolutions.com</a>
+                  <a href={`mailto:${SALES_EMAIL}`} style={linkStyle}>
+                    {SALES_EMAIL}
+                  </a>
                 </div>
                 <div>
                   <span style={detailLabelStyle}>Emergency Breakdown</span>
-                  <a href="tel:+254737628375" style={linkStyle}>+254737628375 (24/7)</a>
+                  <a href={`tel:${EMERGENCY_TEL}`} style={linkStyle}>
+                    {EMERGENCY_TEL} (24/7)
+                  </a>
                 </div>
               </div>
             </div>
 
-            {/* Operating Hours */}
             <div>
-              <h3 style={{ 
-                fontFamily: "'Playfair Display', serif", 
-                fontSize: "1.5rem", 
-                fontWeight: 300, 
-                color: "var(--color-primary)",
-                marginBottom: "2rem"
-              }}>
+              <h3
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: "1.5rem",
+                  fontWeight: 300,
+                  color: "var(--color-primary)",
+                  marginBottom: "1.5rem",
+                }}
+              >
                 Operating Hours.
               </h3>
               <div style={{ display: "grid", gap: "1rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem" }}>
-                  <span style={{ color: "var(--color-secondary)", fontWeight: 300 }}>Monday — Friday</span>
-                  <span style={{ color: "var(--color-primary)", fontWeight: 500 }}>08:00 AM — 05:00 PM</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem" }}>
-                  <span style={{ color: "var(--color-secondary)", fontWeight: 300 }}>Saturday</span>
-                  <span style={{ color: "var(--color-primary)", fontWeight: 500 }}>09:00 AM — 01:00 PM</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem" }}>
-                  <span style={{ color: "var(--color-secondary)", fontWeight: 300 }}>Sunday & Holidays</span>
-                  <span style={{ color: "var(--color-primary)", fontWeight: 500 }}>Technical Support Only</span>
-                </div>
+                {COMPANY_HOURS.map((row) => (
+                  <div
+                    key={row.days}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "1rem",
+                      fontSize: "0.875rem",
+                    }}
+                  >
+                    <span style={{ color: "var(--color-secondary)", fontWeight: 300 }}>{row.days}</span>
+                    <span style={{ color: "var(--color-primary)", fontWeight: 500, textAlign: "right" }}>
+                      {row.hours}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* Regional Office & Map Section */}
       <section style={{ padding: "8rem 2rem", backgroundColor: "white", borderTop: "1px solid var(--color-line)" }}>
         <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "4rem" }} className="reveal-fade">
-             <span style={{ 
-              display: "block", 
-              fontSize: "0.625rem", 
-              textTransform: "uppercase", 
-              letterSpacing: "0.15em", 
-              color: "rgba(87,83,78,0.6)",
-              marginBottom: "1.5rem"
-            }}>Visit our Headquarters</span>
-            <h2 style={{ 
-              fontFamily: "'Playfair Display', serif", 
-              fontSize: "2.5rem", 
-              fontWeight: 300, 
-              color: "var(--color-primary)",
-              marginBottom: "1rem"
-            }}>Our Location.</h2>
-            <p style={{ 
-              color: "var(--color-secondary)", 
-              fontSize: "1rem", 
-              fontWeight: 300,
-              marginBottom: "3rem"
-            }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }} className="reveal-fade">
+            <span
+              style={{
+                display: "block",
+                fontSize: "0.625rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.15em",
+                color: "rgba(87,83,78,0.6)",
+                marginBottom: "1.5rem",
+              }}
+            >
+              Visit our Headquarters
+            </span>
+            <h2
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "2.5rem",
+                fontWeight: 300,
+                color: "var(--color-primary)",
+                marginBottom: "1rem",
+              }}
+            >
+              Our Location.
+            </h2>
+            <p
+              style={{
+                color: "var(--color-secondary)",
+                fontSize: "1rem",
+                fontWeight: 300,
+                margin: 0,
+              }}
+            >
               {COMPANY_ADDRESS_ONE_LINE}
             </p>
           </div>
 
-          <div className="reveal-fade" style={{ 
-            width: "100%", 
-            height: "500px", 
-            borderRadius: "2px", 
-            overflow: "hidden",
-            border: "1px solid var(--color-line)",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.05)",
-            position: "relative"
-          }}>
+          <div
+            className="reveal-fade"
+            style={{
+              width: "100%",
+              height: "500px",
+              borderRadius: "2px",
+              overflow: "hidden",
+              border: "1px solid var(--color-line)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.05)",
+              position: "relative",
+            }}
+          >
             <iframe
               src={COMPANY_MAP_EMBED_URL}
               width="100%"
@@ -413,40 +486,55 @@ export default function ContactPage() {
               allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-            {/* Map Overlay info */}
-            <div style={{
-              position: "absolute",
-              bottom: "2rem",
-              left: "2rem",
-              backgroundColor: "white",
-              padding: "1.5rem 2rem",
-              borderRadius: "2px",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-              border: "1px solid var(--color-line)",
-              zIndex: 10
-            }}>
-              <span style={{ 
-                display: "block", 
-                fontSize: "0.625rem", 
-                textTransform: "uppercase", 
-                letterSpacing: "0.1em",
-                color: "var(--color-secondary)",
-                marginBottom: "0.5rem"
-              }}>Headquarters</span>
-              <h4 style={{ 
-                fontFamily: "'Playfair Display', serif", 
-                fontSize: "1.25rem", 
-                fontWeight: 300,
-                color: "var(--color-primary)",
-                marginBottom: "0.5rem"
-              }}>{COMPANY_NAME}</h4>
-              <p style={{ 
-                fontSize: "0.75rem", 
-                color: "var(--color-secondary)", 
-                fontWeight: 300,
-                lineHeight: 1.65,
-              }}>
+              title={`${COMPANY_NAME} headquarters map`}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: "2rem",
+                left: "2rem",
+                right: "2rem",
+                maxWidth: "22rem",
+                backgroundColor: "white",
+                padding: "1.5rem 2rem",
+                borderRadius: "2px",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                border: "1px solid var(--color-line)",
+                zIndex: 10,
+              }}
+            >
+              <span
+                style={{
+                  display: "block",
+                  fontSize: "0.625rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  color: "var(--color-secondary)",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                Headquarters
+              </span>
+              <h4
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: "1.25rem",
+                  fontWeight: 300,
+                  color: "var(--color-primary)",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                {COMPANY_NAME}
+              </h4>
+              <p
+                style={{
+                  fontSize: "0.75rem",
+                  color: "var(--color-secondary)",
+                  fontWeight: 300,
+                  lineHeight: 1.65,
+                  margin: 0,
+                }}
+              >
                 {COMPANY_ADDRESS_LINES.map((line, i) => (
                   <span key={line}>
                     {line}
@@ -503,5 +591,4 @@ const linkStyle: React.CSSProperties = {
   color: "var(--color-primary)",
   textDecoration: "none",
   fontWeight: 400,
-  transition: "opacity 0.3s",
 };

@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { COMPANY_ADDRESS_LINES, COMPANY_NAME } from "@/lib/company";
+import {
+  COMPANY_ADDRESS_LINES,
+  COMPANY_HOURS_FOOTER,
+  COMPANY_NAME,
+} from "@/lib/company";
 import FooterForm from "./FooterForm";
 import Logo from "./Logo";
 
@@ -64,6 +68,8 @@ export default function Footer() {
               {[
                 { label: "Our Products", href: "/products" },
                 { label: "Industries", href: "/industries" },
+                { label: "Services", href: "/services" },
+                { label: "Partners", href: "/partners" },
                 { label: "Our Projects", href: "/projects" },
                 { label: "About Us", href: "/about" },
                 { label: "Get A Quote", href: "/quote" },
@@ -141,9 +147,7 @@ export default function Footer() {
                 lineHeight: 1.75,
               }}
             >
-              Mon–Sat — 10:00–18:00
-              <br />
-              By appointment Sunday
+              {COMPANY_HOURS_FOOTER}
             </p>
           </div>
 
@@ -227,7 +231,7 @@ export default function Footer() {
                 color: "rgba(87,83,78,0.4)",
               }}
             >
-              Built with intention.
+              Engineered for East African duty cycles.
             </span>
             <p
               style={{

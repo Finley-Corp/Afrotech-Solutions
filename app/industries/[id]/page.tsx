@@ -378,7 +378,7 @@ export default async function IndustryDetailsPage({ params }: IndustryPageProps)
               View Relevant Products
             </Link>
             <Link
-              href="/contact"
+              href="/quote?service=system-design-integration"
               style={{
                 padding: "1rem 2rem",
                 textDecoration: "none",

@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
-import { createAdminSessionCookie } from "@/lib/admin-auth";
+import { createAdminSessionCookie, getAdminPassword } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
   try {
+    const expected = getAdminPassword();
+    if (!expected) {
+      console.error("[admin/login] ADMIN_PASSWORD is not configured");
+      return NextResponse.json({ error: "Admin login is not configured" }, { status: 503 });
+    }
+
     const body = await request.json();
     const submitted = String(body?.password ?? "").trim();
-    const expected = (process.env.ADMIN_PASSWORD ?? "afrotech2026").trim();
 
     if (!submitted || submitted !== expected) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });

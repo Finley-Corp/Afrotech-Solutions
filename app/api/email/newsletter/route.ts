@@ -27,12 +27,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
   }
 
-  if (isFormDbConfigured()) {
-    try {
-      await insertNewsletterSubscriber(email);
-    } catch (err) {
-      console.error("[DB] newsletter insert failed:", err instanceof Error ? err.message : err);
-    }
+  if (!isFormDbConfigured()) {
+    return NextResponse.json({ ok: false, error: "db_not_configured" }, { status: 503 });
+  }
+
+  try {
+    await insertNewsletterSubscriber(email);
+  } catch (err) {
+    console.error("[DB] newsletter insert failed:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ ok: false, error: "db_save_failed" }, { status: 502 });
   }
 
   const from = getFromEmail();
@@ -57,10 +60,12 @@ export async function POST(req: Request) {
 
   if (welcomeErr) {
     console.error("[Resend] newsletter welcome:", welcomeErr);
-    return NextResponse.json(
-      { ok: false, error: "send_failed", reason: resendErrorMessage(welcomeErr) },
-      { status: 502 },
-    );
+    return NextResponse.json({
+      ok: true,
+      saved: true,
+      warning: "welcome_email_failed",
+      reason: resendErrorMessage(welcomeErr),
+    });
   }
 
   const ownerRows = emailDetailRows([{ label: "Subscriber email", value: email }], escapeHtml);
@@ -88,10 +93,11 @@ export async function POST(req: Request) {
     console.error("[Resend] newsletter owner notify:", teamErr);
     return NextResponse.json({
       ok: true,
+      saved: true,
       warning: "team_notify_failed",
       reason: resendErrorMessage(teamErr),
     });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, saved: true });
 }

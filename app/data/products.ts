@@ -26,6 +26,8 @@ export type ProductDbRow = {
   specs: string[];
   detailed_specs: { label: string; value: string }[];
   applications: string[];
+  pump_type: string | null;
+  source_url: string | null;
 };
 
 export function toProductDbRow(p: Product): ProductDbRow {
@@ -42,6 +44,8 @@ export function toProductDbRow(p: Product): ProductDbRow {
     specs: p.specs,
     detailed_specs: p.detailedSpecs,
     applications: p.applications,
+    pump_type: null,
+    source_url: null,
   };
 }
 

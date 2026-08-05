@@ -49,19 +49,19 @@ export default function HeroSection() {
           <h1 className="hero-title">
             <span className="line-mask">
               <span className="reveal-line" data-anim="hero-line">
-                High purity water
+                Industrial water
               </span>
             </span>
             <span className="line-mask">
               <span className="reveal-line" data-anim="hero-line">
-                <span style={{ color: "var(--color-accent)", fontStyle: "italic" }}>solutions.</span>
+                <span style={{ color: "var(--color-accent)", fontStyle: "italic" }}>pumping systems.</span>
               </span>
             </span>
           </h1>
 
           <p data-anim="hero-p" className="hero-description">
-            Reliable treatment-ready pumping systems and technical support for industrial,
-            municipal, and agricultural applications across East Africa.
+            Grundfos, KSB, and Wilo pumps — specified, supplied, and supported for industrial,
+            municipal, and agricultural water movement across East Africa.
           </p>
 
           <div data-anim="hero-search" className="hero-actions">

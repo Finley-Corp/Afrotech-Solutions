@@ -55,3 +55,31 @@ export async function insertNewsletterSubscriber(email: string): Promise<void> {
   ]);
   invalidateAdminCache();
 }
+
+export async function insertServiceInquiry(row: {
+  service_slug: string;
+  service_title: string;
+  name: string;
+  email: string;
+  phone: string;
+  priority: string;
+  variant: string;
+  details: string;
+}): Promise<void> {
+  await neonQuery(
+    `INSERT INTO service_inquiries
+      (service_slug, service_title, name, email, phone, priority, variant, details)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+    [
+      row.service_slug,
+      row.service_title,
+      row.name,
+      row.email,
+      row.phone.trim() || null,
+      row.priority.trim() || null,
+      row.variant.trim() || null,
+      row.details.trim() || "",
+    ],
+  );
+  invalidateAdminCache();
+}

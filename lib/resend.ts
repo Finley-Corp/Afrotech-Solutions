@@ -23,6 +23,31 @@ export function getOwnerNotifyEmails(): string[] {
     .filter(Boolean);
 }
 
+/** Channel-specific notify lists for contact form subject routing. */
+export function getContactChannelNotifyEmails(
+  channel: "general" | "technical" | "sales" | "partnership",
+): string[] {
+  const envKey =
+    channel === "technical"
+      ? "RESEND_TECH_EMAIL"
+      : channel === "sales"
+        ? "RESEND_SALES_EMAIL"
+        : channel === "partnership"
+          ? "RESEND_PARTNERSHIP_EMAIL"
+          : "";
+  const fromEnv = envKey ? process.env[envKey]?.trim() : "";
+  if (fromEnv) {
+    return fromEnv
+      .split(/[,;]+/)
+      .map((e) => e.trim())
+      .filter(Boolean);
+  }
+  if (channel === "sales") {
+    return ["contact@afrotechsolutions.com"];
+  }
+  return getOwnerNotifyEmails();
+}
+
 /** @deprecated use getOwnerNotifyEmails — kept for callers expecting one string */
 export function getNotifyEmail(): string {
   const list = getOwnerNotifyEmails();

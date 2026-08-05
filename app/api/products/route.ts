@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fetchProductsPage } from "@/lib/products-db";
+import { getCachedProductsPage } from "@/lib/products-db";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +11,17 @@ export async function GET(request: Request) {
     const brand = searchParams.get("brand");
     const search = searchParams.get("q") ?? searchParams.get("search");
 
-    const result = await fetchProductsPage({ page, limit, brand, search });
+    const pumpType = searchParams.get("pumpType");
+    const application = searchParams.get("application");
+
+    const result = await getCachedProductsPage({
+      page,
+      limit,
+      brand,
+      search,
+      pumpType,
+      application,
+    });
 
     return NextResponse.json(result, {
       headers: {

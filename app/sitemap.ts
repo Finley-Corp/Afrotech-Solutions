@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getSiteUrl } from "@/lib/site";
 import { industries } from "@/app/data/industries";
+import { services } from "@/app/data/services";
+import { featuredProjects } from "@/app/data/projects";
 import { neonQuery } from "@/lib/neon-db";
 
 const STATIC_ROUTES: { path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
@@ -10,6 +12,7 @@ const STATIC_ROUTES: { path: string; priority: number; changeFrequency: Metadata
   { path: "/services", priority: 0.85, changeFrequency: "monthly" },
   { path: "/industries", priority: 0.85, changeFrequency: "monthly" },
   { path: "/projects", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/partners", priority: 0.75, changeFrequency: "monthly" },
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },
   { path: "/quote", priority: 0.85, changeFrequency: "monthly" },
 ];
@@ -34,6 +37,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency,
     priority,
   }));
+
+  for (const service of services) {
+    entries.push({
+      url: `${base}${service.path}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    });
+  }
+
+  for (const project of featuredProjects) {
+    entries.push({
+      url: `${base}/projects/${project.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+  }
 
   for (const industry of industries) {
     entries.push({

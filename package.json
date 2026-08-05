@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "supabase:keepalive": "node scripts/keep-supabase-awake.mjs"
+    "supabase:keepalive": "node scripts/keep-supabase-awake.mjs",
+    "db:ensure-form-tables": "node scripts/ensure-form-tables.mjs"
   },
   "dependencies": {
     "@iconify/react": "^5.0.2",
