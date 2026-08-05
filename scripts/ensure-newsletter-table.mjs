@@ -1,25 +1,15 @@
 /**
- * Creates newsletter_subscriptions in Neon if missing.
+ * @deprecated Prefer scripts/ensure-form-tables.mjs (newsletter + service_inquiries).
+ * Creates newsletter_subscriptions if missing.
  * Run: node scripts/ensure-newsletter-table.mjs
- * Requires DATABASE_URL in the environment.
  */
-import pg from "pg";
+import { spawnSync } from "child_process";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
-const connectionString = process.env.DATABASE_URL?.trim();
-if (!connectionString) {
-  console.error("DATABASE_URL is required");
-  process.exit(1);
-}
-
-const pool = new pg.Pool({ connectionString, ssl: { rejectUnauthorized: false } });
-
-await pool.query(`
-  CREATE TABLE IF NOT EXISTS newsletter_subscriptions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    email TEXT NOT NULL UNIQUE
-  );
-`);
-
-console.log("newsletter_subscriptions table is ready");
-await pool.end();
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const result = spawnSync(process.execPath, [join(root, "scripts/ensure-form-tables.mjs")], {
+  stdio: "inherit",
+  env: process.env,
+});
+process.exit(result.status ?? 1);
