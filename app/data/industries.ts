@@ -52,7 +52,7 @@ export const industries: Industry[] = [
       "Increased crop yield reliability",
     ],
     image: industryImage("agriculture.jpg"),
-    productsLink: "/products#solar",
+    productsLink: "/products?application=agricultural",
   },
   {
     id: "industrial",
@@ -88,7 +88,7 @@ export const industries: Industry[] = [
       "Fire suppression network support",
     ],
     image: industryImage("industrial and manufacturing.jpg"),
-    productsLink: "/products#industrial",
+    productsLink: "/products?application=industrial",
   },
   {
     id: "municipal",
@@ -124,7 +124,7 @@ export const industries: Industry[] = [
       "Energy-efficient upgrades",
     ],
     image: industryImage("municipal and utility.jpg"),
-    productsLink: "/products#submersible",
+    productsLink: "/products?application=municipal",
   },
   {
     id: "construction",
@@ -160,7 +160,7 @@ export const industries: Industry[] = [
       "Erosion and runoff control support",
     ],
     image: industryImage("construction and dewatering.jpg"),
-    productsLink: "/products#industrial",
+    productsLink: "/products?application=dewatering",
   },
   {
     id: "hospitality",
@@ -196,7 +196,7 @@ export const industries: Industry[] = [
       "Lower lifecycle maintenance risk",
     ],
     image: industryImage("hospitality and real estate.jpg"),
-    productsLink: "/products#submersible",
+    productsLink: "/products?pumpType=booster",
   },
   {
     id: "mining",
@@ -232,7 +232,7 @@ export const industries: Industry[] = [
       "Better continuity of production support systems",
     ],
     image: industryImage("mining and quarring.jpg"),
-    productsLink: "/products#industrial",
+    productsLink: "/products?application=dewatering",
   },
   {
     id: "healthcare",
@@ -268,7 +268,7 @@ export const industries: Industry[] = [
       "Greater long-term infrastructure resilience",
     ],
     image: industryImage("healthcare facilities.jpg"),
-    productsLink: "/products#industrial",
+    productsLink: "/products?application=domestic",
   },
   {
     id: "education",
@@ -304,7 +304,7 @@ export const industries: Industry[] = [
       "Scalable design for future expansion",
     ],
     image: industryImage("education and institution cumpases.jpg"),
-    productsLink: "/products#submersible",
+    productsLink: "/products?application=domestic",
   },
   {
     id: "marine",
@@ -340,7 +340,7 @@ export const industries: Industry[] = [
       "Stronger resilience for critical port services",
     ],
     image: industryImage("marine and port.jpg"),
-    productsLink: "/products#industrial",
+    productsLink: "/products?application=industrial",
   },
 ];
 
