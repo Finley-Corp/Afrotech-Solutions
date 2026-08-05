@@ -7,6 +7,11 @@ export type EmailAttempt = {
   warnings: string[];
 };
 
+export type EmailAttachment = {
+  filename: string;
+  content: string;
+};
+
 /** Sends client + owner emails; failures are logged and collected — never throws. */
 export async function sendLeadEmails(
   resend: Resend,
@@ -14,7 +19,12 @@ export async function sendLeadEmails(
     from: string;
     ownerInboxes: string[];
     client: { to: string; subject: string; html: string };
-    owner: { subject: string; html: string; replyTo: string };
+    owner: {
+      subject: string;
+      html: string;
+      replyTo: string;
+      attachments?: EmailAttachment[];
+    };
   },
 ): Promise<EmailAttempt> {
   const warnings: string[] = [];
@@ -41,6 +51,7 @@ export async function sendLeadEmails(
     replyTo: opts.owner.replyTo,
     subject: opts.owner.subject,
     html: opts.owner.html,
+    attachments: opts.owner.attachments,
   });
 
   if (ownerErr) {
